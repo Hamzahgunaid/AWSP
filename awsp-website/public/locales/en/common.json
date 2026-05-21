@@ -1,0 +1,141 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About the Programme",
+    "projects": "Our Projects",
+    "knowledge": "Knowledge Products",
+    "news": "News & Events",
+    "contact": "Contact & Engage"
+  },
+  "lang": {
+    "toggle": { "en": "EN", "ar": "AR" }
+  },
+  "hero": {
+    "headline": "Aden Water Sector Plan",
+    "subtitle": "Transitioning Aden's water and sanitation sector from emergency response to a stable, resilient, and locally governed system.",
+    "cta": {
+      "projects": "Explore Projects",
+      "framework": "Download the Framework"
+    },
+    "ticker": { "label": "Latest:" }
+  },
+  "kpi": {
+    "projects": { "label": "Projects Delivered" },
+    "investment": { "label": "Total Investment (USD)" },
+    "districts": { "label": "Districts Covered" },
+    "donors": { "label": "Donors & Partners" },
+    "phases": { "label": "AWSP Planning Phases" }
+  },
+  "phases": {
+    "current": "Current Phase",
+    "completed": "Completed",
+    "active": "In Progress",
+    "planned": "Planned",
+    "viewAll": "View Full Roadmap →",
+    "sectionHeading": "The AWSP Planning Journey",
+    "sectionSub": "12 sequenced phases from framework adoption to public endorsement — July 2025 to January 2029."
+  },
+  "partners": {
+    "heading": "Our Primary Partners",
+    "mwe": {
+      "role": "Lead Agency — AWSP",
+      "description": "MWE is the principal custodian of the Aden Water Sector Plan, providing strategic direction, institutional leadership, and coordination with national frameworks and development partners."
+    },
+    "lwsca": {
+      "role": "Principal Service Provider",
+      "description": "LWSCA is the primary operational authority for water and sanitation services in Aden, contributing field expertise, infrastructure data, and technical input to the AWSP planning process."
+    },
+    "taskforce": {
+      "role": "Programme Administration & Oversight",
+      "description": "The AWSP Taskforce is a joint body drawn from MWE and LWSCA, responsible for coordinating programme activities, validating technical outputs, and managing stakeholder engagement across all planning phases."
+    }
+  },
+  "snapshot": {
+    "projects": {
+      "title": "Our Projects",
+      "body": "193 infrastructure projects delivered across Aden's eight urban districts. Browse by location, intervention type, donor, or sector."
+    },
+    "knowledge": {
+      "title": "Knowledge Products",
+      "body": "Diagnostic studies, planning frameworks, technical guidelines, and data resources supporting the AWSP planning process."
+    },
+    "news": {
+      "title": "News & Events",
+      "body": "Latest programme updates, phase milestones, stakeholder events, and media resources from the AWSP Taskforce."
+    }
+  },
+  "newsStrip": {
+    "heading": "Latest from the Programme",
+    "viewAll": "View all news & events →"
+  },
+  "footer": {
+    "quicklinks": "Quick Links",
+    "programmeinfo": "Programme Info",
+    "download": "Download AWSP Framework (PDF)",
+    "programmeName": "Aden Water Sector Plan",
+    "contact": "AWSP Taskforce",
+    "copyright": "© 2025 Ministry of Water and Environment, Republic of Yemen. All rights reserved."
+  },
+  "filter": {
+    "district": "District / Area",
+    "type": "Intervention Type",
+    "sector": "Sector",
+    "donor": "Donor / Funder",
+    "implementer": "Implementing Agency",
+    "year": "Year",
+    "cost": "Cost (USD)",
+    "reset": "Reset All Filters",
+    "results": "Showing {{count}} of 193 projects"
+  },
+  "view": {
+    "map": "Map View",
+    "list": "List View",
+    "analytics": "Analytics View"
+  },
+  "project": {
+    "cost": "Cost",
+    "year": "Year",
+    "sector": "Sector",
+    "donor": "Donor / Funder",
+    "implementer": "Implementing Agency",
+    "contractor": "Contractor",
+    "viewOnMap": "View on Map",
+    "share": "Share Link",
+    "export": "Export to Excel",
+    "na": "Not Available"
+  },
+  "empty": {
+    "projects": {
+      "title": "No matching projects found",
+      "subtitle": "Try adjusting or clearing your selected filters."
+    },
+    "noEvents": "No upcoming events at this time.",
+    "noNews": "No news posts have been published yet.",
+    "noDocs": "No documents available in this category yet.",
+    "loading": "Loading...",
+    "mapLoading": "Loading map..."
+  },
+  "contact": {
+    "form": {
+      "name": "Full Name",
+      "org": "Organisation",
+      "role": "Role / Position",
+      "type": "Enquiry Type",
+      "message": "Message",
+      "lang": "Language Preference",
+      "submit": "Submit",
+      "success": "Thank you for your message. A member of the AWSP Taskforce will review your enquiry and respond as soon as possible.",
+      "error": "We were unable to send your message. Please try again or contact us directly at the email address above.",
+      "required": "This field is required.",
+      "emailInvalid": "Please enter a valid email address."
+    },
+    "types": {
+      "donor": "Donor Enquiry",
+      "partner": "Partner Coordination",
+      "data": "Data Request",
+      "media": "Media Enquiry",
+      "general": "General Enquiry",
+      "other": "Other"
+    }
+  }
+}

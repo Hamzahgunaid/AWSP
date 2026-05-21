@@ -1,0 +1,35 @@
+[
+  {
+    "id": "mwe",
+    "name_en": "Ministry of Water and Environment",
+    "name_ar": "وزارة المياه والبيئة",
+    "role_en": "Lead Agency — AWSP",
+    "role_ar": "الجهة القائدة — AWSP",
+    "description_en": "MWE is the principal custodian of the Aden Water Sector Plan, providing strategic direction, institutional leadership, and coordination with national frameworks and development partners.",
+    "description_ar": "وزارة المياه والبيئة هي الجهة الوصية الرئيسية على خطة قطاع المياه في عدن، وتوفر التوجيه الاستراتيجي والقيادة المؤسسية والتنسيق مع الأطر الوطنية وشركاء التنمية.",
+    "logo_src": "/images/logo-mwe.svg",
+    "href": "https://mwe.gov.ye"
+  },
+  {
+    "id": "lwsca",
+    "name_en": "Local Water and Sanitation Corporation – Aden",
+    "name_ar": "المؤسسة المحلية للمياه والصرف الصحي – عدن",
+    "role_en": "Principal Service Provider",
+    "role_ar": "مزود الخدمة الرئيسي",
+    "description_en": "LWSCA is the primary operational authority for water and sanitation services in Aden, contributing field expertise, infrastructure data, and technical input to the AWSP planning process.",
+    "description_ar": "المؤسسة المحلية للمياه والصرف الصحي في عدن هي السلطة التشغيلية الرئيسية لخدمات المياه والصرف الصحي في عدن، وتساهم بالخبرة الميدانية وبيانات البنية التحتية والمدخلات التقنية في عملية تخطيط AWSP.",
+    "logo_src": "/images/logo-lwsca.svg",
+    "href": "#contact"
+  },
+  {
+    "id": "taskforce",
+    "name_en": "AWSP Taskforce",
+    "name_ar": "فريق عمل AWSP",
+    "role_en": "Programme Administration & Oversight",
+    "role_ar": "إدارة البرنامج والإشراف",
+    "description_en": "The AWSP Taskforce is a joint body drawn from MWE and LWSCA, responsible for coordinating programme activities, validating technical outputs, and managing stakeholder engagement across all planning phases.",
+    "description_ar": "فريق عمل AWSP هو هيئة مشتركة مستمدة من وزارة المياه والبيئة والمؤسسة المحلية، مسؤولة عن تنسيق أنشطة البرنامج والتحقق من المخرجات التقنية وإدارة مشاركة أصحاب المصلحة عبر جميع مراحل التخطيط.",
+    "logo_src": "/images/awsp-logo.svg",
+    "href": "/about#governance"
+  }
+]

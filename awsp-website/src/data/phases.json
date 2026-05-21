@@ -1,0 +1,396 @@
+[
+  {
+    "id": 1,
+    "name_en": "Framework Endorsement & Taskforce Mobilisation",
+    "name_ar": "التصديق على الإطار وتفعيل فريق العمل",
+    "start_date": "2025-06-22",
+    "end_date": "2025-08-01",
+    "duration": "6 weeks",
+    "status": "completed",
+    "description_en": "This phase marks the transition from framework development to active implementation. It secures formal adoption of the AWSP Framework, mobilises the joint MWE-LWSCA Taskforce, and establishes internal structures and operational foundations guiding all subsequent activities.",
+    "description_ar": "تمثل هذه المرحلة الانتقال من تطوير الإطار إلى التنفيذ الفعلي. تؤمن التبني الرسمي لإطار AWSP وتفعيل فريق العمل المشترك بين وزارة المياه والبيئة والمؤسسة المحلية.",
+    "activities_en": [
+      "Formal endorsement of the AWSP Framework by MWE and LWSCA leadership",
+      "Mobilisation and structuring of the AWSP Taskforce with defined roles",
+      "Establishment of internal coordination protocols and communication channels",
+      "Preparation of operational plan for Phase 2 activities"
+    ],
+    "activities_ar": [
+      "التصديق الرسمي على إطار AWSP من قبل قيادة وزارة المياه والبيئة والمؤسسة المحلية",
+      "تفعيل وهيكلة فريق عمل AWSP مع تحديد الأدوار",
+      "إنشاء بروتوكولات التنسيق الداخلي وقنوات التواصل",
+      "إعداد الخطة التشغيلية لأنشطة المرحلة الثانية"
+    ],
+    "outputs_en": [
+      "Endorsed AWSP Framework document",
+      "Active Taskforce with assigned roles",
+      "Operational plan for Phase 2"
+    ],
+    "outputs_ar": [
+      "وثيقة إطار AWSP المُعتمدة",
+      "فريق عمل نشط مع أدوار محددة",
+      "خطة تشغيلية للمرحلة الثانية"
+    ]
+  },
+  {
+    "id": 2,
+    "name_en": "Survey Alignment & Stakeholders Coordination",
+    "name_ar": "مواءمة المسوحات وتنسيق أصحاب المصلحة",
+    "start_date": "2025-07-01",
+    "end_date": "2025-12-30",
+    "duration": "26 weeks",
+    "status": "active",
+    "description_en": "This phase ensures planned AWSP surveys are aligned with existing data collection efforts, institutional mandates, and ongoing partner initiatives. It activates technical coordination mechanisms to review and harmonise scopes, methodologies, and schedules to avoid duplication.",
+    "description_ar": "تضمن هذه المرحلة توافق مسوحات AWSP المخططة مع جهود جمع البيانات القائمة والتفويضات المؤسسية والمبادرات الجارية.",
+    "activities_en": [
+      "Review of existing surveys by donors, partners, and government institutions",
+      "Harmonisation of survey scopes and methodologies across actors",
+      "Activation of technical coordination mechanisms",
+      "Production of a Survey Alignment Matrix"
+    ],
+    "activities_ar": [
+      "مراجعة المسوحات القائمة للجهات المانحة والشركاء والمؤسسات الحكومية",
+      "توحيد نطاقات ومنهجيات المسح عبر الجهات الفاعلة",
+      "تفعيل آليات التنسيق التقني",
+      "إعداد مصفوفة مواءمة المسوحات"
+    ],
+    "outputs_en": [
+      "Survey Alignment Matrix",
+      "Alignment Workshop Summary Memo",
+      "Updated Terms of Reference where required"
+    ],
+    "outputs_ar": [
+      "مصفوفة مواءمة المسوحات",
+      "مذكرة ملخص ورشة عمل المواءمة",
+      "مصطلحات مرجعية محدّثة عند الاقتضاء"
+    ]
+  },
+  {
+    "id": 3,
+    "name_en": "Survey Design Finalisation",
+    "name_ar": "الانتهاء من تصميم المسوحات",
+    "start_date": "2025-08-01",
+    "end_date": "2026-01-30",
+    "duration": "26 weeks",
+    "status": "active",
+    "description_en": "This phase finalises the design of the four foundational surveys: Household and Customer Survey, Hydrogeological Survey, GIS and Topographic Survey, and Hydraulic Infrastructure Survey.",
+    "description_ar": "تُنهي هذه المرحلة تصميم المسوحات الأربعة التأسيسية: مسح الأسر والعملاء، المسح الجيولوجي المائي، مسح نظم المعلومات الجغرافية والطبوغرافي، ومسح البنية التحتية الهيدروليكية.",
+    "activities_en": [
+      "Finalisation of four foundational survey designs",
+      "Review and refinement of Terms of Reference",
+      "Technical validation of survey instruments and methodologies",
+      "Stakeholder review and sign-off on finalised designs"
+    ],
+    "activities_ar": [
+      "إنهاء تصميم المسوحات الأربعة التأسيسية",
+      "مراجعة وتحسين المصطلحات المرجعية",
+      "التحقق التقني من أدوات ومنهجيات المسح",
+      "مراجعة أصحاب المصلحة والموافقة على التصاميم النهائية"
+    ],
+    "outputs_en": [
+      "Four finalised survey design documents",
+      "Updated and procurement-ready Terms of Reference",
+      "Stakeholder validation records"
+    ],
+    "outputs_ar": [
+      "أربع وثائق تصميم مسح نهائية",
+      "مصطلحات مرجعية محدّثة وجاهزة للمشتريات",
+      "سجلات التحقق من أصحاب المصلحة"
+    ]
+  },
+  {
+    "id": 4,
+    "name_en": "Survey ToRs Finalisation & Procurement",
+    "name_ar": "إعداد مرجعية المسوحات والمشتريات",
+    "start_date": "2025-11-01",
+    "end_date": "2026-02-27",
+    "duration": "17 weeks",
+    "status": "planned",
+    "description_en": "This phase translates finalised survey designs into procurement-ready Terms of Reference and launches competitive tender processes to engage qualified survey firms.",
+    "description_ar": "تحوّل هذه المرحلة تصاميم المسوحات النهائية إلى مصطلحات مرجعية جاهزة للمشتريات وتطلق عمليات المناقصة التنافسية.",
+    "activities_en": [
+      "Translation of survey designs into formal procurement documentation",
+      "Preparation and issuance of tender packages for all four surveys",
+      "Evaluation of bids and selection of survey firms",
+      "Contract award and mobilisation of survey teams"
+    ],
+    "activities_ar": [
+      "تحويل تصاميم المسوحات إلى وثائق مشتريات رسمية",
+      "إعداد وإصدار حزم المناقصات للمسوحات الأربعة",
+      "تقييم العطاءات واختيار شركات المسح",
+      "ترسية العقود وتفعيل فرق المسح"
+    ],
+    "outputs_en": [
+      "Procurement-ready ToR packages for all four surveys",
+      "Issued tender documents",
+      "Signed survey contracts"
+    ],
+    "outputs_ar": [
+      "حزم مصطلحات مرجعية جاهزة للمشتريات للمسوحات الأربعة",
+      "وثائق مناقصة صادرة",
+      "عقود مسح موقّعة"
+    ]
+  },
+  {
+    "id": 5,
+    "name_en": "Survey Implementation & Data Validation",
+    "name_ar": "تنفيذ المسوحات والتحقق من البيانات",
+    "start_date": "2026-02-01",
+    "end_date": "2027-06-30",
+    "duration": "72 weeks",
+    "status": "planned",
+    "description_en": "The four foundational surveys are executed across all Aden districts and water source areas. All collected data is rigorously validated for accuracy, completeness, and integrity.",
+    "description_ar": "تُنفَّذ المسوحات الأربعة التأسيسية عبر جميع مديريات عدن ومناطق مصادر المياه. يُتحقق بصرامة من جميع البيانات المجمّعة للتأكد من دقتها واكتمالها وسلامتها.",
+    "activities_en": [
+      "Field execution of all four surveys across Aden's eight districts and Lahj water sources",
+      "Real-time data quality monitoring and validation",
+      "Post-collection data cleaning, integration, and verification",
+      "Preparation of validated survey output reports"
+    ],
+    "activities_ar": [
+      "التنفيذ الميداني للمسوحات الأربعة عبر المديريات الثماني لعدن ومصادر مياه لحج",
+      "مراقبة جودة البيانات والتحقق منها في الوقت الفعلي",
+      "تنظيف البيانات وتكاملها والتحقق منها بعد الجمع",
+      "إعداد تقارير مخرجات المسح المُتحقق منها"
+    ],
+    "outputs_en": [
+      "Four validated survey output reports",
+      "Cleaned and integrated datasets",
+      "Data validation memoranda"
+    ],
+    "outputs_ar": [
+      "أربعة تقارير مخرجات مسح مُتحقق منها",
+      "مجموعات بيانات منظّفة ومتكاملة",
+      "مذكرات التحقق من البيانات"
+    ]
+  },
+  {
+    "id": 6,
+    "name_en": "Options Alignment & Stakeholders Coordination",
+    "name_ar": "مواءمة الخيارات وتنسيق أصحاب المصلحة",
+    "start_date": "2026-10-01",
+    "end_date": "2027-05-30",
+    "duration": "34 weeks",
+    "status": "planned",
+    "description_en": "A second alignment phase ensuring options studies are designed with full awareness of stakeholder priorities, ongoing initiatives, and emerging survey findings.",
+    "description_ar": "مرحلة مواءمة ثانية تضمن تصميم دراسات الخيارات مع الوعي الكامل بأولويات أصحاب المصلحة والمبادرات الجارية ونتائج المسوحات الناشئة.",
+    "activities_en": [
+      "Review of survey findings against stakeholder priorities",
+      "Coordination with donors on investment parameters",
+      "Alignment of options study scope with institutional constraints",
+      "Updated stakeholder engagement activities"
+    ],
+    "activities_ar": [
+      "مراجعة نتائج المسوحات في مقابل أولويات أصحاب المصلحة",
+      "التنسيق مع الجهات المانحة بشأن معايير الاستثمار",
+      "مواءمة نطاق دراسة الخيارات مع القيود المؤسسية",
+      "أنشطة مشاركة أصحاب المصلحة المحدّثة"
+    ],
+    "outputs_en": [
+      "Options alignment report",
+      "Updated stakeholder coordination matrix",
+      "Revised engagement plan"
+    ],
+    "outputs_ar": [
+      "تقرير مواءمة الخيارات",
+      "مصفوفة تنسيق أصحاب المصلحة المحدّثة",
+      "خطة مشاركة مراجَعة"
+    ]
+  },
+  {
+    "id": 7,
+    "name_en": "Options Study ToRs & Procurement",
+    "name_ar": "إعداد مرجعية دراسة الخيارات والمشتريات",
+    "start_date": "2027-05-01",
+    "end_date": "2027-08-30",
+    "duration": "17 weeks",
+    "status": "planned",
+    "description_en": "Terms of Reference for the Options Studies are prepared and a competitive procurement process is launched to engage qualified technical consultants.",
+    "description_ar": "تُعدّ المصطلحات المرجعية لدراسات الخيارات وتُطلق عملية مشتريات تنافسية للتعاقد مع مستشارين تقنيين مؤهلين.",
+    "activities_en": [
+      "Preparation of Options Study Terms of Reference",
+      "Launch of competitive procurement for consultants",
+      "Bid evaluation, selection, and contract award",
+      "Mobilisation of options study consultant team"
+    ],
+    "activities_ar": [
+      "إعداد المصطلحات المرجعية لدراسة الخيارات",
+      "إطلاق مشتريات تنافسية للمستشارين",
+      "تقييم العطاءات والاختيار وترسية العقود",
+      "تفعيل فريق مستشاري دراسة الخيارات"
+    ],
+    "outputs_en": [
+      "Options Study Terms of Reference",
+      "Procurement documentation",
+      "Contracted consultant team"
+    ],
+    "outputs_ar": [
+      "المصطلحات المرجعية لدراسة الخيارات",
+      "وثائق المشتريات",
+      "فريق المستشارين المتعاقد معهم"
+    ]
+  },
+  {
+    "id": 8,
+    "name_en": "Options Studies & Scenario Development",
+    "name_ar": "دراسات الخيارات وتطوير السيناريوهات",
+    "start_date": "2027-07-01",
+    "end_date": "2028-06-30",
+    "duration": "52 weeks",
+    "status": "planned",
+    "description_en": "The core technical analysis phase. Investment pathways and service delivery models are evaluated across all six functional scope areas. Costed, risk-informed scenarios are developed for Aden's water sector future.",
+    "description_ar": "مرحلة التحليل التقني الأساسية. تُقيَّم مسارات الاستثمار ونماذج تقديم الخدمات عبر مجالات النطاق الوظيفي الستة. تُطوَّر سيناريوهات مكلَّفة ومستنيرة بالمخاطر لمستقبل قطاع مياه عدن.",
+    "activities_en": [
+      "Evaluation of investment options across all six functional areas",
+      "Integration of validated survey data with stakeholder priorities",
+      "Development of three to five costed scenarios",
+      "Preparation of Options Studies report"
+    ],
+    "activities_ar": [
+      "تقييم خيارات الاستثمار عبر المجالات الوظيفية الستة",
+      "تكامل بيانات المسح المُتحقق منها مع أولويات أصحاب المصلحة",
+      "تطوير ثلاثة إلى خمسة سيناريوهات مكلَّفة",
+      "إعداد تقرير دراسات الخيارات"
+    ],
+    "outputs_en": [
+      "Options Studies report",
+      "Three to five costed development scenarios",
+      "Risk assessment matrix"
+    ],
+    "outputs_ar": [
+      "تقرير دراسات الخيارات",
+      "ثلاثة إلى خمسة سيناريوهات تنمية مكلَّفة",
+      "مصفوفة تقييم المخاطر"
+    ]
+  },
+  {
+    "id": 9,
+    "name_en": "Consultation & Scenario Selection",
+    "name_ar": "التشاور واختيار السيناريو",
+    "start_date": "2028-05-01",
+    "end_date": "2028-07-30",
+    "duration": "13 weeks",
+    "status": "planned",
+    "description_en": "Developed scenarios are presented to all stakeholder groups for structured review and prioritisation. A preferred scenario is selected through consensus.",
+    "description_ar": "تُقدَّم السيناريوهات المطوَّرة لجميع مجموعات أصحاب المصلحة للمراجعة والترتيب الهيكلي. يُختار السيناريو المفضل بالتوافق.",
+    "activities_en": [
+      "Structured presentation of scenarios to all stakeholder categories",
+      "Review of assumptions, costs, risks, and trade-offs",
+      "Consensus-building process to select preferred scenario",
+      "Documentation of scenario selection rationale"
+    ],
+    "activities_ar": [
+      "تقديم منظّم للسيناريوهات لجميع فئات أصحاب المصلحة",
+      "مراجعة الافتراضات والتكاليف والمخاطر والمفاضلات",
+      "عملية بناء التوافق لاختيار السيناريو المفضل",
+      "توثيق مبررات اختيار السيناريو"
+    ],
+    "outputs_en": [
+      "Preferred scenario document",
+      "Consultation summary report",
+      "Rationale and implementation considerations memorandum"
+    ],
+    "outputs_ar": [
+      "وثيقة السيناريو المفضل",
+      "تقرير ملخص التشاور",
+      "مذكرة المبررات واعتبارات التنفيذ"
+    ]
+  },
+  {
+    "id": 10,
+    "name_en": "Plan Development ToR & Procurement",
+    "name_ar": "مرجعية تطوير الخطة والمشتريات",
+    "start_date": "2028-08-01",
+    "end_date": "2028-10-30",
+    "duration": "13 weeks",
+    "status": "planned",
+    "description_en": "Terms of Reference for the full AWSP document are prepared, defining scope, content structure, and deliverables. A competitive procurement engages the plan drafting team.",
+    "description_ar": "تُعدّ المصطلحات المرجعية لوثيقة AWSP الكاملة، محدِّدةً النطاق والبنية والمخرجات. تُشرَك فريق صياغة الخطة عبر مشتريات تنافسية.",
+    "activities_en": [
+      "Preparation of AWSP Plan Development Terms of Reference",
+      "Competitive procurement of the plan drafting team",
+      "Contract award and team mobilisation"
+    ],
+    "activities_ar": [
+      "إعداد المصطلحات المرجعية لتطوير خطة AWSP",
+      "مشتريات تنافسية لفريق صياغة الخطة",
+      "ترسية العقد وتفعيل الفريق"
+    ],
+    "outputs_en": [
+      "Plan Development Terms of Reference",
+      "Procurement documentation",
+      "Contracted plan development team"
+    ],
+    "outputs_ar": [
+      "المصطلحات المرجعية لتطوير الخطة",
+      "وثائق المشتريات",
+      "فريق تطوير الخطة المتعاقد معه"
+    ]
+  },
+  {
+    "id": 11,
+    "name_en": "Aden Water Sector Plan Development",
+    "name_ar": "تطوير خطة قطاع المياه في عدن",
+    "start_date": "2028-11-01",
+    "end_date": "2028-12-30",
+    "duration": "9 weeks",
+    "status": "planned",
+    "description_en": "The full AWSP document is drafted, incorporating the selected scenario, validated survey results, stakeholder consultation findings, and national framework alignment. The draft undergoes rigorous internal review.",
+    "description_ar": "تُصاغ وثيقة AWSP الكاملة متضمِّنةً السيناريو المختار ونتائج المسوحات المُتحقق منها ونتائج تشاور أصحاب المصلحة والتوافق مع الإطار الوطني.",
+    "activities_en": [
+      "Drafting of the full AWSP document",
+      "Internal review by MWE, LWSCA, and the Taskforce",
+      "Incorporation of review comments and final refinements",
+      "Preparation of AWSP for formal endorsement"
+    ],
+    "activities_ar": [
+      "صياغة وثيقة AWSP الكاملة",
+      "المراجعة الداخلية من قِبل وزارة المياه والبيئة والمؤسسة المحلية وفريق العمل",
+      "دمج تعليقات المراجعة والتحسينات النهائية",
+      "إعداد AWSP للاعتماد الرسمي"
+    ],
+    "outputs_en": [
+      "Full draft AWSP document",
+      "Internal review records",
+      "Revised AWSP ready for endorsement"
+    ],
+    "outputs_ar": [
+      "مسودة وثيقة AWSP الكاملة",
+      "سجلات المراجعة الداخلية",
+      "AWSP المراجَع الجاهز للاعتماد"
+    ]
+  },
+  {
+    "id": 12,
+    "name_en": "Endorsement & Public Launch",
+    "name_ar": "التصديق والإطلاق الرسمي",
+    "start_date": "2029-01-01",
+    "end_date": "2029-01-30",
+    "duration": "4 weeks",
+    "status": "planned",
+    "description_en": "The Aden Water Sector Plan receives formal approval from MWE and relevant institutions. The plan is publicly launched through a stakeholder event communicating commitments, investment priorities, and implementation pathways.",
+    "description_ar": "تحصل خطة قطاع المياه في عدن على الموافقة الرسمية من وزارة المياه والبيئة والمؤسسات المعنية. تُطلق الخطة رسمياً من خلال فعالية أصحاب المصلحة.",
+    "activities_en": [
+      "Formal approval and endorsement of the AWSP",
+      "Organisation and delivery of the public launch event",
+      "Communication to donors, partners, and the public",
+      "Distribution of the endorsed plan"
+    ],
+    "activities_ar": [
+      "الموافقة الرسمية واعتماد AWSP",
+      "تنظيم وتنفيذ فعالية الإطلاق العام",
+      "التواصل مع الجهات المانحة والشركاء والجمهور",
+      "توزيع الخطة المعتمدة"
+    ],
+    "outputs_en": [
+      "Endorsed AWSP document",
+      "Public launch event proceedings",
+      "Official communication materials"
+    ],
+    "outputs_ar": [
+      "وثيقة AWSP المعتمدة",
+      "وقائع فعالية الإطلاق العام",
+      "المواد الإعلامية الرسمية"
+    ]
+  }
+]
