@@ -1,0 +1,6 @@
+{
+  "buildCommand": "cd awsp-website && npm install && npm run build",
+  "outputDirectory": "awsp-website/.next",
+  "framework": "nextjs",
+  "rootDirectory": "awsp-website"
+}
