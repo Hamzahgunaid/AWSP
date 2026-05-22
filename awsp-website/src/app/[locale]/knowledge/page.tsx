@@ -1,8 +1,14 @@
-export default async function Page({
+export default async function KnowledgePage({
   params
 }: {
-  params: Promise<{ locale: 'ar' | 'en' }>
+  params: Promise<{ locale: string }>
 }) {
   const { locale } = await params;
-  return <main><h1>{locale}</h1></main>;
+  return (
+    <main style={{ padding: '100px 40px', textAlign: 'center' }}>
+      <p style={{ color: '#1A3557', fontFamily: 'Cairo, sans-serif' }}>
+        {locale === 'ar' ? 'المنتجات المعرفية' : 'Knowledge Products'} — Under Construction
+      </p>
+    </main>
+  );
 }
