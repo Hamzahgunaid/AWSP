@@ -26,9 +26,6 @@ export default async function LocalePage({
           ? 'سيتم إطلاق الموقع قريباً'
           : 'Site launching soon'}
       </p>
-      <p style={{ textAlign: 'center', color: '#8A9BB0', fontSize: '12px', marginTop: '40px' }}>
-        v1.0 · build 2026-05-22
-      </p>
     </main>
   );
 }
