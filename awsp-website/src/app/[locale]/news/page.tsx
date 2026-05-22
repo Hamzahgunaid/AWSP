@@ -1,3 +1,8 @@
-export default function Page() {
-  return <main><h1>Coming Soon</h1></main>;
+export default async function Page({
+  params
+}: {
+  params: Promise<{ locale: 'ar' | 'en' }>
+}) {
+  const { locale } = await params;
+  return <main><h1>{locale}</h1></main>;
 }

@@ -1,8 +1,10 @@
-export default function LocalePage({
+export default async function LocalePage({
   params
 }: {
-  params: { locale: 'ar' | 'en' }
+  params: Promise<{ locale: 'ar' | 'en' }>
 }) {
+  const { locale } = await params;
+
   return (
     <main>
       <h1 style={{
@@ -11,7 +13,7 @@ export default function LocalePage({
         padding: '100px 40px',
         textAlign: 'center'
       }}>
-        {params.locale === 'ar'
+        {locale === 'ar'
           ? 'خطة قطاع المياه في عدن — قيد الإنشاء'
           : 'Aden Water Sector Plan — Under Construction'}
       </h1>
@@ -20,7 +22,7 @@ export default function LocalePage({
         color: '#0D7A6E',
         fontFamily: 'Cairo, sans-serif'
       }}>
-        {params.locale === 'ar'
+        {locale === 'ar'
           ? 'سيتم إطلاق الموقع قريباً'
           : 'Site launching soon — Step 2 in progress'}
       </p>
