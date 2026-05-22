@@ -1,6 +1,4 @@
-type ColorScheme =
-  'navy' | 'teal' | 'gold' | 'grey' |
-  'green' | 'red' | 'blue';
+type ColorScheme = 'navy' | 'teal' | 'gold' | 'grey' | 'green' | 'red' | 'blue';
 
 interface BadgeProps {
   label: string;
@@ -8,10 +6,7 @@ interface BadgeProps {
   className?: string;
 }
 
-const colorMap: Record<ColorScheme, {
-  bg: string;
-  color: string;
-}> = {
+const colorMap: Record<ColorScheme, { bg: string; color: string }> = {
   navy:  { bg: '#1A3557', color: 'white' },
   teal:  { bg: '#0D7A6E', color: 'white' },
   gold:  { bg: '#C8922A', color: 'white' },

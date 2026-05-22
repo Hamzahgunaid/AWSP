@@ -14,18 +14,12 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { labelAr: 'الرئيسية',
-    labelEn: 'Home',                href: '' },
-  { labelAr: 'عن البرنامج',
-    labelEn: 'About the Programme', href: '/about' },
-  { labelAr: 'مشاريعنا',
-    labelEn: 'Our Projects',        href: '/projects' },
-  { labelAr: 'المنتجات المعرفية',
-    labelEn: 'Knowledge Products',  href: '/knowledge' },
-  { labelAr: 'الأخبار والفعاليات',
-    labelEn: 'News & Events',       href: '/news' },
-  { labelAr: 'التواصل والمشاركة',
-    labelEn: 'Contact & Engage',    href: '/contact' },
+  { labelAr: 'الرئيسية',          labelEn: 'Home',                href: '' },
+  { labelAr: 'عن البرنامج',        labelEn: 'About the Programme', href: '/about' },
+  { labelAr: 'مشاريعنا',           labelEn: 'Our Projects',        href: '/projects' },
+  { labelAr: 'المنتجات المعرفية',  labelEn: 'Knowledge Products',  href: '/knowledge' },
+  { labelAr: 'الأخبار والفعاليات', labelEn: 'News & Events',       href: '/news' },
+  { labelAr: 'التواصل والمشاركة',  labelEn: 'Contact & Engage',    href: '/contact' },
 ];
 
 interface SiteHeaderProps {
@@ -33,7 +27,7 @@ interface SiteHeaderProps {
 }
 
 export default function SiteHeader({ locale }: SiteHeaderProps) {
-  const [scrolled, setScrolled]     = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
   const isAr = locale === 'ar';
@@ -47,41 +41,40 @@ export default function SiteHeader({ locale }: SiteHeaderProps) {
   const isActive = (href: string) => {
     const full = `/${locale}${href}`;
     if (href === '') {
-      return pathname === `/${locale}` ||
-             pathname === `/${locale}/`;
+      return pathname === `/${locale}` || pathname === `/${locale}/`;
     }
     return pathname.startsWith(full);
   };
 
   const fontStyle = {
-    fontFamily: isAr
-      ? 'Cairo, sans-serif'
-      : 'Source Sans 3, sans-serif',
+    fontFamily: isAr ? 'Cairo, sans-serif' : 'Source Sans 3, sans-serif',
   };
 
   return (
-    <header style={{
-      position: 'fixed',
-      top: 0,
-      insetInlineStart: 0,
-      width: '100%',
-      height: '64px',
-      backgroundColor: 'white',
-      boxShadow: scrolled
-        ? '0 2px 8px rgba(0,0,0,0.08)'
-        : 'none',
-      zIndex: 50,
-      transition: 'box-shadow 300ms ease',
-    }}>
-      <div style={{
-        maxWidth: '1280px',
-        margin: '0 auto',
-        height: '100%',
-        padding: '0 24px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}>
+    <header
+      style={{
+        position: 'fixed',
+        top: 0,
+        insetInlineStart: 0,
+        width: '100%',
+        height: '64px',
+        backgroundColor: 'white',
+        boxShadow: scrolled ? '0 2px 8px rgba(0,0,0,0.08)' : 'none',
+        zIndex: 50,
+        transition: 'box-shadow 300ms ease',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          height: '100%',
+          padding: '0 24px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
         {/* Logo */}
         <Link
           href={`/${locale}`}
@@ -100,14 +93,8 @@ export default function SiteHeader({ locale }: SiteHeaderProps) {
 
         {/* Desktop navigation */}
         <nav
-          aria-label={
-            isAr ? 'القائمة الرئيسية' : 'Main navigation'
-          }
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-          }}
+          aria-label={isAr ? 'القائمة الرئيسية' : 'Main navigation'}
+          style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
           className="hidden md:flex"
         >
           {NAV_ITEMS.map((item) => (
@@ -121,9 +108,7 @@ export default function SiteHeader({ locale }: SiteHeaderProps) {
                 fontSize: '14px',
                 fontWeight: '500',
                 textDecoration: 'none',
-                color: isActive(item.href)
-                  ? '#0D7A6E'
-                  : '#1A3557',
+                color: isActive(item.href) ? '#0D7A6E' : '#1A3557',
                 borderBottom: isActive(item.href)
                   ? '2px solid #0D7A6E'
                   : '2px solid transparent',
@@ -136,14 +121,9 @@ export default function SiteHeader({ locale }: SiteHeaderProps) {
         </nav>
 
         {/* Right side: language toggle + hamburger */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-        }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <LanguageToggle locale={locale} />
 
-          {/* Mobile hamburger */}
           <button
             className="md:hidden"
             style={{
@@ -156,30 +136,28 @@ export default function SiteHeader({ locale }: SiteHeaderProps) {
             }}
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={
-              mobileOpen
-                ? 'Close navigation menu'
-                : 'Open navigation menu'
+              mobileOpen ? 'Close navigation menu' : 'Open navigation menu'
             }
           >
-            {mobileOpen
-              ? <X size={24} />
-              : <Menu size={24} />}
+            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
 
       {/* Mobile dropdown */}
       {mobileOpen && (
-        <div style={{
-          position: 'absolute',
-          top: '64px',
-          insetInlineStart: 0,
-          width: '100%',
-          backgroundColor: 'white',
-          borderTop: '1px solid #F4F6F8',
-          boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
-          zIndex: 40,
-        }}>
+        <div
+          style={{
+            position: 'absolute',
+            top: '64px',
+            insetInlineStart: 0,
+            width: '100%',
+            backgroundColor: 'white',
+            borderTop: '1px solid #F4F6F8',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
+            zIndex: 40,
+          }}
+        >
           <nav style={{ padding: '8px 0' }}>
             {NAV_ITEMS.map((item) => (
               <Link
@@ -193,9 +171,7 @@ export default function SiteHeader({ locale }: SiteHeaderProps) {
                   fontSize: '14px',
                   fontWeight: '500',
                   textDecoration: 'none',
-                  color: isActive(item.href)
-                    ? '#0D7A6E'
-                    : '#1A3557',
+                  color: isActive(item.href) ? '#0D7A6E' : '#1A3557',
                   borderInlineStart: isActive(item.href)
                     ? '3px solid #0D7A6E'
                     : '3px solid transparent',
@@ -207,10 +183,7 @@ export default function SiteHeader({ locale }: SiteHeaderProps) {
                 {isAr ? item.labelAr : item.labelEn}
               </Link>
             ))}
-            <div style={{
-              padding: '12px 24px',
-              borderTop: '1px solid #F4F6F8',
-            }}>
+            <div style={{ padding: '12px 24px', borderTop: '1px solid #F4F6F8' }}>
               <LanguageToggle locale={locale} />
             </div>
           </nav>

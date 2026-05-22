@@ -6,71 +6,68 @@ interface SiteFooterProps {
 }
 
 const NAV_LINKS = [
-  { labelAr: 'الرئيسية',
-    labelEn: 'Home',                href: '' },
-  { labelAr: 'عن البرنامج',
-    labelEn: 'About the Programme', href: '/about' },
-  { labelAr: 'مشاريعنا',
-    labelEn: 'Our Projects',        href: '/projects' },
-  { labelAr: 'المنتجات المعرفية',
-    labelEn: 'Knowledge Products',  href: '/knowledge' },
-  { labelAr: 'الأخبار والفعاليات',
-    labelEn: 'News & Events',       href: '/news' },
-  { labelAr: 'التواصل والمشاركة',
-    labelEn: 'Contact & Engage',    href: '/contact' },
+  { labelAr: 'الرئيسية',          labelEn: 'Home',                href: '' },
+  { labelAr: 'عن البرنامج',        labelEn: 'About the Programme', href: '/about' },
+  { labelAr: 'مشاريعنا',           labelEn: 'Our Projects',        href: '/projects' },
+  { labelAr: 'المنتجات المعرفية',  labelEn: 'Knowledge Products',  href: '/knowledge' },
+  { labelAr: 'الأخبار والفعاليات', labelEn: 'News & Events',       href: '/news' },
+  { labelAr: 'التواصل والمشاركة',  labelEn: 'Contact & Engage',    href: '/contact' },
 ];
 
 export default function SiteFooter({ locale }: SiteFooterProps) {
   const isAr = locale === 'ar';
   const fontStyle = {
-    fontFamily: isAr
-      ? 'Cairo, sans-serif'
-      : 'Source Sans 3, sans-serif',
+    fontFamily: isAr ? 'Cairo, sans-serif' : 'Source Sans 3, sans-serif',
   };
 
   return (
     <footer>
       {/* Teal top line */}
-      <div style={{
-        height: '2px',
-        backgroundColor: '#0D7A6E',
-      }} />
+      <div style={{ height: '2px', backgroundColor: '#0D7A6E' }} />
 
       {/* Footer body */}
       <div style={{ backgroundColor: '#1A3557' }}>
-        <div style={{
-          maxWidth: '1280px',
-          margin: '0 auto',
-          padding: '48px 24px',
-          display: 'grid',
-          gridTemplateColumns:
-            'repeat(auto-fit, minmax(240px, 1fr))',
-          gap: '40px',
-        }}>
-
+        <div
+          style={{
+            maxWidth: '1280px',
+            margin: '0 auto',
+            padding: '48px 24px',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: '40px',
+          }}
+        >
           {/* Quick Links */}
           <div>
-            <h3 style={{
-              ...fontStyle,
-              color: 'white',
-              fontWeight: '600',
-              fontSize: '15px',
-              marginBottom: '20px',
-            }}>
+            <h3
+              style={{
+                ...fontStyle,
+                color: 'white',
+                fontWeight: '600',
+                fontSize: '15px',
+                marginBottom: '20px',
+              }}
+            >
               {isAr ? 'روابط سريعة' : 'Quick Links'}
             </h3>
-            <ul style={{
-              listStyle: 'none',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '8px',
-            }}>
+            <ul
+              style={{
+                listStyle: 'none',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px',
+              }}
+            >
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={`/${locale}${link.href}`}
                     className="footer-nav-link"
-                    style={fontStyle}
+                    style={{
+                      ...fontStyle,
+                      textDecoration: 'none',
+                      fontSize: '14px',
+                    }}
                   >
                     {isAr ? link.labelAr : link.labelEn}
                   </Link>
@@ -78,7 +75,6 @@ export default function SiteFooter({ locale }: SiteFooterProps) {
               ))}
             </ul>
 
-            {/* Framework download */}
             <a
               href="/docs/AWSP_Development_Framework.pdf"
               download
@@ -104,17 +100,18 @@ export default function SiteFooter({ locale }: SiteFooterProps) {
 
           {/* Programme Info */}
           <div>
-            <h3 style={{
-              ...fontStyle,
-              color: 'white',
-              fontWeight: '600',
-              fontSize: '15px',
-              marginBottom: '20px',
-            }}>
+            <h3
+              style={{
+                ...fontStyle,
+                color: 'white',
+                fontWeight: '600',
+                fontSize: '15px',
+                marginBottom: '20px',
+              }}
+            >
               {isAr ? 'عن البرنامج' : 'Programme Info'}
             </h3>
 
-            {/* Logo — inverted white for dark footer */}
             <div style={{ marginBottom: '16px' }}>
               <Image
                 src="/images/awsp-logo-mark.svg"
@@ -129,43 +126,46 @@ export default function SiteFooter({ locale }: SiteFooterProps) {
               />
             </div>
 
-            <p style={{
-              ...fontStyle,
-              color: 'white',
-              fontWeight: '600',
-              fontSize: '14px',
-              marginBottom: '4px',
-            }}>
-              {isAr
-                ? 'خطة قطاع المياه في عدن'
-                : 'Aden Water Sector Plan'}
+            <p
+              style={{
+                ...fontStyle,
+                color: 'white',
+                fontWeight: '600',
+                fontSize: '14px',
+                marginBottom: '4px',
+              }}
+            >
+              {isAr ? 'خطة قطاع المياه في عدن' : 'Aden Water Sector Plan'}
             </p>
-            <p style={{
-              ...fontStyle,
-              color: '#8A9BB0',
-              fontSize: '13px',
-              marginBottom: '20px',
-            }}>
-              {isAr
-                ? 'Aden Water Sector Plan'
-                : 'خطة قطاع المياه في عدن'}
+            <p
+              style={{
+                ...fontStyle,
+                color: '#8A9BB0',
+                fontSize: '13px',
+                marginBottom: '20px',
+              }}
+            >
+              {isAr ? 'Aden Water Sector Plan' : 'خطة قطاع المياه في عدن'}
             </p>
 
-            {/* Contact */}
-            <p style={{
-              ...fontStyle,
-              color: 'white',
-              fontSize: '14px',
-              fontWeight: '500',
-              marginBottom: '4px',
-            }}>
+            <p
+              style={{
+                ...fontStyle,
+                color: 'white',
+                fontSize: '14px',
+                fontWeight: '500',
+                marginBottom: '4px',
+              }}
+            >
               {isAr ? 'فريق عمل AWSP' : 'AWSP Taskforce'}
             </p>
-            <p style={{
-              ...fontStyle,
-              color: '#8A9BB0',
-              fontSize: '13px',
-            }}>
+            <p
+              style={{
+                ...fontStyle,
+                color: '#8A9BB0',
+                fontSize: '13px',
+              }}
+            >
               {isAr
                 ? 'وزارة المياه والبيئة، عدن، الجمهورية اليمنية'
                 : 'Ministry of Water and Environment, Aden, Republic of Yemen'}
@@ -175,16 +175,15 @@ export default function SiteFooter({ locale }: SiteFooterProps) {
       </div>
 
       {/* Copyright bar */}
-      <div style={{
-        backgroundColor: '#0F2340',
-        padding: '12px 24px',
-      }}>
-        <p style={{
-          ...fontStyle,
-          textAlign: 'center',
-          fontSize: '12px',
-          color: '#8A9BB0',
-        }}>
+      <div style={{ backgroundColor: '#0F2340', padding: '12px 24px' }}>
+        <p
+          style={{
+            ...fontStyle,
+            textAlign: 'center',
+            fontSize: '12px',
+            color: '#8A9BB0',
+          }}
+        >
           {isAr
             ? '© ٢٠٢٥ وزارة المياه والبيئة، الجمهورية اليمنية. جميع الحقوق محفوظة.'
             : '© 2025 Ministry of Water and Environment, Republic of Yemen. All rights reserved.'}

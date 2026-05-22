@@ -41,20 +41,24 @@ export default function LanguageToggle({
         userSelect: 'none',
       }}
     >
-      <span style={{
-        padding: '4px 12px',
-        backgroundColor: locale === 'ar' ? '#1A3557' : 'white',
-        color: locale === 'ar' ? 'white' : '#1A3557',
-        transition: 'all 150ms ease',
-      }}>
+      <span
+        style={{
+          padding: '4px 12px',
+          backgroundColor: locale === 'ar' ? '#1A3557' : 'white',
+          color: locale === 'ar' ? 'white' : '#1A3557',
+          transition: 'all 150ms ease',
+        }}
+      >
         AR
       </span>
-      <span style={{
-        padding: '4px 12px',
-        backgroundColor: locale === 'en' ? '#1A3557' : 'white',
-        color: locale === 'en' ? 'white' : '#1A3557',
-        transition: 'all 150ms ease',
-      }}>
+      <span
+        style={{
+          padding: '4px 12px',
+          backgroundColor: locale === 'en' ? '#1A3557' : 'white',
+          color: locale === 'en' ? 'white' : '#1A3557',
+          transition: 'all 150ms ease',
+        }}
+      >
         EN
       </span>
     </button>
