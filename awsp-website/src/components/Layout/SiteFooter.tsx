@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 
 interface SiteFooterProps {
   locale: string;
@@ -113,11 +112,9 @@ export default function SiteFooter({ locale }: SiteFooterProps) {
             </h3>
 
             <div style={{ marginBottom: '16px' }}>
-              <Image
+              <img
                 src="/images/awsp-logo-mark.svg"
                 alt="AWSP"
-                width={140}
-                height={42}
                 style={{
                   height: '42px',
                   width: 'auto',

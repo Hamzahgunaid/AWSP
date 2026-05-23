@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import LanguageToggle from './LanguageToggle';
@@ -81,12 +80,9 @@ export default function SiteHeader({ locale }: SiteHeaderProps) {
           aria-label="AWSP — Aden Water Sector Plan — Return to Home"
           style={{ display: 'flex', alignItems: 'center' }}
         >
-          <Image
+          <img
             src="/images/awsp-logo-mark.svg"
             alt="AWSP — Aden Water Sector Plan"
-            width={160}
-            height={48}
-            priority
             style={{ height: '48px', width: 'auto' }}
           />
         </Link>
