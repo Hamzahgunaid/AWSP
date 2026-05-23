@@ -4,21 +4,21 @@ import partnersData from '@/data/partners.json';
 
 export default function PartnerCards({ locale }: { locale: string }) {
   const isAr = locale === 'ar';
-  const font = isAr ? 'Cairo, sans-serif' : 'Source Sans 3, sans-serif';
+  const font = isAr ? 'var(--font-arabic)' : 'var(--font-sans)';
 
   return (
-    <section style={{ backgroundColor: '#F4F6F8', padding: '64px 24px' }}>
-      <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-        <h2 style={{
-          textAlign: 'center',
-          fontFamily: isAr ? 'Cairo, sans-serif' : 'Source Serif 4, serif',
-          fontWeight: '700',
-          fontSize: 'clamp(22px, 3vw, 32px)',
-          color: '#1A3557',
-          marginBottom: '40px',
-        }}>
-          {isAr ? 'شركاؤنا الأساسيون' : 'Our Primary Partners'}
-        </h2>
+    <section style={{ backgroundColor: 'var(--bone)', padding: '72px 24px' }}>
+      <div style={{ maxWidth: 'var(--wrap-max)', margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <h2 style={{
+            fontFamily: isAr ? 'var(--font-arabic)' : 'var(--font-serif)',
+            fontWeight: '700',
+            fontSize: 'clamp(22px, 3vw, 32px)',
+            color: 'var(--ink-900)',
+          }}>
+            {isAr ? 'شركاؤنا الأساسيون' : 'Our Primary Partners'}
+          </h2>
+        </div>
 
         <div style={{
           display: 'grid',
@@ -38,22 +38,21 @@ export default function PartnerCards({ locale }: { locale: string }) {
                 padding: '32px 24px',
                 textAlign: 'center',
                 textDecoration: 'none',
-                boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+                boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
                 transition: 'all 300ms ease',
                 border: '1px solid transparent',
               }}
               onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 24px rgba(0,0,0,0.14)';
-                (e.currentTarget as HTMLElement).style.borderColor = '#0D7A6E';
+                (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 24px rgba(0,0,0,0.12)';
+                (e.currentTarget as HTMLElement).style.borderColor = 'var(--teal-500)';
                 (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
               }}
               onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 12px rgba(0,0,0,0.08)';
+                (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)';
                 (e.currentTarget as HTMLElement).style.borderColor = 'transparent';
                 (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
               }}
             >
-              {/* Logo */}
               <div style={{ height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
                 <img
                   src={partner.logo_src}
@@ -61,27 +60,13 @@ export default function PartnerCards({ locale }: { locale: string }) {
                   style={{ maxHeight: '80px', maxWidth: '160px', objectFit: 'contain' }}
                 />
               </div>
-              {/* Name */}
-              <h3 style={{
-                fontFamily: font, fontWeight: '700',
-                fontSize: '15px', color: '#1A3557',
-                marginBottom: '6px',
-              }}>
+              <h3 style={{ fontFamily: font, fontWeight: '700', fontSize: '15px', color: 'var(--ink-900)', marginBottom: '6px' }}>
                 {isAr ? partner.name_ar : partner.name_en}
               </h3>
-              {/* Role */}
-              <p style={{
-                fontFamily: font, fontSize: '12px',
-                color: '#0D7A6E', fontWeight: '600',
-                marginBottom: '12px',
-              }}>
+              <p style={{ fontFamily: font, fontSize: '12px', color: 'var(--teal-600)', fontWeight: '600', marginBottom: '12px' }}>
                 {isAr ? partner.role_ar : partner.role_en}
               </p>
-              {/* Description */}
-              <p style={{
-                fontFamily: font, fontSize: '13px',
-                color: '#6B7280', lineHeight: '1.7',
-              }}>
+              <p style={{ fontFamily: font, fontSize: '13px', color: '#6B7280', lineHeight: '1.7' }}>
                 {isAr ? partner.description_ar : partner.description_en}
               </p>
             </a>

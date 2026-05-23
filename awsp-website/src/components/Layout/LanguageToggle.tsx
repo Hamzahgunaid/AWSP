@@ -4,11 +4,13 @@ import { useRouter, usePathname } from 'next/navigation';
 
 interface LanguageToggleProps {
   locale: string;
+  onDark?: boolean;
   className?: string;
 }
 
 export default function LanguageToggle({
   locale,
+  onDark = false,
   className = '',
 }: LanguageToggleProps) {
   const router = useRouter();
@@ -19,6 +21,12 @@ export default function LanguageToggle({
     const newPath = pathname.replace(`/${locale}`, `/${next}`);
     router.push(newPath);
   };
+
+  const borderColor = onDark ? 'rgba(255,255,255,0.5)' : 'var(--ink-700)';
+  const activeText = onDark ? 'var(--ink-900)' : 'white';
+  const activeBg   = onDark ? 'white' : 'var(--ink-700)';
+  const inactiveText = onDark ? 'rgba(255,255,255,0.8)' : 'var(--ink-700)';
+  const inactiveBg   = 'transparent';
 
   return (
     <button
@@ -33,19 +41,21 @@ export default function LanguageToggle({
         display: 'flex',
         alignItems: 'center',
         borderRadius: '9999px',
-        border: '2px solid #1A3557',
+        border: `2px solid ${borderColor}`,
         overflow: 'hidden',
         fontSize: '13px',
         fontWeight: '600',
         cursor: 'pointer',
         userSelect: 'none',
+        background: 'none',
+        transition: 'border-color 200ms ease',
       }}
     >
       <span
         style={{
           padding: '4px 12px',
-          backgroundColor: locale === 'ar' ? '#1A3557' : 'white',
-          color: locale === 'ar' ? 'white' : '#1A3557',
+          backgroundColor: locale === 'ar' ? activeBg : inactiveBg,
+          color:           locale === 'ar' ? activeText : inactiveText,
           transition: 'all 150ms ease',
         }}
       >
@@ -54,8 +64,8 @@ export default function LanguageToggle({
       <span
         style={{
           padding: '4px 12px',
-          backgroundColor: locale === 'en' ? '#1A3557' : 'white',
-          color: locale === 'en' ? 'white' : '#1A3557',
+          backgroundColor: locale === 'en' ? activeBg : inactiveBg,
+          color:           locale === 'en' ? activeText : inactiveText,
           transition: 'all 150ms ease',
         }}
       >
