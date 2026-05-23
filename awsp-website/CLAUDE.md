@@ -102,3 +102,13 @@ Google Fonts used (load in layout.tsx):
 - No directional CSS properties (left, right, margin-left etc.)
 - All images must have descriptive alt text
 - WCAG 2.1 AA colour contrast minimum
+
+## Git Workflow — STRICT RULES
+- ALWAYS work on main branch only
+- NEVER create feature branches under any circumstances
+- NEVER create pull requests
+- After every file change: 
+  git add -A && git commit -m "description" && git push origin main
+- Before starting any work: git checkout main && git pull origin main
+- If you find yourself on a branch: immediately checkout main and merge
+- Zero exceptions to this rule
