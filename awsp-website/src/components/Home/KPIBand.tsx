@@ -52,12 +52,12 @@ function AnimatedCounter({ target, prefix, suffix, duration = 1500 }: {
 
 export default function KPIBand({ locale }: { locale: string }) {
   const isAr = locale === 'ar';
-  const font = isAr ? 'Cairo, sans-serif' : 'Source Sans 3, sans-serif';
+  const font = isAr ? 'var(--font-arabic)' : 'var(--font-sans)';
 
   return (
-    <section style={{ backgroundColor: '#1A3557', padding: '48px 24px' }}>
+    <section style={{ backgroundColor: 'var(--ink-900)', padding: '52px 24px' }}>
       <div style={{
-        maxWidth: '1280px',
+        maxWidth: 'var(--wrap-max)',
         margin: '0 auto',
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
@@ -66,13 +66,13 @@ export default function KPIBand({ locale }: { locale: string }) {
         {KPIS.map((kpi, i) => (
           <div key={i} style={{ textAlign: 'center' }}>
             <div style={{
-              width: '40px', height: '3px',
-              backgroundColor: '#C8922A',
+              width: '36px', height: '3px',
+              backgroundColor: 'var(--sand-500)',
               margin: '0 auto 16px',
               borderRadius: '2px',
             }} />
             <div style={{
-              fontFamily: isAr ? 'Cairo, sans-serif' : 'Source Serif 4, serif',
+              fontFamily: isAr ? 'var(--font-arabic)' : 'var(--font-serif)',
               fontWeight: '700',
               fontSize: 'clamp(36px, 4vw, 52px)',
               color: 'white',
@@ -88,7 +88,7 @@ export default function KPIBand({ locale }: { locale: string }) {
             <p style={{
               fontFamily: font,
               fontSize: '13px',
-              color: '#8A9BB0',
+              color: 'rgba(255,255,255,0.55)',
               fontWeight: '500',
               letterSpacing: '0.3px',
               margin: 0,

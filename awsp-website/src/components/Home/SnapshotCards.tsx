@@ -40,11 +40,11 @@ const CARDS: Card[] = [
 
 export default function SnapshotCards({ locale }: { locale: string }) {
   const isAr = locale === 'ar';
-  const font = isAr ? 'Cairo, sans-serif' : 'Source Sans 3, sans-serif';
+  const font = isAr ? 'var(--font-arabic)' : 'var(--font-sans)';
 
   return (
-    <section style={{ backgroundColor: 'white', padding: '64px 24px' }}>
-      <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+    <section style={{ backgroundColor: 'white', padding: '72px 24px' }}>
+      <div style={{ maxWidth: 'var(--wrap-max)', margin: '0 auto' }}>
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
@@ -56,30 +56,29 @@ export default function SnapshotCards({ locale }: { locale: string }) {
               href={`/${locale}${card.href}`}
               style={{
                 display: 'block',
-                backgroundColor: '#F4F6F8',
+                backgroundColor: 'var(--paper)',
                 borderRadius: '12px',
                 padding: '32px 24px',
                 textDecoration: 'none',
                 borderTop: '3px solid transparent',
-                boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
+                boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
                 transition: 'all 300ms ease',
               }}
               onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.borderTopColor = '#0D7A6E';
-                (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 24px rgba(0,0,0,0.12)';
+                (e.currentTarget as HTMLElement).style.borderTopColor = 'var(--teal-600)';
+                (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 24px rgba(0,0,0,0.10)';
                 (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
               }}
               onMouseLeave={e => {
                 (e.currentTarget as HTMLElement).style.borderTopColor = 'transparent';
-                (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)';
+                (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 10px rgba(0,0,0,0.05)';
                 (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
               }}
             >
               <div style={{ fontSize: '36px', marginBottom: '16px' }}>{card.icon}</div>
               <h3 style={{
                 fontFamily: font, fontWeight: '700',
-                fontSize: '18px', color: '#1A3557',
-                marginBottom: '12px',
+                fontSize: '18px', color: 'var(--ink-900)', marginBottom: '12px',
               }}>
                 {isAr ? card.titleAr : card.titleEn}
               </h3>
@@ -92,7 +91,7 @@ export default function SnapshotCards({ locale }: { locale: string }) {
               <div style={{
                 marginTop: '20px',
                 fontFamily: font, fontSize: '13px',
-                color: '#0D7A6E', fontWeight: '600',
+                color: 'var(--teal-600)', fontWeight: '600',
               }}>
                 {isAr ? '← اقرأ المزيد' : 'Learn more →'}
               </div>

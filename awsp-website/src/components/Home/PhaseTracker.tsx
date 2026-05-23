@@ -8,7 +8,7 @@ import type { Phase } from '@/types';
 export default function PhaseTracker({ locale }: { locale: string }) {
   const [activePhase, setActivePhase] = useState<number | null>(null);
   const isAr = locale === 'ar';
-  const font = isAr ? 'Cairo, sans-serif' : 'Source Sans 3, sans-serif';
+  const font = isAr ? 'var(--font-arabic)' : 'var(--font-sans)';
 
   const getNodeStyle = (status: string, isSelected: boolean) => {
     const base = {
@@ -21,56 +21,50 @@ export default function PhaseTracker({ locale }: { locale: string }) {
       border: '3px solid transparent',
       position: 'relative' as const,
       flexShrink: 0,
-      outline: isSelected ? '3px solid rgba(13,122,110,0.4)' : 'none',
+      outline: isSelected ? '3px solid rgba(42,138,138,0.4)' : 'none',
       outlineOffset: '2px',
     };
-    if (status === 'completed') return { ...base, backgroundColor: '#C8922A', color: 'white', borderColor: '#C8922A' };
-    if (status === 'active') return { ...base, backgroundColor: '#0D7A6E', color: 'white', borderColor: '#0D7A6E', boxShadow: '0 0 0 4px rgba(13,122,110,0.25)' };
-    return { ...base, backgroundColor: 'white', color: '#8A9BB0', borderColor: '#C5CDD6' };
+    if (status === 'completed') return { ...base, backgroundColor: 'var(--sand-500)', color: 'white', borderColor: 'var(--sand-500)' };
+    if (status === 'active') return { ...base, backgroundColor: 'var(--teal-600)', color: 'white', borderColor: 'var(--teal-600)', boxShadow: '0 0 0 4px rgba(31,122,120,0.25)' };
+    return { ...base, backgroundColor: 'white', color: '#8A9BB0', borderColor: 'var(--line-2)' };
   };
 
   const selectedPhase: Phase | null = activePhase !== null ? (phases as Phase[])[activePhase] : null;
 
   return (
-    <section style={{ backgroundColor: 'white', padding: '64px 24px' }}>
-      <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+    <section style={{ backgroundColor: 'var(--paper)', padding: '72px 24px' }}>
+      <div style={{ maxWidth: 'var(--wrap-max)', margin: '0 auto' }}>
 
-        {/* Heading */}
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
           <h2 style={{
-            fontFamily: isAr ? 'Cairo, sans-serif' : 'Source Serif 4, serif',
+            fontFamily: isAr ? 'var(--font-arabic)' : 'var(--font-serif)',
             fontWeight: '700',
             fontSize: 'clamp(24px, 3vw, 36px)',
-            color: '#1A3557',
+            color: 'var(--ink-900)',
             marginBottom: '12px',
           }}>
             {isAr ? 'رحلة التخطيط في AWSP' : 'The AWSP Planning Journey'}
           </h2>
-          <p style={{ fontFamily: font, fontSize: '15px', color: '#8A9BB0' }}>
+          <p style={{ fontFamily: font, fontSize: '15px', color: '#6B7280' }}>
             {isAr
               ? '١٢ مرحلة متسلسلة من اعتماد الإطار إلى الإقرار الرسمي — يوليو ٢٠٢٥ إلى يناير ٢٠٢٩'
               : '12 sequenced phases from framework adoption to public endorsement — July 2025 to January 2029'}
           </p>
         </div>
 
-        {/* Timeline nodes */}
+        {/* Timeline */}
         <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          overflowX: 'auto',
-          paddingBottom: '16px',
-          gap: '0',
-          position: 'relative',
+          display: 'flex', alignItems: 'center', overflowX: 'auto',
+          paddingBottom: '16px', gap: '0', position: 'relative',
         }}>
           {(phases as Phase[]).map((phase, i) => (
             <div key={phase.id} style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-              {/* Phase node */}
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                 {phase.status === 'active' ? (
                   <span style={{
                     fontSize: '10px', fontFamily: font,
-                    color: '#0D7A6E', fontWeight: '700',
-                    backgroundColor: 'rgba(13,122,110,0.1)',
+                    color: 'var(--teal-600)', fontWeight: '700',
+                    backgroundColor: 'rgba(31,122,120,0.10)',
                     padding: '2px 8px', borderRadius: '100px',
                   }}>
                     {isAr ? 'جارية' : 'Current'}
@@ -87,6 +81,7 @@ export default function PhaseTracker({ locale }: { locale: string }) {
                 >
                   {phase.id}
                 </button>
+
                 <span style={{
                   fontSize: '10px', fontFamily: font,
                   color: '#8A9BB0', textAlign: 'center',
@@ -98,11 +93,10 @@ export default function PhaseTracker({ locale }: { locale: string }) {
                 </span>
               </div>
 
-              {/* Connector line */}
               {i < phases.length - 1 && (
                 <div style={{
                   height: '2px', width: '24px', flexShrink: 0,
-                  backgroundColor: phase.status === 'completed' ? '#C8922A' : '#E5E7EB',
+                  backgroundColor: phase.status === 'completed' ? 'var(--sand-500)' : 'var(--line)',
                   marginBottom: '28px',
                 }} />
               )}
@@ -110,21 +104,17 @@ export default function PhaseTracker({ locale }: { locale: string }) {
           ))}
         </div>
 
-        {/* Expanded phase detail */}
+        {/* Phase detail panel */}
         {selectedPhase && (
           <div style={{
-            marginTop: '32px',
-            padding: '28px',
-            backgroundColor: '#F4F6F8',
+            marginTop: '32px', padding: '28px',
+            backgroundColor: 'var(--bone)',
             borderRadius: '12px',
-            borderInlineStart: '4px solid #0D7A6E',
+            borderInlineStart: '4px solid var(--teal-600)',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px' }}>
               <div>
-                <h3 style={{
-                  fontFamily: font, fontWeight: '700',
-                  fontSize: '18px', color: '#1A3557', marginBottom: '4px',
-                }}>
+                <h3 style={{ fontFamily: font, fontWeight: '700', fontSize: '18px', color: 'var(--ink-900)', marginBottom: '4px' }}>
                   {isAr
                     ? `المرحلة ${selectedPhase.id}: ${selectedPhase.name_ar}`
                     : `Phase ${selectedPhase.id}: ${selectedPhase.name_en}`}
@@ -134,11 +124,12 @@ export default function PhaseTracker({ locale }: { locale: string }) {
                 </span>
               </div>
               <span style={{
-                padding: '4px 14px', borderRadius: '100px', fontSize: '12px', fontWeight: '600', fontFamily: font,
-                backgroundColor: selectedPhase.status === 'completed' ? '#FFF8E1'
-                  : selectedPhase.status === 'active' ? '#E0F2F1' : '#F4F6F8',
-                color: selectedPhase.status === 'completed' ? '#C8922A'
-                  : selectedPhase.status === 'active' ? '#0D7A6E' : '#8A9BB0',
+                padding: '4px 14px', borderRadius: '100px',
+                fontSize: '12px', fontWeight: '600', fontFamily: font,
+                backgroundColor: selectedPhase.status === 'completed' ? 'rgba(200,137,58,0.12)'
+                  : selectedPhase.status === 'active' ? 'rgba(31,122,120,0.10)' : 'var(--bone)',
+                color: selectedPhase.status === 'completed' ? 'var(--sand-500)'
+                  : selectedPhase.status === 'active' ? 'var(--teal-600)' : '#8A9BB0',
               }}>
                 {isAr
                   ? selectedPhase.status === 'completed' ? 'مكتملة'
@@ -151,13 +142,13 @@ export default function PhaseTracker({ locale }: { locale: string }) {
               {isAr ? selectedPhase.description_ar : selectedPhase.description_en}
             </p>
             <div style={{ marginTop: '16px' }}>
-              <p style={{ fontFamily: font, fontSize: '13px', fontWeight: '700', color: '#1A3557', marginBottom: '8px' }}>
+              <p style={{ fontFamily: font, fontSize: '13px', fontWeight: '700', color: 'var(--ink-900)', marginBottom: '8px' }}>
                 {isAr ? 'الأنشطة الرئيسية:' : 'Key Activities:'}
               </p>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 {(isAr ? selectedPhase.activities_ar : selectedPhase.activities_en).map((a, idx) => (
                   <li key={idx} style={{ display: 'flex', gap: '8px', fontFamily: font, fontSize: '13px', color: '#4B5563' }}>
-                    <span style={{ color: '#0D7A6E', fontWeight: '700', flexShrink: 0 }}>•</span>
+                    <span style={{ color: 'var(--teal-600)', fontWeight: '700', flexShrink: 0 }}>•</span>
                     {a}
                   </li>
                 ))}
@@ -166,11 +157,10 @@ export default function PhaseTracker({ locale }: { locale: string }) {
           </div>
         )}
 
-        {/* View full roadmap link */}
         <div style={{ textAlign: 'center', marginTop: '32px' }}>
           <Link href={`/${locale}/about#phases`} style={{
             fontFamily: font, fontSize: '14px', fontWeight: '600',
-            color: '#0D7A6E', textDecoration: 'none',
+            color: 'var(--teal-600)', textDecoration: 'none',
           }}>
             {isAr ? '← عرض خارطة الطريق الكاملة' : 'View Full Roadmap →'}
           </Link>
