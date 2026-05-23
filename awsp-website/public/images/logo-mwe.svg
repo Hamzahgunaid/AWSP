@@ -1,4 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
-  <circle cx="40" cy="40" r="38" fill="#1A3557" stroke="#C8922A" stroke-width="3"/>
-  <text x="40" y="45" font-family="Arial" font-size="10" fill="white" text-anchor="middle">MWE</text>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Ministry of Water and Environment — Republic of Yemen</title>
+<circle cx="100" cy="100" r="98" fill="#2A4FA0"/>
+<circle cx="100" cy="100" r="96" fill="none" stroke="#C9A84C" stroke-width="5"/>
+<circle cx="100" cy="100" r="84" fill="none" stroke="#C9A84C" stroke-width="3"/>
+<circle cx="100" cy="100" r="81" fill="#3058B0" opacity="0.4"/>
+<path id="arcAr" d="M 22,100 A 78,78 0 0,1 178,100" fill="none"/>
+<text font-family="Arial,sans-serif" font-size="11.5" fill="white" font-weight="700">
+  <textPath href="#arcAr" startOffset="4%">الجمهورية اليمنية - وزارة المياه والبيئة</textPath>
+</text>
+<path id="arcEn" d="M 24,100 A 76,76 0 0,0 176,100" fill="none"/>
+<text font-family="Arial,sans-serif" font-size="9" fill="white" font-weight="500">
+  <textPath href="#arcEn" startOffset="2%">Republic Of Yemen  -  Ministry Of Water &amp; Environment</textPath>
+</text>
+<path d="M52 90 Q38 74 28 80 Q32 94 50 98" fill="#9B8454" stroke="#7A6535" stroke-width="0.8"/>
+<path d="M148 90 Q162 74 172 80 Q168 94 150 98" fill="#9B8454" stroke="#7A6535" stroke-width="0.8"/>
+<ellipse cx="100" cy="105" rx="22" ry="26" fill="#9B8454"/>
+<ellipse cx="100" cy="80" rx="13" ry="13" fill="#9B8454"/>
+<path d="M107 83 L118 87 L108 92Z" fill="#C9A84C"/>
+<circle cx="106" cy="79" r="3.5" fill="#1A0A00"/>
+<circle cx="105" cy="78" r="1.5" fill="white"/>
+<rect x="84" y="96" width="32" height="28" rx="3" fill="#CC1020"/>
+<rect x="84" y="96" width="32" height="10" fill="white"/>
+<rect x="84" y="96" width="32" height="5" fill="#CC1020"/>
+<rect x="84" y="114" width="32" height="10" fill="#111111"/>
+<rect x="84" y="96" width="32" height="28" rx="3" fill="none" stroke="#C9A84C" stroke-width="1"/>
+<line x1="72" y1="128" x2="128" y2="143" stroke="#C9A84C" stroke-width="3.5" stroke-linecap="round"/>
+<line x1="128" y1="128" x2="72" y2="143" stroke="#C9A84C" stroke-width="3.5" stroke-linecap="round"/>
+<circle cx="100" cy="135" r="3" fill="#C9A84C"/>
+<circle cx="30" cy="100" r="2.5" fill="#C9A84C"/>
+<circle cx="170" cy="100" r="2.5" fill="#C9A84C"/>
 </svg>

@@ -1,4 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
-  <circle cx="40" cy="40" r="38" fill="#0D7A6E" stroke="#1A3557" stroke-width="2"/>
-  <text x="40" y="45" font-family="Arial" font-size="9" fill="white" text-anchor="middle">LWSCA</text>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Local Water and Sanitation Corporation — Aden</title>
+<rect width="200" height="200" fill="white"/>
+<path id="lwAr" d="M 25,100 A 75,75 0 0,1 175,100" fill="none"/>
+<text font-family="Arial,sans-serif" font-size="10.5" fill="#111111" font-weight="700">
+  <textPath href="#lwAr" startOffset="3%">المؤسسة المحلية للمياه والصرف الصحي</textPath>
+</text>
+<path d="M100 25 L168 148 L32 148Z" fill="none" stroke="#29A8E0" stroke-width="10" stroke-linejoin="round"/>
+<path d="M38 143 Q100 175 162 143" fill="none" stroke="#29A8E0" stroke-width="10" stroke-linecap="round"/>
+<path d="M100 32 Q110 46 110 55 Q110 67 100 71 Q90 67 90 55 Q90 46 100 32Z" fill="#29A8E0"/>
+<circle cx="100" cy="75" r="4" fill="#29A8E0"/>
+<ellipse cx="100" cy="118" rx="34" ry="26" fill="#7B68B8" opacity="0.35"/>
+<ellipse cx="100" cy="118" rx="34" ry="26" fill="none" stroke="#7B68B8" stroke-width="1.5"/>
+<path d="M68 108 Q79 101 90 108 Q101 115 112 108 Q123 101 132 108" fill="none" stroke="#5B4B9A" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M68 117 Q79 110 90 117 Q101 124 112 117 Q123 110 132 117" fill="none" stroke="#7B68B8" stroke-width="2" stroke-linecap="round"/>
+<path d="M68 126 Q79 119 90 126 Q101 133 112 126 Q123 119 132 126" fill="none" stroke="#9B8FD0" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M70 135 Q81 128 92 135 Q103 142 114 135 Q122 130 130 135" fill="none" stroke="#BBAFDF" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M72 152 Q58 168 44 178 Q62 168 78 155Z" fill="#1A8C6A"/>
+<path d="M128 152 Q142 168 156 178 Q138 168 122 155Z" fill="#1A8C6A"/>
+<path d="M78 155 Q100 172 122 155 Q110 185 100 190 Q90 185 78 155Z" fill="#1A8C6A"/>
+<text x="100" y="197" font-family="Arial,sans-serif" font-size="9" fill="#111111" text-anchor="middle" font-weight="700">م / عدن</text>
 </svg>

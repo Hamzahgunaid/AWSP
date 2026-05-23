@@ -7,7 +7,7 @@
     "role_ar": "الجهة القائدة — AWSP",
     "description_en": "MWE is the principal custodian of the Aden Water Sector Plan, providing strategic direction, institutional leadership, and coordination with national frameworks and development partners.",
     "description_ar": "وزارة المياه والبيئة هي الجهة الوصية الرئيسية على خطة قطاع المياه في عدن، وتوفر التوجيه الاستراتيجي والقيادة المؤسسية والتنسيق مع الأطر الوطنية وشركاء التنمية.",
-    "logo_src": "/images/logo-mwe.svg",
+    "logo_src": "/images/logo-mwe.png",
     "href": "https://mwe.gov.ye"
   },
   {
@@ -18,7 +18,7 @@
     "role_ar": "مزود الخدمة الرئيسي",
     "description_en": "LWSCA is the primary operational authority for water and sanitation services in Aden, contributing field expertise, infrastructure data, and technical input to the AWSP planning process.",
     "description_ar": "المؤسسة المحلية للمياه والصرف الصحي في عدن هي السلطة التشغيلية الرئيسية لخدمات المياه والصرف الصحي في عدن، وتساهم بالخبرة الميدانية وبيانات البنية التحتية والمدخلات التقنية في عملية تخطيط AWSP.",
-    "logo_src": "/images/logo-lwsca.svg",
+    "logo_src": "/images/logo-lwsca.png",
     "href": "#contact"
   },
   {

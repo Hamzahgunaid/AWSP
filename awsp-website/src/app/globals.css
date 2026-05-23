@@ -1,76 +1,237 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700&family=Source+Sans+3:wght@400;500;600&display=swap');
+
 @import "tailwindcss";
 
 @theme {
-  --color-navy: #1A3557;
-  --color-teal: #0D7A6E;
-  --color-gold: #C8922A;
-  --color-bg: #F4F6F8;
-  --color-surface: #FFFFFF;
-  --color-table-fill: #D5E8F0;
-  --color-text: #0D0D0D;
-  --color-muted: #8A9BB0;
-  --color-active: #0D7A6E;
-  --color-complete: #C8922A;
-  --color-future: #C5CDD6;
-  --color-danger: #D97706;
-
-  --font-cairo: 'Cairo', sans-serif;
-  --font-noto: 'Noto Naskh Arabic', serif;
-  --font-source-serif: 'Source Serif 4', serif;
-  --font-source-sans: 'Source Sans 3', sans-serif;
-
-  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.08);
-  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.14);
-  --shadow-header: 0 2px 8px rgba(0, 0, 0, 0.08);
-
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
-
-  --width-site: 1280px;
+  --color-ink-900: #0A1F38;
+  --color-ink-700: #143A5E;
+  --color-teal-600: #1F7A78;
+  --color-teal-500: #2A8A8A;
+  --color-sand-500: #C8893A;
+  --color-paper: #FAF7F0;
+  --color-bone: #F2EDE2;
 }
 
-*,
-*::before,
-*::after {
+/* ── Design Tokens ──────────────────────────────── */
+:root {
+  --ink-900: #0A1F38;
+  --ink-800: #0E2A47;
+  --ink-700: #143A5E;
+  --ink-600: #1E4F7A;
+
+  --teal-700: #0E5566;
+  --teal-600: #1F7A78;
+  --teal-500: #2A8A8A;
+  --teal-400: #3FA89A;
+
+  --sand-500: #C8893A;
+  --sand-400: #E8B14A;
+
+  --paper:  #FAF7F0;
+  --bone:   #F2EDE2;
+  --line:   #E5DFD0;
+  --line-2: #D8D0BB;
+
+  --font-serif:   'Source Serif 4', Georgia, serif;
+  --font-sans:    'Source Sans 3', system-ui, sans-serif;
+  --font-arabic:  'Cairo', 'Noto Naskh Arabic', sans-serif;
+
+  --header-h: 74px;
+  --wrap-max: 1280px;
+}
+
+/* ── Reset ──────────────────────────────── */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
-html[dir='rtl'] body {
-  font-family: 'Cairo', 'Noto Naskh Arabic', sans-serif;
-}
-
-html[dir='ltr'] body {
-  font-family: 'Source Sans 3', sans-serif;
-}
+html[dir='rtl'] body { font-family: var(--font-arabic); }
+html[dir='ltr'] body { font-family: var(--font-sans); }
 
 body {
-  background-color: #F4F6F8;
-  color: #0D0D0D;
+  background-color: var(--paper);
+  color: var(--ink-900);
   line-height: 1.7;
 }
 
-[dir='rtl'] .icon-dir {
-  transform: scaleX(-1);
-}
+[dir='rtl'] .icon-dir { transform: scaleX(-1); }
 
 :focus-visible {
-  outline: 2px solid #0D7A6E;
+  outline: 2px solid var(--teal-500);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
+/* ── Layout Utilities ──────────────────────────────── */
+.wrap {
+  max-width: var(--wrap-max);
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+/* ── Typography Utilities ──────────────────────────────── */
+.eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--teal-500);
+  margin-bottom: 12px;
+}
+
+.lead {
+  font-size: clamp(16px, 2vw, 19px);
+  color: var(--ink-700);
+  line-height: 1.8;
+  max-width: 680px;
+}
+
+/* ── Section Heading ──────────────────────────────── */
+.section-head {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.section-head h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 700;
+  color: var(--ink-900);
+  margin-bottom: 12px;
+}
+html[dir='rtl'] .section-head h2 {
+  font-family: var(--font-arabic);
+}
+.section-head p {
+  font-size: 16px;
+  color: #6B7280;
+  max-width: 600px;
+  margin-inline: auto;
+}
+
+/* ── Page Hero ──────────────────────────────── */
+.page-hero {
+  padding: 96px 24px 72px;
+  background-color: var(--ink-900);
+  color: white;
+}
+
+/* ── Buttons ──────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background-color: var(--teal-600);
+  color: white;
+  border: 2px solid var(--teal-600);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+.btn-primary:hover {
+  background-color: var(--teal-700);
+  border-color: var(--teal-700);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background-color: transparent;
+  color: var(--teal-600);
+  border: 2px solid var(--teal-600);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+.btn-outline:hover {
+  background-color: var(--teal-600);
+  color: white;
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: transparent;
+  color: var(--teal-600);
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+.btn-ghost:hover {
+  background-color: rgba(31, 122, 120, 0.08);
+}
+
+/* ── Chips / Badges ──────────────────────────────── */
+.chip-teal {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  background-color: rgba(42, 138, 138, 0.12);
+  color: var(--teal-500);
+}
+
+.chip-sand {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  background-color: rgba(200, 137, 58, 0.12);
+  color: var(--sand-500);
+}
+
+.chip-muted {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  background-color: var(--bone);
+  color: #6B7280;
+}
+
+/* ── Card ──────────────────────────────── */
+.card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 28px 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: all 300ms ease;
+}
+.card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+/* ── Footer ──────────────────────────────── */
 .footer-nav-link {
   color: #8A9BB0;
   transition: color 150ms ease;
 }
-
 .footer-nav-link:hover {
-  color: #0D7A6E;
+  color: var(--teal-400);
 }
