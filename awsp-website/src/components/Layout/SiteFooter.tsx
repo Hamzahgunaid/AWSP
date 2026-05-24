@@ -2,128 +2,66 @@
 
 import Link from 'next/link';
 
-const NAV_LINKS = [
-  { labelAr: 'الرئيسية',          labelEn: 'Home',                href: '' },
-  { labelAr: 'عن البرنامج',        labelEn: 'About',               href: '/about' },
-  { labelAr: 'مشاريعنا',           labelEn: 'Projects',            href: '/projects' },
-  { labelAr: 'المنتجات المعرفية',  labelEn: 'Knowledge',           href: '/knowledge' },
-  { labelAr: 'الأخبار والفعاليات', labelEn: 'News',                href: '/news' },
-  { labelAr: 'لوحة المعلومات',     labelEn: 'Dashboard',           href: '/dashboard' },
-  { labelAr: 'تواصل معنا',         labelEn: 'Contact',             href: '/contact' },
+const NAV = [
+  { ar: 'الرئيسية',          en: 'Home',      href: '' },
+  { ar: 'عن البرنامج',        en: 'About',     href: '/about' },
+  { ar: 'مشاريعنا',           en: 'Projects',  href: '/projects' },
+  { ar: 'لوحة التحكم',        en: 'Dashboard', href: '/dashboard' },
+  { ar: 'المنتجات المعرفية',  en: 'Knowledge', href: '/knowledge' },
+  { ar: 'الأخبار',            en: 'News',      href: '/news' },
+  { ar: 'التواصل',            en: 'Contact',   href: '/contact' },
 ];
 
 export default function SiteFooter({ locale }: { locale: string }) {
   const isAr = locale === 'ar';
-  const font = isAr ? 'var(--font-arabic)' : 'var(--font-sans)';
+  const ff = isAr ? 'var(--font-arabic)' : 'var(--font-sans)';
 
   return (
-    <footer>
-      {/* Gradient accent line */}
-      <div style={{
-        height: '3px',
-        background: 'linear-gradient(90deg, var(--teal-700) 0%, var(--teal-500) 40%, var(--sand-500) 70%, var(--sand-400) 100%)',
-      }} />
+    <footer style={{ background: 'var(--ink-900)', color: 'rgba(255,255,255,0.75)', padding: '48px 0 28px', position: 'relative' }}>
+      {/* Gradient top line */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, var(--teal-400), var(--blue-500), var(--sand-400))' }} />
 
-      {/* Footer body */}
-      <div style={{ backgroundColor: 'var(--ink-900)' }}>
-        <div
-          style={{
-            maxWidth: 'var(--wrap-max)',
-            margin: '0 auto',
-            padding: '56px 24px 40px',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-            gap: '48px',
-          }}
-        >
-          {/* Brand column */}
-          <div>
-            <div style={{ marginBottom: '20px' }}>
-              <img
-                src="/images/awsp-logo-mark.png"
-                alt="AWSP"
-                style={{ height: '44px', width: 'auto', filter: 'brightness(0) invert(1)' }}
-              />
-            </div>
-            <p style={{
-              fontFamily: font,
-              color: 'white',
-              fontWeight: '600',
-              fontSize: '15px',
-              marginBottom: '4px',
-            }}>
-              {isAr ? 'خطة قطاع المياه في عدن' : 'Aden Water Sector Plan'}
-            </p>
-            <p style={{ fontFamily: font, color: '#8A9BB0', fontSize: '13px', marginBottom: '20px' }}>
-              {isAr ? 'Aden Water Sector Plan' : 'خطة قطاع المياه في عدن'}
-            </p>
-            <p style={{ fontFamily: font, color: '#8A9BB0', fontSize: '13px', lineHeight: '1.6' }}>
-              {isAr
-                ? 'وزارة المياه والبيئة، عدن، الجمهورية اليمنية'
-                : 'Ministry of Water and Environment, Aden, Republic of Yemen'}
-            </p>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 style={{ fontFamily: font, color: 'white', fontWeight: '600', fontSize: '14px', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-              {isAr ? 'روابط سريعة' : 'Quick Links'}
-            </h3>
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {NAV_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={`/${locale}${link.href}`}
-                    className="footer-nav-link"
-                    style={{ fontFamily: font, textDecoration: 'none', fontSize: '14px' }}
-                  >
-                    {isAr ? link.labelAr : link.labelEn}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Resources */}
-          <div>
-            <h3 style={{ fontFamily: font, color: 'white', fontWeight: '600', fontSize: '14px', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-              {isAr ? 'الموارد' : 'Resources'}
-            </h3>
-            <a
-              href="/docs/AWSP_Development_Framework.pdf"
-              download
-              style={{
-                fontFamily: font,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                color: 'var(--sand-400)',
-                textDecoration: 'none',
-                fontSize: '14px',
-                fontWeight: '500',
-              }}
-              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = 'var(--sand-500)'}
-              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = 'var(--sand-400)'}
-            >
-              <span>↓</span>
-              <span>{isAr ? 'تحميل إطار AWSP (PDF)' : 'Download AWSP Framework (PDF)'}</span>
-            </a>
-          </div>
+      <div className="wrap">
+        {/* Top */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '28px', borderBottom: '1px solid rgba(255,255,255,0.1)', gap: '32px', flexWrap: 'wrap' }}>
+          <Link href={`/${locale}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
+            <img src="/images/awsp-logo-mark.png" alt="AWSP"
+              style={{ width: '40px', height: '40px', objectFit: 'contain', filter: 'brightness(0) invert(1)', opacity: 0.9 }}
+              onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+            />
+            <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1 }}>
+              <strong style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: '600', color: '#fff', letterSpacing: '0.02em' }}>AWSP</strong>
+              <span style={{ fontFamily: ff, fontSize: '11px', fontWeight: '500', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)' }}>
+                {isAr ? 'خطة قطاع المياه في عدن' : 'Aden Water Sector Plan'}
+              </span>
+            </span>
+          </Link>
+          <nav style={{ display: 'flex', gap: '28px', flexWrap: 'wrap' }}>
+            {NAV.map(l => (
+              <Link key={l.href} href={`/${locale}${l.href}`}
+                style={{ fontFamily: ff, fontSize: '13.5px', fontWeight: '500', color: 'rgba(255,255,255,0.7)', textDecoration: 'none', transition: 'color 160ms ease' }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = 'var(--teal-300)'}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.7)'}
+              >
+                {isAr ? l.ar : l.en}
+              </Link>
+            ))}
+          </nav>
         </div>
-      </div>
 
-      {/* Copyright bar */}
-      <div style={{ backgroundColor: 'var(--ink-800)', padding: '14px 24px' }}>
-        <p style={{
-          fontFamily: font,
-          textAlign: 'center',
-          fontSize: '12px',
-          color: '#6B7280',
-        }}>
-          {isAr
-            ? '© ٢٠٢٥ وزارة المياه والبيئة، الجمهورية اليمنية. جميع الحقوق محفوظة.'
-            : '© 2025 Ministry of Water and Environment, Republic of Yemen. All rights reserved.'}
-        </p>
+        {/* Bottom */}
+        <div style={{ paddingTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12.5px', color: 'rgba(255,255,255,0.5)', flexWrap: 'wrap', gap: '14px' }}>
+          <span style={{ fontFamily: ff }}>
+            {isAr ? '© ٢٠٢٥ وزارة المياه والبيئة، الجمهورية اليمنية' : '© 2025 Ministry of Water and Environment, Republic of Yemen'}
+          </span>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+            <a href="mailto:taskforce@awsp.gov.ye" style={{ fontFamily: ff, color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>taskforce@awsp.gov.ye</a>
+            <span style={{ opacity: 0.35 }}>·</span>
+            <a href="/docs/AWSP_Development_Framework.pdf" download style={{ fontFamily: ff, color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>Framework PDF</a>
+            <span style={{ opacity: 0.35 }}>·</span>
+            <a href={`/${locale}/news`} style={{ fontFamily: ff, color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>Press Kit</a>
+          </span>
+        </div>
       </div>
     </footer>
   );

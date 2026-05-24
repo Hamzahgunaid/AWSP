@@ -2,75 +2,32 @@
 
 import { useRouter, usePathname } from 'next/navigation';
 
-interface LanguageToggleProps {
-  locale: string;
-  onDark?: boolean;
-  className?: string;
-}
-
-export default function LanguageToggle({
-  locale,
-  onDark = false,
-  className = '',
-}: LanguageToggleProps) {
+export default function LanguageToggle({ locale, onDark = false }: { locale: string; onDark?: boolean }) {
   const router = useRouter();
   const pathname = usePathname();
-
-  const switchLocale = () => {
+  const toggle = () => {
     const next = locale === 'ar' ? 'en' : 'ar';
-    const newPath = pathname.replace(`/${locale}`, `/${next}`);
-    router.push(newPath);
+    router.push(pathname.replace(`/${locale}`, `/${next}`));
   };
-
-  const borderColor = onDark ? 'rgba(255,255,255,0.5)' : 'var(--ink-700)';
-  const activeText = onDark ? 'var(--ink-900)' : 'white';
-  const activeBg   = onDark ? 'white' : 'var(--ink-700)';
-  const inactiveText = onDark ? 'rgba(255,255,255,0.8)' : 'var(--ink-700)';
-  const inactiveBg   = 'transparent';
-
   return (
     <button
-      onClick={switchLocale}
-      aria-label={
-        locale === 'ar'
-          ? 'Switch site language to English'
-          : 'تبديل لغة الموقع إلى العربية'
-      }
-      className={className}
+      onClick={toggle}
+      aria-label={locale === 'ar' ? 'Switch to English' : 'التبديل إلى العربية'}
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        borderRadius: '9999px',
-        border: `2px solid ${borderColor}`,
-        overflow: 'hidden',
-        fontSize: '13px',
-        fontWeight: '600',
-        cursor: 'pointer',
-        userSelect: 'none',
-        background: 'none',
-        transition: 'border-color 200ms ease',
+        display: 'inline-flex', alignItems: 'center', gap: '6px',
+        padding: '8px 14px', fontSize: '13px', fontWeight: '600',
+        letterSpacing: '0.06em', cursor: 'pointer', transition: 'all 160ms ease',
+        color: onDark ? '#fff' : 'var(--ink-800)',
+        border: `1px solid ${onDark ? 'rgba(255,255,255,0.3)' : 'var(--line-2)'}`,
+        borderRadius: 'var(--radius-pill)', background: 'transparent',
+        fontFamily: 'inherit',
       }}
+      onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = onDark ? 'rgba(255,255,255,0.1)' : 'var(--bone)'}
+      onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}
     >
-      <span
-        style={{
-          padding: '4px 12px',
-          backgroundColor: locale === 'ar' ? activeBg : inactiveBg,
-          color:           locale === 'ar' ? activeText : inactiveText,
-          transition: 'all 150ms ease',
-        }}
-      >
-        AR
-      </span>
-      <span
-        style={{
-          padding: '4px 12px',
-          backgroundColor: locale === 'en' ? activeBg : inactiveBg,
-          color:           locale === 'en' ? activeText : inactiveText,
-          transition: 'all 150ms ease',
-        }}
-      >
-        EN
-      </span>
+      <span style={{ color: locale === 'ar' ? (onDark ? 'var(--teal-300)' : 'var(--teal-600)') : 'inherit' }}>AR</span>
+      <span style={{ opacity: 0.4 }}>|</span>
+      <span style={{ color: locale === 'en' ? (onDark ? 'var(--teal-300)' : 'var(--teal-600)') : 'inherit' }}>EN</span>
     </button>
   );
 }

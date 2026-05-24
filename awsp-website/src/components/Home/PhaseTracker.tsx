@@ -3,169 +3,222 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import phases from '@/data/phases.json';
-import type { Phase } from '@/types';
+
+const STATUS_CONFIG = {
+  completed: { chipClass: 'chip-completed', dotColor: 'var(--sand-400)', en: 'Completed',   ar: 'مكتملة' },
+  active:    { chipClass: 'chip-active',    dotColor: 'var(--teal-500)', en: 'In Progress', ar: 'جارية'  },
+  planned:   { chipClass: 'chip-planned',   dotColor: 'var(--gray-300)', en: 'Planned',     ar: 'مخططة' },
+};
 
 export default function PhaseTracker({ locale }: { locale: string }) {
-  const [activePhase, setActivePhase] = useState<number | null>(null);
+  const [open, setOpen] = useState<number | null>(1);
   const isAr = locale === 'ar';
-  const font = isAr ? 'var(--font-arabic)' : 'var(--font-sans)';
+  const ff = isAr ? 'var(--font-arabic)' : 'var(--font-sans)';
 
-  const getNodeStyle = (status: string, isSelected: boolean) => {
-    const base = {
-      width: '36px', height: '36px',
-      borderRadius: '50%',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      fontSize: '13px', fontWeight: '700' as const,
-      cursor: 'pointer' as const,
-      transition: 'all 200ms ease',
-      border: '3px solid transparent',
-      position: 'relative' as const,
-      flexShrink: 0,
-      outline: isSelected ? '3px solid rgba(42,138,138,0.4)' : 'none',
-      outlineOffset: '2px',
-    };
-    if (status === 'completed') return { ...base, backgroundColor: 'var(--sand-500)', color: 'white', borderColor: 'var(--sand-500)' };
-    if (status === 'active') return { ...base, backgroundColor: 'var(--teal-600)', color: 'white', borderColor: 'var(--teal-600)', boxShadow: '0 0 0 4px rgba(31,122,120,0.25)' };
-    return { ...base, backgroundColor: 'white', color: '#8A9BB0', borderColor: 'var(--line-2)' };
-  };
-
-  const selectedPhase: Phase | null = activePhase !== null ? (phases as Phase[])[activePhase] : null;
+  const visible = phases.slice(0, 3);
 
   return (
-    <section style={{ backgroundColor: 'var(--paper)', padding: '72px 24px' }}>
-      <div style={{ maxWidth: 'var(--wrap-max)', margin: '0 auto' }}>
+    <section style={{ background: 'var(--paper)', padding: '120px 0', position: 'relative' }}>
+      <div className="wrap">
 
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <h2 style={{
-            fontFamily: isAr ? 'var(--font-arabic)' : 'var(--font-serif)',
-            fontWeight: '700',
-            fontSize: 'clamp(24px, 3vw, 36px)',
-            color: 'var(--ink-900)',
-            marginBottom: '12px',
-          }}>
-            {isAr ? 'رحلة التخطيط في AWSP' : 'The AWSP Planning Journey'}
-          </h2>
-          <p style={{ fontFamily: font, fontSize: '15px', color: '#6B7280' }}>
-            {isAr
-              ? '١٢ مرحلة متسلسلة من اعتماد الإطار إلى الإقرار الرسمي — يوليو ٢٠٢٥ إلى يناير ٢٠٢٩'
-              : '12 sequenced phases from framework adoption to public endorsement — July 2025 to January 2029'}
-          </p>
-        </div>
-
-        {/* Timeline */}
-        <div style={{
-          display: 'flex', alignItems: 'center', overflowX: 'auto',
-          paddingBottom: '16px', gap: '0', position: 'relative',
-        }}>
-          {(phases as Phase[]).map((phase, i) => (
-            <div key={phase.id} style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                {phase.status === 'active' ? (
-                  <span style={{
-                    fontSize: '10px', fontFamily: font,
-                    color: 'var(--teal-600)', fontWeight: '700',
-                    backgroundColor: 'rgba(31,122,120,0.10)',
-                    padding: '2px 8px', borderRadius: '100px',
-                  }}>
-                    {isAr ? 'جارية' : 'Current'}
-                  </span>
-                ) : (
-                  <span style={{ height: '20px', display: 'block' }} />
-                )}
-
-                <button
-                  style={getNodeStyle(phase.status, activePhase === i)}
-                  onClick={() => setActivePhase(activePhase === i ? null : i)}
-                  title={isAr ? phase.name_ar : phase.name_en}
-                  aria-pressed={activePhase === i}
-                >
-                  {phase.id}
-                </button>
-
-                <span style={{
-                  fontSize: '10px', fontFamily: font,
-                  color: '#8A9BB0', textAlign: 'center',
-                  maxWidth: '64px', lineHeight: '1.3',
-                }}>
-                  {isAr
-                    ? phase.name_ar.split(' ').slice(0, 2).join(' ')
-                    : phase.name_en.split(' ').slice(0, 2).join(' ')}
-                </span>
-              </div>
-
-              {i < phases.length - 1 && (
-                <div style={{
-                  height: '2px', width: '24px', flexShrink: 0,
-                  backgroundColor: phase.status === 'completed' ? 'var(--sand-500)' : 'var(--line)',
-                  marginBottom: '28px',
-                }} />
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Phase detail panel */}
-        {selectedPhase && (
-          <div style={{
-            marginTop: '32px', padding: '28px',
-            backgroundColor: 'var(--bone)',
-            borderRadius: '12px',
-            borderInlineStart: '4px solid var(--teal-600)',
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px' }}>
-              <div>
-                <h3 style={{ fontFamily: font, fontWeight: '700', fontSize: '18px', color: 'var(--ink-900)', marginBottom: '4px' }}>
-                  {isAr
-                    ? `المرحلة ${selectedPhase.id}: ${selectedPhase.name_ar}`
-                    : `Phase ${selectedPhase.id}: ${selectedPhase.name_en}`}
-                </h3>
-                <span style={{ fontSize: '12px', fontFamily: font, color: '#8A9BB0' }}>
-                  {selectedPhase.start_date} — {selectedPhase.end_date}
-                </span>
-              </div>
-              <span style={{
-                padding: '4px 14px', borderRadius: '100px',
-                fontSize: '12px', fontWeight: '600', fontFamily: font,
-                backgroundColor: selectedPhase.status === 'completed' ? 'rgba(200,137,58,0.12)'
-                  : selectedPhase.status === 'active' ? 'rgba(31,122,120,0.10)' : 'var(--bone)',
-                color: selectedPhase.status === 'completed' ? 'var(--sand-500)'
-                  : selectedPhase.status === 'active' ? 'var(--teal-600)' : '#8A9BB0',
-              }}>
-                {isAr
-                  ? selectedPhase.status === 'completed' ? 'مكتملة'
-                    : selectedPhase.status === 'active' ? 'جارية' : 'مخططة'
-                  : selectedPhase.status === 'completed' ? 'Completed'
-                    : selectedPhase.status === 'active' ? 'In Progress' : 'Planned'}
-              </span>
-            </div>
-            <p style={{ fontFamily: font, fontSize: '14px', color: '#4B5563', marginTop: '16px', lineHeight: '1.8' }}>
-              {isAr ? selectedPhase.description_ar : selectedPhase.description_en}
+        {/* Intro grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '64px', alignItems: 'end', marginBottom: '80px' }}>
+          <div>
+            <span className="eyebrow" style={{ fontFamily: ff }}>
+              {isAr ? 'رحلة التخطيط' : 'The Planning Journey'}
+            </span>
+            <h2 style={{ fontFamily: isAr ? 'var(--font-arabic)' : 'var(--font-serif)', fontSize: 'clamp(2rem, 3.4vw, 3.2rem)', lineHeight: 1.05, marginTop: '16px' }}>
+              {isAr
+                ? 'اثنتا عشرة مرحلة متسلسلة من الإطار إلى الإقرار العام.'
+                : (<>Twelve sequenced phases<br />from framework to public endorsement.</>)}
+            </h2>
+            <p className="lead" style={{ marginTop: '24px', fontFamily: ff }}>
+              {isAr
+                ? 'يتضمن AWSP اثنتي عشرة مرحلة متسلسلة منطقياً، من يوليو ٢٠٢٥ إلى يناير ٢٠٢٩. تُبنى كل مرحلة على مخرجات المرحلة السابقة المُتحقق منها.'
+                : 'The AWSP is structured around twelve logically sequenced phases, spanning July 2025 to January 2029. Each phase builds on validated outputs of the preceding stages, with intentional overlaps that enable stakeholder engagement and timely course correction.'}
             </p>
-            <div style={{ marginTop: '16px' }}>
-              <p style={{ fontFamily: font, fontSize: '13px', fontWeight: '700', color: 'var(--ink-900)', marginBottom: '8px' }}>
-                {isAr ? 'الأنشطة الرئيسية:' : 'Key Activities:'}
-              </p>
-              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                {(isAr ? selectedPhase.activities_ar : selectedPhase.activities_en).map((a, idx) => (
-                  <li key={idx} style={{ display: 'flex', gap: '8px', fontFamily: font, fontSize: '13px', color: '#4B5563' }}>
-                    <span style={{ color: 'var(--teal-600)', fontWeight: '700', flexShrink: 0 }}>•</span>
-                    {a}
-                  </li>
-                ))}
-              </ul>
+          </div>
+          <div>
+            {/* Summary card */}
+            <div style={{ background: '#fff', border: '1px solid var(--line)', borderRadius: 'var(--radius-lg)', padding: '24px 28px', marginTop: '28px' }}>
+              {[
+                { k: isAr ? 'نافذة البرنامج'  : 'Programme window', v: 'Jul 2025 → Jan 2029' },
+                { k: isAr ? 'إجمالي المراحل'   : 'Total phases',     v: '12' },
+                { k: isAr ? 'مكتملة'           : 'Completed',        v: isAr ? '١ من ١٢' : '1 of 12' },
+                { k: isAr ? 'قيد التنفيذ'      : 'In progress',      v: isAr ? 'المراحل ٢–٣' : 'Phases 2 — 3' },
+                { k: isAr ? 'المعلم القادم'     : 'Next milestone',   v: isAr ? 'الموافقة على تصميم المسح · يناير ٢٠٢٦' : 'Survey design sign-off · Jan 2026' },
+              ].map(row => (
+                <div key={row.k} style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', fontSize: '14px', borderBottom: '1px solid var(--line)' }}>
+                  <span style={{ color: 'var(--gray-500)', fontFamily: ff }}>{row.k}</span>
+                  <span style={{ color: 'var(--ink-800)', fontWeight: '600', fontFamily: 'var(--font-serif)' }}>{row.v}</span>
+                </div>
+              ))}
+            </div>
+            {/* Status chips */}
+            <div style={{ display: 'flex', gap: '14px', marginTop: '16px', flexWrap: 'wrap' }}>
+              {(['completed', 'active', 'planned'] as const).map(s => {
+                const cfg = STATUS_CONFIG[s];
+                return (
+                  <span key={s} className={`chip ${cfg.chipClass}`}>
+                    <span className="chip-dot" />
+                    {isAr ? cfg.ar : cfg.en}
+                  </span>
+                );
+              })}
             </div>
           </div>
-        )}
+        </div>
 
-        <div style={{ textAlign: 'center', marginTop: '32px' }}>
-          <Link href={`/${locale}/about#phases`} style={{
-            fontFamily: font, fontSize: '14px', fontWeight: '600',
-            color: 'var(--teal-600)', textDecoration: 'none',
-          }}>
-            {isAr ? '← عرض خارطة الطريق الكاملة' : 'View Full Roadmap →'}
+        {/* Vertical timeline */}
+        <div style={{ position: 'relative', paddingInlineStart: '56px', maxWidth: '920px', margin: '0 auto' }}>
+          {/* Vertical line */}
+          <div style={{
+            position: 'absolute',
+            insetInlineStart: '22px',
+            top: 0, bottom: 0, width: '2px',
+            background: 'linear-gradient(180deg, var(--sand-400) 0%, var(--teal-500) 18%, var(--gray-300) 55%, var(--gray-300) 100%)',
+          }} />
+
+          {visible.map((phase, i) => {
+            const st = phase.status as 'completed' | 'active' | 'planned';
+            const cfg = STATUS_CONFIG[st];
+            const isOpen = open === i;
+
+            return (
+              <div key={phase.id} style={{ position: 'relative', marginBottom: '56px' }}>
+                {/* Dot */}
+                <div style={{
+                  position: 'absolute',
+                  insetInlineStart: '-42px', top: '8px',
+                  width: '16px', height: '16px', borderRadius: '50%',
+                  background: cfg.dotColor,
+                  border: '3px solid var(--paper)',
+                  boxShadow: st === 'active'
+                    ? `0 0 0 1px var(--teal-500), 0 0 0 6px rgba(42,138,138,0.18)`
+                    : `0 0 0 1px ${cfg.dotColor}`,
+                  zIndex: 1,
+                  animation: st === 'active' ? 'pulseActive 2s ease-in-out infinite' : 'none',
+                }} />
+                {/* Phase number */}
+                <div style={{
+                  position: 'absolute',
+                  insetInlineStart: '-78px', top: 0,
+                  fontFamily: 'var(--font-serif)',
+                  fontSize: '12px', fontWeight: '500', letterSpacing: '0.08em',
+                  color: 'var(--gray-400)', width: '28px',
+                  textAlign: isAr ? 'left' : 'right',
+                }}>
+                  P.{String(phase.id).padStart(2, '0')}
+                </div>
+
+                {/* Phase card */}
+                <div style={{
+                  background: '#fff',
+                  border: `1px solid ${isOpen ? 'var(--teal-500)' : 'var(--line)'}`,
+                  borderRadius: 'var(--radius-lg)',
+                  overflow: 'hidden',
+                  transition: 'all 220ms ease',
+                  boxShadow: isOpen ? '0 18px 40px -22px rgba(14,42,71,0.18)' : 'none',
+                }}>
+                  {/* Card head */}
+                  <button
+                    onClick={() => setOpen(isOpen ? null : i)}
+                    style={{
+                      width: '100%', display: 'flex', justifyContent: 'space-between',
+                      alignItems: 'flex-start', padding: '24px 28px', gap: '16px',
+                      background: 'transparent', border: 'none', cursor: 'pointer',
+                      textAlign: 'start', transition: 'background 160ms ease',
+                    }}
+                    onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'var(--bone)'}
+                    onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}
+                  >
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontFamily: 'var(--font-serif)', fontSize: '13px', color: 'var(--teal-600)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '4px' }}>
+                        {isAr ? `المرحلة ${phase.id}` : `Phase ${phase.id}`}
+                        {st === 'active' ? (isAr ? ' · المرحلة الحالية' : ' · Current Phase') : ''}
+                      </div>
+                      <h3 style={{ fontFamily: isAr ? 'var(--font-arabic)' : 'var(--font-serif)', fontSize: '1.35rem', margin: '0 0 8px', letterSpacing: '-0.01em', color: 'var(--ink-800)' }}>
+                        {isAr ? phase.name_ar : phase.name_en}
+                      </h3>
+                      <div style={{ fontSize: '13px', color: 'var(--gray-500)', fontFamily: ff, fontVariantNumeric: 'tabular-nums' }}>
+                        {phase.start_date} → {phase.end_date}
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start', flexShrink: 0 }}>
+                      <span className={`chip ${cfg.chipClass}`}>
+                        <span className="chip-dot" />
+                        {isAr ? cfg.ar : cfg.en}
+                      </span>
+                      <span style={{
+                        width: '36px', height: '36px', borderRadius: '50%',
+                        border: '1px solid var(--line-2)',
+                        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                        transition: 'all 200ms ease',
+                        background: isOpen ? 'var(--ink-800)' : 'transparent',
+                        color: isOpen ? '#fff' : 'var(--ink-700)',
+                        transform: isOpen ? 'rotate(45deg)' : 'none',
+                        flexShrink: 0, fontSize: '20px', lineHeight: '1', cursor: 'pointer',
+                      }}>+</span>
+                    </div>
+                  </button>
+
+                  {/* Expandable body */}
+                  {isOpen && (
+                    <div style={{ padding: '0 28px 28px', borderTop: '1px solid var(--line)', paddingTop: '24px', display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '36px' }}>
+                      <div>
+                        <p style={{ color: 'var(--gray-700)', lineHeight: 1.6, fontFamily: ff, fontSize: '15px', marginBottom: '20px' }}>
+                          {isAr ? phase.description_ar : phase.description_en}
+                        </p>
+                        <div style={{ fontSize: '12px', fontWeight: '600', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--teal-600)', marginBottom: '12px', fontFamily: ff }}>
+                          {isAr ? 'الأنشطة الرئيسية' : 'Key activities'}
+                        </div>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                          {(isAr ? phase.activities_ar : phase.activities_en).map((a, j) => (
+                            <li key={j} style={{ position: 'relative', paddingInlineStart: '18px', fontSize: '14px', lineHeight: 1.5, marginBottom: '8px', color: 'var(--gray-700)', fontFamily: ff }}>
+                              <span style={{ position: 'absolute', insetInlineStart: 0, top: '9px', width: '6px', height: '6px', background: 'var(--teal-500)', borderRadius: '50%', display: 'inline-block' }} />
+                              {a}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '12px', fontWeight: '600', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--teal-600)', marginBottom: '12px', fontFamily: ff }}>
+                          {isAr ? 'مخرجات المرحلة' : 'Phase outputs'}
+                        </div>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                          {(isAr ? phase.outputs_ar : phase.outputs_en).map((o, j) => (
+                            <li key={j} style={{ position: 'relative', paddingInlineStart: '18px', fontSize: '14px', lineHeight: 1.5, marginBottom: '8px', color: 'var(--gray-700)', fontFamily: ff }}>
+                              <span style={{ position: 'absolute', insetInlineStart: 0, top: '9px', width: '6px', height: '6px', background: 'var(--sand-400)', borderRadius: '50%', display: 'inline-block' }} />
+                              {o}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* View full roadmap */}
+        <div style={{ textAlign: 'center', marginTop: '64px' }}>
+          <Link href={`/${locale}/about#phases`} className="btn btn-secondary" style={{ fontFamily: ff }}>
+            {isAr ? 'عرض خارطة الطريق الكاملة' : 'View Full Roadmap'}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="icon-dir" style={{ width: 16, height: 16 }}>
+              <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </Link>
         </div>
       </div>
+
+      <style>{`
+        @keyframes pulseActive {
+          0%,100% { box-shadow: 0 0 0 1px var(--teal-500), 0 0 0 6px rgba(42,138,138,0.18); }
+          50% { box-shadow: 0 0 0 1px var(--teal-500), 0 0 0 10px rgba(42,138,138,0.08); }
+        }
+      `}</style>
     </section>
   );
 }
