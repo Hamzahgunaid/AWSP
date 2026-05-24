@@ -25,9 +25,12 @@ export default function SiteFooter({ locale }: { locale: string }) {
         {/* Top */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '28px', borderBottom: '1px solid rgba(255,255,255,0.1)', gap: '32px', flexWrap: 'wrap' }}>
           <Link href={`/${locale}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
-            <img src="/images/awsp-logo-mark.png" alt="AWSP"
-              style={{ width: '40px', height: '40px', objectFit: 'contain', filter: 'brightness(0) invert(1)', opacity: 0.9 }}
-              onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+            <img
+              src="/images/awsp-logo-mark.png"
+              alt="AWSP"
+              width={40}
+              height={40}
+              style={{ width: '40px', height: '40px', objectFit: 'contain', flexShrink: 0, filter: 'brightness(0) invert(1)', opacity: 0.9 }}
             />
             <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1 }}>
               <strong style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: '600', color: '#fff', letterSpacing: '0.02em' }}>AWSP</strong>
