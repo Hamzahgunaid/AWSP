@@ -4,10 +4,10 @@ import partnersData from '@/data/partners.json';
 
 const ROLE_COLORS = ['var(--teal-600)', 'var(--blue-600)', 'var(--sand-500)'];
 const TOP_COLORS  = ['var(--teal-500)', 'var(--blue-500)', 'var(--sand-400)'];
-const EXTERNAL_LINKS = [
-  { en: 'Visit MWE',           ar: 'زيارة موقع الوزارة' },
-  { en: 'Visit LWSCA',         ar: 'زيارة موقع المؤسسة' },
-  { en: 'Meet the Taskforce',  ar: 'تعرف على فريق العمل' },
+const LINKS = [
+  { en: 'Visit MWE',          ar: 'زيارة موقع الوزارة' },
+  { en: 'Visit LWSCA',        ar: 'زيارة موقع المؤسسة' },
+  { en: 'Meet the Taskforce', ar: 'تعرف على فريق العمل' },
 ];
 
 export default function PartnerCards({ locale }: { locale: string }) {
@@ -35,14 +35,13 @@ export default function PartnerCards({ locale }: { locale: string }) {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
           {partnersData.map((p, i) => (
-            <a
-              key={p.id}
-              href={p.href}
+            <a key={p.id} href={p.href}
               target={p.href.startsWith('http') ? '_blank' : '_self'}
               rel="noreferrer"
               style={{
-                display: 'block', background: '#fff', borderRadius: 'var(--radius-lg)',
-                padding: '36px', position: 'relative', overflow: 'hidden',
+                display: 'block', background: '#fff',
+                borderRadius: 'var(--radius-lg)', padding: '36px',
+                position: 'relative', overflow: 'hidden',
                 transition: 'all 220ms ease', border: '1px solid var(--line)',
                 textDecoration: 'none',
               }}
@@ -57,7 +56,7 @@ export default function PartnerCards({ locale }: { locale: string }) {
                 el.style.boxShadow = 'none';
               }}
             >
-              {/* Top colour stripe */}
+              {/* Coloured top stripe */}
               <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: TOP_COLORS[i] }} />
 
               {/* Logo */}
@@ -85,9 +84,9 @@ export default function PartnerCards({ locale }: { locale: string }) {
                 {isAr ? p.description_ar : p.description_en}
               </p>
 
-              {/* External link */}
+              {/* Link */}
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '600', color: 'var(--ink-800)', fontFamily: ff }}>
-                {isAr ? EXTERNAL_LINKS[i]?.ar : EXTERNAL_LINKS[i]?.en}
+                {isAr ? LINKS[i]?.ar : LINKS[i]?.en}
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                   {p.href.startsWith('http')
                     ? <path d="M7 17L17 7M8 7h9v9" strokeLinecap="round" strokeLinejoin="round"/>

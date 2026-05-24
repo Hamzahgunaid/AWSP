@@ -38,35 +38,33 @@ export default function SiteHeader({ locale }: { locale: string }) {
       : pathname.startsWith(full);
   };
 
-  const headerStyle: React.CSSProperties = {
-    position: 'fixed',
-    top: 0,
-    insetInlineStart: 0,
-    width: '100%',
-    zIndex: 50,
-    background: onDark ? 'rgba(10,31,56,0.6)' : 'rgba(250,247,240,0.92)',
-    backdropFilter: 'saturate(180%) blur(16px)',
-    WebkitBackdropFilter: 'saturate(180%) blur(16px)',
-    borderBottom: `1px solid ${onDark ? 'rgba(255,255,255,0.1)' : 'var(--line)'}`,
-    transition: 'background 300ms ease, border-color 300ms ease',
-  };
-
-  const linkColor = onDark ? 'rgba(255,255,255,0.85)' : 'var(--gray-700)';
-  const linkActiveColor = onDark ? '#fff' : 'var(--ink-800)';
-  const activeLineColor = onDark ? 'var(--sand-400)' : 'var(--teal-500)';
+  const headerBg    = onDark ? 'rgba(10,31,56,0.6)' : 'rgba(250,247,240,0.92)';
+  const headerBorder= onDark ? 'rgba(255,255,255,0.1)' : 'var(--line)';
+  const linkColor   = onDark ? 'rgba(255,255,255,0.85)' : 'var(--gray-700)';
+  const linkActive  = onDark ? '#fff' : 'var(--ink-800)';
+  const activeLine  = onDark ? 'var(--sand-400)' : 'var(--teal-500)';
   const brandStrong = onDark ? '#fff' : 'var(--ink-800)';
-  const brandSpan = onDark ? 'rgba(255,255,255,0.6)' : 'var(--gray-500)';
+  const brandSpan   = onDark ? 'rgba(255,255,255,0.6)' : 'var(--gray-500)';
+  const hamColor    = onDark ? 'rgba(255,255,255,0.25)' : 'var(--line-2)';
 
   return (
     <>
-      <header style={headerStyle}>
+      <header style={{
+        position: 'fixed', top: 0, insetInlineStart: 0,
+        width: '100%', zIndex: 50,
+        background: headerBg,
+        backdropFilter: 'saturate(180%) blur(16px)',
+        WebkitBackdropFilter: 'saturate(180%) blur(16px)',
+        borderBottom: `1px solid ${headerBorder}`,
+        transition: 'background 300ms ease, border-color 300ms ease',
+      }}>
         <div className="wrap" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '74px', gap: '24px' }}>
 
           {/* Brand */}
           <Link href={`/${locale}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
             <img
               src="/images/awsp-logo-mark.png"
-              alt="AWSP — Aden Water Sector Plan"
+              alt="AWSP"
               width={44}
               height={44}
               style={{ width: '44px', height: '44px', objectFit: 'contain', flexShrink: 0 }}
@@ -82,24 +80,22 @@ export default function SiteHeader({ locale }: { locale: string }) {
           </Link>
 
           {/* Desktop nav */}
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '4px' }} className="hidden md:flex">
+          <nav className="hidden md:flex" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
             {NAV.map(item => {
               const active = isActive(item.href);
               return (
-                <Link key={item.href} href={`/${locale}${item.href}`}
-                  style={{
-                    position: 'relative', padding: '22px 14px',
-                    fontSize: '14px', fontWeight: '500', fontFamily: ff,
-                    color: active ? linkActiveColor : linkColor,
-                    textDecoration: 'none', transition: 'color 160ms ease',
-                  }}
-                >
+                <Link key={item.href} href={`/${locale}${item.href}`} style={{
+                  position: 'relative', padding: '22px 14px',
+                  fontSize: '14px', fontWeight: '500', fontFamily: ff,
+                  color: active ? linkActive : linkColor,
+                  textDecoration: 'none', transition: 'color 160ms ease',
+                }}>
                   {isAr ? item.ar : item.en}
                   {active && (
                     <span style={{
                       position: 'absolute', bottom: 0,
                       insetInlineStart: '14px', insetInlineEnd: '14px',
-                      height: '2px', background: activeLineColor, borderRadius: '1px',
+                      height: '2px', background: activeLine, borderRadius: '1px',
                     }} />
                   )}
                 </Link>
@@ -113,12 +109,11 @@ export default function SiteHeader({ locale }: { locale: string }) {
             <button
               className="md:hidden"
               onClick={() => setMobileOpen(o => !o)}
-              aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
               style={{
                 width: '40px', height: '40px',
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                background: 'transparent',
-                border: `1px solid ${onDark ? 'rgba(255,255,255,0.25)' : 'var(--line-2)'}`,
+                background: 'transparent', border: `1px solid ${hamColor}`,
                 borderRadius: '50%', cursor: 'pointer',
                 color: onDark ? '#fff' : 'var(--ink-800)',
               }}
@@ -146,9 +141,9 @@ export default function SiteHeader({ locale }: { locale: string }) {
                 display: 'block', padding: '14px 32px', fontFamily: ff,
                 fontSize: '15px', fontWeight: '500', textDecoration: 'none',
                 color: isActive(item.href) ? 'var(--ink-800)' : 'var(--gray-700)',
-                borderInlineStart: isActive(item.href) ? '3px solid var(--teal-500)' : '3px solid transparent',
-              }}
-            >
+                borderInlineStart: isActive(item.href)
+                  ? '3px solid var(--teal-500)' : '3px solid transparent',
+              }}>
               {isAr ? item.ar : item.en}
             </Link>
           ))}

@@ -7,11 +7,8 @@ import NewsStrip     from '@/components/Home/NewsStrip';
 
 export default async function HomePage({
   params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+}: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-
   return (
     <>
       <HeroSection   locale={locale} />

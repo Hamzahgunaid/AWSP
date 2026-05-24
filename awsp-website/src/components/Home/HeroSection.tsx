@@ -22,18 +22,13 @@ export default function HeroSection({ locale }: { locale: string }) {
 
   return (
     <section style={{
-      position: 'relative',
-      minHeight: '92vh',
-      background: 'var(--ink-900)',
-      color: '#fff',
-      display: 'flex',
-      alignItems: 'stretch',
-      overflow: 'hidden',
-      marginTop: '-74px',
-      paddingTop: '74px',
+      position: 'relative', minHeight: '92vh',
+      background: 'var(--ink-900)', color: '#fff',
+      display: 'flex', alignItems: 'stretch',
+      overflow: 'hidden', marginTop: '-74px', paddingTop: '74px',
     }}>
 
-      {/* Background photo */}
+      {/* Background photo + gradient */}
       <div style={{
         position: 'absolute', inset: 0,
         backgroundImage: `
@@ -45,25 +40,21 @@ export default function HeroSection({ locale }: { locale: string }) {
       }} />
 
       {/* Wave grain overlay */}
-      <div aria-hidden style={{
+      <div aria-hidden="true" style={{
         position: 'absolute', inset: 0, pointerEvents: 'none',
         backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'><g fill='none' stroke='%23ffffff' stroke-width='0.5' opacity='0.06'><path d='M0 400 Q 200 340 400 400 T 800 400 T 1200 400'/><path d='M0 460 Q 240 400 460 460 T 880 460 T 1240 460'/><path d='M0 340 Q 180 290 380 340 T 780 340 T 1200 340'/></g></svg>")`,
         backgroundSize: '100% 100%',
       }} />
 
-      {/* Main content — 2 column grid */}
+      {/* Two-column content grid */}
       <div className="wrap" style={{
         position: 'relative', width: '100%',
-        display: 'grid',
-        gridTemplateColumns: '1.4fr 1fr',
-        alignItems: 'end',
-        padding: '80px 0 64px',
-        gap: '48px',
+        display: 'grid', gridTemplateColumns: '1.4fr 1fr',
+        alignItems: 'end', padding: '80px 0 64px', gap: '48px',
       }}>
 
         {/* LEFT — headline */}
         <div>
-          {/* Eyebrow */}
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: '14px',
             fontSize: '12px', fontWeight: '600', letterSpacing: '0.18em',
@@ -80,12 +71,11 @@ export default function HeroSection({ locale }: { locale: string }) {
             fontFamily: isAr ? 'var(--font-arabic)' : 'var(--font-serif)',
             color: '#fff',
             fontSize: 'clamp(2.8rem, 6vw, 5.6rem)',
-            lineHeight: 0.98,
-            letterSpacing: '-0.025em',
+            lineHeight: 0.98, letterSpacing: '-0.025em',
             fontWeight: isAr ? '600' : '400',
             marginBottom: '32px',
           }}>
-            {isAr ? 'خطة قطاع\nالمياه في عدن' : (<>{`Aden Water`}<br />{`Sector Plan`}</>)}
+            {isAr ? 'خطة قطاع المياه في عدن' : <><span>Aden Water</span><br/><span>Sector Plan</span></>}
           </h1>
 
           <p style={{
@@ -106,7 +96,8 @@ export default function HeroSection({ locale }: { locale: string }) {
                 <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </Link>
-            <a href="/docs/AWSP_Development_Framework.pdf" download className="btn btn-outline-light" style={{ fontFamily: ff }}>
+            <a href="/docs/AWSP_Development_Framework.pdf" download
+              className="btn btn-outline-light" style={{ fontFamily: ff }}>
               {isAr ? 'تحميل الإطار' : 'Download the Framework'}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 16, height: 16 }}>
                 <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" strokeLinecap="round" strokeLinejoin="round"/>
@@ -118,8 +109,7 @@ export default function HeroSection({ locale }: { locale: string }) {
         {/* RIGHT — At a glance sidebar */}
         <aside style={{
           borderInlineStart: '1px solid rgba(255,255,255,0.16)',
-          paddingInlineStart: '36px',
-          paddingBottom: '12px',
+          paddingInlineStart: '36px', paddingBottom: '12px',
         }}>
           <div style={{
             fontSize: '11px', fontWeight: '600', letterSpacing: '0.16em',
@@ -137,9 +127,9 @@ export default function HeroSection({ locale }: { locale: string }) {
                 borderBottom: '1px solid rgba(255,255,255,0.1)',
               }}>
                 <div style={{
-                  fontFamily: 'var(--font-serif)',
-                  fontSize: '13px', color: 'var(--sand-400)',
-                  letterSpacing: '0.05em', flexShrink: 0, width: '32px',
+                  fontFamily: 'var(--font-serif)', fontSize: '13px',
+                  color: 'var(--sand-400)', letterSpacing: '0.05em',
+                  flexShrink: 0, width: '32px',
                 }}>
                   {row.num}
                 </div>
@@ -156,7 +146,7 @@ export default function HeroSection({ locale }: { locale: string }) {
       </div>
 
       {/* Scroll cue */}
-      <div aria-hidden style={{
+      <div aria-hidden="true" style={{
         position: 'absolute', bottom: '52px', left: '50%',
         transform: 'translateX(-50%)',
         fontSize: '11px', letterSpacing: '0.18em', textTransform: 'uppercase',
@@ -175,8 +165,7 @@ export default function HeroSection({ locale }: { locale: string }) {
       {/* News ticker */}
       <div style={{
         position: 'absolute', bottom: 0, left: 0, right: 0,
-        background: 'rgba(0,0,0,0.4)',
-        backdropFilter: 'blur(8px)',
+        background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(8px)',
         borderTop: '1px solid rgba(255,255,255,0.12)',
         padding: '12px 0', fontSize: '13px',
         color: 'rgba(255,255,255,0.85)', overflow: 'hidden',
@@ -193,7 +182,7 @@ export default function HeroSection({ locale }: { locale: string }) {
           </span>
           <div style={{
             display: 'flex', gap: '56px', whiteSpace: 'nowrap',
-            animation: `ticker ${isAr ? 'reverse' : 'normal'} 40s linear infinite`,
+            animation: 'ticker 40s linear infinite',
             flexShrink: 0,
           }}>
             {allTicker.map((t, i) => (
@@ -208,13 +197,16 @@ export default function HeroSection({ locale }: { locale: string }) {
 
       <style>{`
         @keyframes scrollLine {
-          0% { transform: translateY(-12px); opacity: 0; }
+          0%  { transform: translateY(-12px); opacity: 0; }
           50% { opacity: 1; }
-          100% { transform: translateY(12px); opacity: 0; }
+          100%{ transform: translateY(12px);  opacity: 0; }
         }
-        @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        @keyframes ticker {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-50%); }
+        }
         @media (max-width: 980px) {
-          .hero-grid { grid-template-columns: 1fr !important; }
+          .hero-two-col { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </section>
