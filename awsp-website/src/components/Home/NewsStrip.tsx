@@ -32,7 +32,7 @@ export default function NewsStrip({ locale }: { locale: string }) {
 
   return (
     <>
-      {/* News grid */}
+      {/* News section */}
       <section style={{ background: 'var(--paper)' }}>
         <div className="wrap">
           <div className="section-head">
@@ -55,26 +55,43 @@ export default function NewsStrip({ locale }: { locale: string }) {
           <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr', gap: '24px' }}>
             {MOCK_NEWS.map((item, i) => (
               <article key={i} style={{
-                background: '#fff', borderRadius: 'var(--radius-lg)', border: '1px solid var(--line)',
-                overflow: 'hidden', display: 'flex', flexDirection: 'column',
+                background: '#fff', borderRadius: 'var(--radius-lg)',
+                border: '1px solid var(--line)', overflow: 'hidden',
+                display: 'flex', flexDirection: 'column',
                 transition: 'all 220ms ease',
               }}
-              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.transform = 'translateY(-3px)'; el.style.boxShadow = '0 18px 40px -22px rgba(14,42,71,0.18)'; }}
-              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.transform = 'translateY(0)'; el.style.boxShadow = 'none'; }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.transform = 'translateY(-3px)';
+                el.style.boxShadow = '0 18px 40px -22px rgba(14,42,71,0.18)';
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.transform = 'translateY(0)';
+                el.style.boxShadow = 'none';
+              }}
               >
-                {/* Media */}
                 <div style={{
                   aspectRatio: item.featured ? '4/3' : '16/9',
                   backgroundImage: `linear-gradient(180deg, rgba(14,42,71,0.2), rgba(14,42,71,0.6)), url('${item.img}')`,
                   backgroundSize: 'cover', backgroundPosition: 'center',
                 }} />
-                {/* Body */}
                 <div style={{ padding: '24px 28px 28px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '11px', fontWeight: '600', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--teal-600)', marginBottom: '12px', fontFamily: ff }}>
+                  <span style={{
+                    display: 'inline-flex', alignItems: 'center', gap: '8px',
+                    fontSize: '11px', fontWeight: '600', letterSpacing: '0.12em',
+                    textTransform: 'uppercase', color: 'var(--teal-600)',
+                    marginBottom: '12px', fontFamily: ff,
+                  }}>
                     <span style={{ width: '6px', height: '6px', background: 'currentColor', borderRadius: '50%' }} />
                     {isAr ? item.tag.ar : item.tag.en}
                   </span>
-                  <h3 style={{ fontFamily: isAr ? 'var(--font-arabic)' : 'var(--font-serif)', fontSize: item.featured ? '1.45rem' : '1.2rem', lineHeight: 1.25, marginBottom: '12px', flex: 1, color: 'var(--ink-800)' }}>
+                  <h3 style={{
+                    fontFamily: isAr ? 'var(--font-arabic)' : 'var(--font-serif)',
+                    fontSize: item.featured ? '1.45rem' : '1.2rem',
+                    lineHeight: 1.25, marginBottom: '12px', flex: 1,
+                    color: 'var(--ink-800)',
+                  }}>
                     {isAr ? item.title.ar : item.title.en}
                   </h3>
                   <div style={{ fontSize: '13px', color: 'var(--gray-500)', fontVariantNumeric: 'tabular-nums', fontFamily: ff }}>
@@ -97,7 +114,10 @@ export default function NewsStrip({ locale }: { locale: string }) {
             <span className="eyebrow" style={{ color: 'var(--sand-400)', fontFamily: ff }}>
               {isAr ? 'تواصل مع البرنامج' : 'Engage with the programme'}
             </span>
-            <h2 style={{ fontFamily: isAr ? 'var(--font-arabic)' : 'var(--font-serif)', color: '#fff', maxWidth: '24ch', marginTop: '14px' }}>
+            <h2 style={{
+              fontFamily: isAr ? 'var(--font-arabic)' : 'var(--font-serif)',
+              color: '#fff', maxWidth: '24ch', marginTop: '14px',
+            }}>
               {isAr
                 ? 'المانحون، الشركاء، الباحثون — تواصلوا معنا.'
                 : 'Donors, partners, researchers — get in touch.'}
