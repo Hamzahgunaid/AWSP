@@ -66,14 +66,10 @@ export default function SiteHeader({ locale }: { locale: string }) {
           <Link href={`/${locale}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
             <img
               src="/images/awsp-logo-mark.png"
-              alt="AWSP"
-              style={{
-                width: '44px', height: '44px', objectFit: 'contain',
-                borderRadius: '12px', flexShrink: 0,
-                background: onDark ? 'rgba(255,255,255,0.1)' : 'transparent',
-                padding: onDark ? '6px' : '0',
-              }}
-              onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+              alt="AWSP — Aden Water Sector Plan"
+              width={44}
+              height={44}
+              style={{ width: '44px', height: '44px', objectFit: 'contain', flexShrink: 0 }}
             />
             <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1 }}>
               <strong style={{ fontFamily: 'var(--font-serif)', fontSize: '18px', fontWeight: '600', color: brandStrong, letterSpacing: '0.02em' }}>
