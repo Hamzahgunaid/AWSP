@@ -1,217 +1,222 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
-const TICKER_ITEMS = [
-  {
-    ar: 'تم إطلاق برنامج خطة قطاع المياه في عدن رسمياً — يونيو ٢٠٢٥',
-    en: 'Aden Water Sector Plan officially launched — June 2025',
-  },
-  {
-    ar: 'المرحلة الثانية جارية: مواءمة المسوحات وتنسيق أصحاب المصلحة',
-    en: 'Phase 2 active: Survey Alignment & Stakeholder Coordination',
-  },
-  {
-    ar: '١٩٤ مشروع منجز عبر مديريات عدن الثماني',
-    en: "194 projects delivered across Aden's eight urban districts",
-  },
+const TICKER = [
+  { date: '12 May 2026', en: 'Survey alignment workshop convened with development partners in Aden.', ar: 'انعقدت ورشة مواءمة المسوحات مع شركاء التنمية في عدن.' },
+  { date: '28 Apr 2026', en: 'Phase 2 Survey Alignment Matrix released for stakeholder review.',       ar: 'صدرت مصفوفة مواءمة مسوحات المرحلة الثانية للمراجعة.' },
+  { date: '15 Apr 2026', en: 'AWSP Taskforce welcomes two new technical officers.',                    ar: 'رحّب فريق عمل AWSP بضابطَين تقنيَّين جديدَين.' },
+];
+
+const AT_A_GLANCE = [
+  { num: '01', en: { strong: 'July 2025 — January 2029', body: 'Twelve sequenced planning phases.' }, ar: { strong: 'يوليو ٢٠٢٥ — يناير ٢٠٢٩', body: 'اثنتا عشرة مرحلة تخطيطية متسلسلة.' } },
+  { num: '02', en: { strong: '8 urban districts', body: 'Across Aden governorate.' }, ar: { strong: '٨ مديريات حضرية', body: 'عبر محافظة عدن.' } },
+  { num: '03', en: { strong: 'Four foundational surveys', body: 'Household, hydrogeological, GIS, and hydraulic infrastructure.' }, ar: { strong: 'أربعة مسوحات تأسيسية', body: 'أسر، جيولوجية مائية، GIS وهيدروليكية.' } },
+  { num: '04', en: { strong: 'Locally led', body: 'MWE and LWSCA with ICRC technical support.' }, ar: { strong: 'قيادة محلية', body: 'وزارة المياه والمؤسسة المحلية بدعم ICRC.' } },
 ];
 
 export default function HeroSection({ locale }: { locale: string }) {
   const isAr = locale === 'ar';
-  const [tickerIdx, setTickerIdx] = useState(0);
-
-  useEffect(() => {
-    const t = setInterval(() => setTickerIdx(i => (i + 1) % TICKER_ITEMS.length), 5000);
-    return () => clearInterval(t);
-  }, []);
-
-  const font = isAr ? 'var(--font-arabic)' : 'var(--font-sans)';
+  const ff = isAr ? 'var(--font-arabic)' : 'var(--font-sans)';
+  const allTicker = [...TICKER, ...TICKER];
 
   return (
-    <section
-      style={{
-        position: 'relative',
-        width: '100%',
-        marginTop: 'calc(-1 * var(--header-h))',
-      }}
-    >
-      {/* Hero panel */}
+    <section style={{
+      position: 'relative',
+      minHeight: '92vh',
+      background: 'var(--ink-900)',
+      color: '#fff',
+      display: 'flex',
+      alignItems: 'stretch',
+      overflow: 'hidden',
+      marginTop: '-74px',
+      paddingTop: '74px',
+    }}>
+
+      {/* Background photo */}
       <div style={{
-        position: 'relative',
-        width: '100%',
-        minHeight: '92vh',
-        background: 'linear-gradient(135deg, var(--ink-900) 0%, var(--ink-800) 35%, var(--teal-700) 70%, var(--teal-600) 100%)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        padding: 'calc(var(--header-h) + 48px) 24px 72px',
+        position: 'absolute', inset: 0,
+        backgroundImage: `
+          linear-gradient(180deg, rgba(10,31,56,0.65) 0%, rgba(10,31,56,0.78) 60%, rgba(10,31,56,0.94) 100%),
+          linear-gradient(90deg, rgba(10,31,56,0.85) 0%, rgba(10,31,56,0.45) 50%, rgba(10,31,56,0.65) 100%),
+          url('https://images.unsplash.com/photo-1583146193020-3b35cb04165f?w=2000&q=80&auto=format&fit=crop')
+        `,
+        backgroundSize: 'cover', backgroundPosition: 'center', filter: 'saturate(0.85)',
+      }} />
+
+      {/* Wave grain overlay */}
+      <div aria-hidden style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'><g fill='none' stroke='%23ffffff' stroke-width='0.5' opacity='0.06'><path d='M0 400 Q 200 340 400 400 T 800 400 T 1200 400'/><path d='M0 460 Q 240 400 460 460 T 880 460 T 1240 460'/><path d='M0 340 Q 180 290 380 340 T 780 340 T 1200 340'/></g></svg>")`,
+        backgroundSize: '100% 100%',
+      }} />
+
+      {/* Main content — 2 column grid */}
+      <div className="wrap" style={{
+        position: 'relative', width: '100%',
+        display: 'grid',
+        gridTemplateColumns: '1.4fr 1fr',
+        alignItems: 'end',
+        padding: '80px 0 64px',
+        gap: '48px',
       }}>
 
-        {/* Radial overlays */}
-        <div style={{
-          position: 'absolute', inset: 0, pointerEvents: 'none',
-          background: 'radial-gradient(ellipse at 20% 50%, rgba(31,122,120,0.35) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(63,168,154,0.18) 0%, transparent 50%)',
-        }} />
-
-        {/* Programme badge */}
-        <div style={{
-          position: 'relative',
-          display: 'inline-flex', alignItems: 'center', gap: '8px',
-          backgroundColor: 'rgba(31,122,120,0.25)',
-          border: '1px solid rgba(63,168,154,0.5)',
-          borderRadius: '100px',
-          padding: '6px 18px',
-          marginBottom: '32px',
-        }}>
-          <div style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: 'var(--teal-400)' }} />
-          <span style={{
-            color: 'rgba(255,255,255,0.9)',
-            fontSize: '13px',
-            fontFamily: font,
-            fontWeight: '500',
-            letterSpacing: '0.4px',
+        {/* LEFT — headline */}
+        <div>
+          {/* Eyebrow */}
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: '14px',
+            fontSize: '12px', fontWeight: '600', letterSpacing: '0.18em',
+            textTransform: 'uppercase', color: 'var(--sand-400)',
+            marginBottom: '28px', fontFamily: ff,
           }}>
-            {isAr ? 'البرنامج الرسمي — وزارة المياه والبيئة' : 'Official Programme — Ministry of Water & Environment'}
-          </span>
+            <span style={{ width: '32px', height: '1.5px', background: 'var(--sand-400)', display: 'inline-block', flexShrink: 0 }} />
+            {isAr ? 'وزارة المياه والبيئة' : 'Ministry of Water and Environment'}
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--sand-400)', flexShrink: 0 }} />
+            {isAr ? 'المؤسسة المحلية — عدن' : 'LWSCA — Aden'}
+          </div>
+
+          <h1 style={{
+            fontFamily: isAr ? 'var(--font-arabic)' : 'var(--font-serif)',
+            color: '#fff',
+            fontSize: 'clamp(2.8rem, 6vw, 5.6rem)',
+            lineHeight: 0.98,
+            letterSpacing: '-0.025em',
+            fontWeight: isAr ? '600' : '400',
+            marginBottom: '32px',
+          }}>
+            {isAr ? 'خطة قطاع\nالمياه في عدن' : (<>{`Aden Water`}<br />{`Sector Plan`}</>)}
+          </h1>
+
+          <p style={{
+            fontFamily: isAr ? 'var(--font-arabic)' : 'var(--font-serif)',
+            fontSize: 'clamp(1.15rem, 1.5vw, 1.4rem)',
+            color: 'rgba(255,255,255,0.82)',
+            maxWidth: '38ch', lineHeight: 1.45, marginBottom: '40px',
+          }}>
+            {isAr
+              ? 'الانتقال من الاستجابة الإنسانية إلى نظام مياه وصرف صحي مستقر ومرن وتحت قيادة محلية في عدن.'
+              : "Transitioning Aden's water and sanitation sector from emergency response to a stable, resilient, and locally governed system."}
+          </p>
+
+          <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+            <Link href={`/${locale}/projects`} className="btn btn-light" style={{ fontFamily: ff }}>
+              {isAr ? 'استكشاف المشاريع' : 'Explore Projects'}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="icon-dir" style={{ width: 16, height: 16 }}>
+                <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </Link>
+            <a href="/docs/AWSP_Development_Framework.pdf" download className="btn btn-outline-light" style={{ fontFamily: ff }}>
+              {isAr ? 'تحميل الإطار' : 'Download the Framework'}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 16, height: 16 }}>
+                <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </a>
+          </div>
         </div>
 
-        {/* Main headline */}
-        <h1 style={{
-          position: 'relative',
-          fontFamily: 'var(--font-arabic)',
-          fontWeight: '700',
-          fontSize: 'clamp(32px, 6vw, 64px)',
-          color: 'white',
-          lineHeight: '1.2',
-          marginBottom: '16px',
-          maxWidth: '900px',
+        {/* RIGHT — At a glance sidebar */}
+        <aside style={{
+          borderInlineStart: '1px solid rgba(255,255,255,0.16)',
+          paddingInlineStart: '36px',
+          paddingBottom: '12px',
         }}>
-          خطة قطاع المياه في عدن
-        </h1>
+          <div style={{
+            fontSize: '11px', fontWeight: '600', letterSpacing: '0.16em',
+            textTransform: 'uppercase', color: 'rgba(255,255,255,0.55)',
+            marginBottom: '22px', fontFamily: ff,
+          }}>
+            {isAr ? 'لمحة سريعة' : 'At a glance'}
+          </div>
+          {AT_A_GLANCE.map(row => {
+            const d = isAr ? row.ar : row.en;
+            return (
+              <div key={row.num} style={{
+                display: 'flex', gap: '14px',
+                padding: '16px 0',
+                borderBottom: '1px solid rgba(255,255,255,0.1)',
+              }}>
+                <div style={{
+                  fontFamily: 'var(--font-serif)',
+                  fontSize: '13px', color: 'var(--sand-400)',
+                  letterSpacing: '0.05em', flexShrink: 0, width: '32px',
+                }}>
+                  {row.num}
+                </div>
+                <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.85)', lineHeight: 1.4, fontFamily: ff }}>
+                  <strong style={{ display: 'block', color: '#fff', fontWeight: '600', marginBottom: '2px' }}>
+                    {d.strong}
+                  </strong>
+                  {d.body}
+                </div>
+              </div>
+            );
+          })}
+        </aside>
+      </div>
 
-        <h2 style={{
-          position: 'relative',
-          fontFamily: 'var(--font-serif)',
-          fontWeight: '400',
-          fontSize: 'clamp(18px, 3vw, 30px)',
-          color: 'rgba(255,255,255,0.80)',
-          marginBottom: '28px',
-        }}>
-          Aden Water Sector Plan
-        </h2>
-
-        {/* Mission */}
-        <p style={{
-          position: 'relative',
-          fontFamily: font,
-          fontSize: 'clamp(15px, 2vw, 18px)',
-          color: 'rgba(255,255,255,0.70)',
-          fontStyle: 'italic',
-          maxWidth: '700px',
-          lineHeight: '1.9',
-          marginBottom: '52px',
-        }}>
-          {isAr
-            ? 'الانتقال من الاستجابة الإنسانية إلى نظام مياه وصرف صحي مستقر ومرن وتحت قيادة محلية في عدن.'
-            : "Transitioning Aden's water and sanitation sector from emergency response to a stable, resilient, and locally governed system."}
-        </p>
-
-        {/* CTAs */}
-        <div style={{
-          position: 'relative',
-          display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center',
-        }}>
-          <Link
-            href={`/${locale}/projects`}
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: '8px',
-              padding: '14px 32px',
-              border: '2px solid white',
-              borderRadius: '8px',
-              color: 'white',
-              fontFamily: font,
-              fontWeight: '600',
-              fontSize: '15px',
-              textDecoration: 'none',
-              backgroundColor: 'rgba(255,255,255,0.12)',
-              transition: 'all 150ms ease',
-            }}
-            onMouseEnter={e => {
-              (e.currentTarget as HTMLElement).style.backgroundColor = 'white';
-              (e.currentTarget as HTMLElement).style.color = 'var(--ink-900)';
-            }}
-            onMouseLeave={e => {
-              (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.12)';
-              (e.currentTarget as HTMLElement).style.color = 'white';
-            }}
-          >
-            {isAr ? '← استكشاف المشاريع' : 'Explore Projects →'}
-          </Link>
-
-          <a
-            href="/docs/AWSP_Development_Framework.pdf"
-            download
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: '8px',
-              padding: '14px 32px',
-              border: '2px solid rgba(255,255,255,0.35)',
-              borderRadius: '8px',
-              color: 'rgba(255,255,255,0.80)',
-              fontFamily: font,
-              fontWeight: '600',
-              fontSize: '15px',
-              textDecoration: 'none',
-              backgroundColor: 'transparent',
-              transition: 'all 150ms ease',
-            }}
-            onMouseEnter={e => {
-              (e.currentTarget as HTMLElement).style.borderColor = 'white';
-              (e.currentTarget as HTMLElement).style.color = 'white';
-            }}
-            onMouseLeave={e => {
-              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.35)';
-              (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.80)';
-            }}
-          >
-            ↓ {isAr ? 'تحميل الإطار' : 'Download Framework'}
-          </a>
-        </div>
+      {/* Scroll cue */}
+      <div aria-hidden style={{
+        position: 'absolute', bottom: '52px', left: '50%',
+        transform: 'translateX(-50%)',
+        fontSize: '11px', letterSpacing: '0.18em', textTransform: 'uppercase',
+        color: 'rgba(255,255,255,0.5)',
+        display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
+        fontFamily: ff,
+      }}>
+        <span>{isAr ? 'مرر' : 'Scroll'}</span>
+        <span style={{
+          width: '1px', height: '36px',
+          background: 'linear-gradient(180deg, transparent, rgba(255,255,255,0.6), transparent)',
+          animation: 'scrollLine 2s ease-in-out infinite',
+        }} />
       </div>
 
       {/* News ticker */}
       <div style={{
-        backgroundColor: 'var(--teal-700)',
-        padding: '11px 24px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '16px',
-        overflow: 'hidden',
+        position: 'absolute', bottom: 0, left: 0, right: 0,
+        background: 'rgba(0,0,0,0.4)',
+        backdropFilter: 'blur(8px)',
+        borderTop: '1px solid rgba(255,255,255,0.12)',
+        padding: '12px 0', fontSize: '13px',
+        color: 'rgba(255,255,255,0.85)', overflow: 'hidden',
       }}>
-        <span style={{
-          color: 'var(--sand-400)',
-          fontFamily: font,
-          fontWeight: '700',
-          fontSize: '12px',
-          whiteSpace: 'nowrap',
-          flexShrink: 0,
-          textTransform: 'uppercase',
-          letterSpacing: '0.05em',
-        }}>
-          {isAr ? 'آخر الأخبار:' : 'Latest:'}
-        </span>
-        <span style={{
-          color: 'rgba(255,255,255,0.90)',
-          fontFamily: font,
-          fontSize: '13px',
-          transition: 'opacity 500ms ease',
-        }}>
-          {isAr ? TICKER_ITEMS[tickerIdx].ar : TICKER_ITEMS[tickerIdx].en}
-        </span>
+        <div className="wrap" style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
+          <span style={{
+            fontWeight: '700', fontSize: '11px', letterSpacing: '0.14em',
+            textTransform: 'uppercase', color: 'var(--sand-400)',
+            flexShrink: 0, paddingInlineEnd: '18px',
+            borderInlineEnd: '1px solid rgba(255,255,255,0.2)',
+            fontFamily: ff,
+          }}>
+            {isAr ? 'آخر الأخبار' : 'Latest'}
+          </span>
+          <div style={{
+            display: 'flex', gap: '56px', whiteSpace: 'nowrap',
+            animation: `ticker ${isAr ? 'reverse' : 'normal'} 40s linear infinite`,
+            flexShrink: 0,
+          }}>
+            {allTicker.map((t, i) => (
+              <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', fontFamily: ff }}>
+                <span style={{ color: 'var(--teal-300)', fontWeight: '600', fontSize: '12px', letterSpacing: '0.04em' }}>{t.date}</span>
+                <span>{isAr ? t.ar : t.en}</span>
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
+
+      <style>{`
+        @keyframes scrollLine {
+          0% { transform: translateY(-12px); opacity: 0; }
+          50% { opacity: 1; }
+          100% { transform: translateY(12px); opacity: 0; }
+        }
+        @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        @media (max-width: 980px) {
+          .hero-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </section>
   );
 }
