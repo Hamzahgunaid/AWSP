@@ -76,18 +76,24 @@ export default function DistrictMap({
 
       mapInstanceRef.current = map;
 
+      // CartoDB light tiles
       L.tileLayer(
         'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-        { attribution: '© OpenStreetMap contributors © CARTO', subdomains: 'abcd', maxZoom: 16 }
+        {
+          attribution: '© OpenStreetMap contributors © CARTO',
+          subdomains: 'abcd',
+          maxZoom: 16,
+        }
       ).addTo(map);
 
+      // GeoJSON — OUTLINE ONLY, zero fill, no dashArray
       fetch('/data/aden-districts.geojson')
         .then(r => r.json())
         .then(geojson => {
           L.geoJSON(geojson, {
             style: () => ({
               fillColor: 'transparent',
-              fillOpacity: 0,
+              fillOpacity: 0,           // NO fill at all
               color: '#2A8A8A',
               weight: 1.2,
               opacity: 0.35,
@@ -95,6 +101,7 @@ export default function DistrictMap({
             }),
           }).addTo(map);
 
+          // Draw bubbles after boundaries load
           drawBubbles(L, map, metric);
         });
     });
@@ -108,6 +115,7 @@ export default function DistrictMap({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Redraw bubbles when metric changes
   useEffect(() => {
     if (!mapInstanceRef.current) return;
     import('leaflet').then(L => {
@@ -120,6 +128,7 @@ export default function DistrictMap({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [metric, isAr]);
 
+  // Hover highlight
   useEffect(() => {
     Object.entries(circleLayersRef.current).forEach(([name, circle]) => {
       const isHov = hoveredDistrict === name;
@@ -143,6 +152,7 @@ export default function DistrictMap({
       const distName = isAr ? d.ar : name;
       const textColor = fillColor === '#6BC3B6' ? '#0E2A47' : '#fff';
 
+      // Circle marker at exact district centre
       const circle = L.circleMarker([d.lat, d.lng], {
         radius,
         fillColor,
@@ -168,6 +178,7 @@ export default function DistrictMap({
         }
       );
 
+      // Label marker — centred on bubble
       const labelMarker = L.marker([d.lat, d.lng], {
         icon: L.divIcon({
           className: '',
@@ -203,10 +214,19 @@ export default function DistrictMap({
 
   return (
     <>
-      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+      <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      />
       <div
         ref={mapRef}
-        style={{ height: '380px', width: '100%', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--line)' }}
+        style={{
+          height: '380px',
+          width: '100%',
+          borderRadius: '12px',
+          overflow: 'hidden',
+          border: '1px solid var(--line)',
+        }}
       />
       <style>{`
         .awsp-tooltip {
