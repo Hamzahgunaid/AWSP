@@ -1,0 +1,45 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "name": "Al-Mansoura", "name_ar": "المنصورة" },
+      "geometry": { "type": "Polygon", "coordinates": [[[45.020,12.820],[45.065,12.820],[45.065,12.790],[45.020,12.790],[45.020,12.820]]] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Al-Buraiqeh", "name_ar": "البريقة" },
+      "geometry": { "type": "Polygon", "coordinates": [[[45.065,12.820],[45.110,12.820],[45.110,12.785],[45.065,12.785],[45.065,12.820]]] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Sheikh Othman", "name_ar": "الشيخ عثمان" },
+      "geometry": { "type": "Polygon", "coordinates": [[[45.010,12.860],[45.060,12.860],[45.060,12.820],[45.010,12.820],[45.010,12.860]]] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Khormaksar", "name_ar": "خورمكسر" },
+      "geometry": { "type": "Polygon", "coordinates": [[[44.960,12.840],[45.010,12.840],[45.010,12.805],[44.960,12.805],[44.960,12.840]]] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Crater", "name_ar": "كريتر" },
+      "geometry": { "type": "Polygon", "coordinates": [[[44.990,12.790],[45.030,12.790],[45.030,12.760],[44.990,12.760],[44.990,12.790]]] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Al-Mualla", "name_ar": "المعلا" },
+      "geometry": { "type": "Polygon", "coordinates": [[[44.960,12.805],[44.995,12.805],[44.995,12.775],[44.960,12.775],[44.960,12.805]]] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Dar Saad", "name_ar": "دار سعد" },
+      "geometry": { "type": "Polygon", "coordinates": [[[45.055,12.900],[45.110,12.900],[45.110,12.860],[45.055,12.860],[45.055,12.900]]] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Tawahi", "name_ar": "التواهي" },
+      "geometry": { "type": "Polygon", "coordinates": [[[44.930,12.790],[44.965,12.790],[44.965,12.760],[44.930,12.760],[44.930,12.790]]] }
+    }
+  ]
+}
