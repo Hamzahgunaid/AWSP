@@ -2,155 +2,92 @@
 
 import { useEffect, useRef } from 'react';
 
-interface District {
-  en: string;
-  ar: string;
-  count: number;
-  inv: string;
-}
-
 interface DistrictMapProps {
-  districts: District[];
   hoveredDistrict: string | null;
   onHover: (name: string | null) => void;
   metric: 'count' | 'investment' | 'sector';
   locale: string;
 }
 
-const DISTRICT_DATA: Record<string, { count: number; inv: string; color: string }> = {
-  'Al-Mansoura':   { count: 34, inv: '$9.4M', color: '#2A8A8A' },
-  'Al-Buraiqeh':   { count: 33, inv: '$8.1M', color: '#2A8A8A' },
-  'Sheikh Othman': { count: 31, inv: '$7.8M', color: '#E8B14A' },
-  'Khormaksar':    { count: 28, inv: '$7.2M', color: '#E8B14A' },
-  'Crater':        { count: 21, inv: '$5.1M', color: '#2A8A8A' },
-  'Al-Mualla':     { count: 19, inv: '$4.8M', color: '#3B8FD4' },
-  'Dar Saad':      { count: 15, inv: '$4.6M', color: '#2A8A8A' },
-  'Tawahi':        { count: 12, inv: '$3.6M', color: '#3B8FD4' },
+const DISTRICT_DATA: Record<string, {
+  count: number;
+  inv: string;
+  invNum: number;
+  lat: number;
+  lng: number;
+  ar: string;
+}> = {
+  'Al-Mansoura':   { count: 34, inv: '$9.4M', invNum: 9.4, lat: 12.804, lng: 45.042, ar: 'المنصورة' },
+  'Al-Buraiqeh':   { count: 33, inv: '$8.1M', invNum: 8.1, lat: 12.793, lng: 45.092, ar: 'البريقة' },
+  'Sheikh Othman': { count: 31, inv: '$7.8M', invNum: 7.8, lat: 12.840, lng: 45.035, ar: 'الشيخ عثمان' },
+  'Khormaksar':    { count: 28, inv: '$7.2M', invNum: 7.2, lat: 12.822, lng: 44.978, ar: 'خورمكسر' },
+  'Crater':        { count: 21, inv: '$5.1M', invNum: 5.1, lat: 12.775, lng: 45.005, ar: 'كريتر' },
+  'Al-Mualla':     { count: 19, inv: '$4.8M', invNum: 4.8, lat: 12.788, lng: 44.975, ar: 'المعلا' },
+  'Dar Saad':      { count: 15, inv: '$4.6M', invNum: 4.6, lat: 12.878, lng: 45.080, ar: 'دار سعد' },
+  'Tawahi':        { count: 12, inv: '$3.6M', invNum: 3.6, lat: 12.772, lng: 44.948, ar: 'التواهي' },
 };
 
-function getColor(count: number): string {
-  if (count >= 30) return '#0D7A6E';
-  if (count >= 25) return '#2A8A8A';
-  if (count >= 20) return '#3FA89A';
-  if (count >= 15) return '#6BC3B6';
-  return '#A8DDD7';
+function getBubbleRadius(value: number, allValues: number[], minR = 18, maxR = 48): number {
+  const min = Math.min(...allValues);
+  const max = Math.max(...allValues);
+  if (max === min) return (minR + maxR) / 2;
+  return minR + ((value - min) / (max - min)) * (maxR - minR);
 }
 
-export default function DistrictMap({
-  districts,
-  hoveredDistrict,
-  onHover,
-  metric,
-  locale,
-}: DistrictMapProps) {
+export default function DistrictMap({ hoveredDistrict, onHover, metric, locale }: DistrictMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapInstanceRef = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const layersRef = useRef<Record<string, any>>({});
+  const circleLayersRef = useRef<Record<string, any>>({});
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const geoLayerRef = useRef<any>(null);
   const isAr = locale === 'ar';
 
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;
 
     import('leaflet').then(L => {
-      // Fix default marker icons
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       delete (L.Icon.Default.prototype as any)._getIconUrl;
-      L.Icon.Default.mergeOptions({
-        iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-      });
 
       const map = L.map(mapRef.current!, {
-        center: [12.82, 45.02],
+        center: [12.815, 45.020],
         zoom: 12,
         zoomControl: true,
         scrollWheelZoom: false,
         attributionControl: true,
+        minZoom: 11,
+        maxZoom: 16,
       });
 
       mapInstanceRef.current = map;
 
       L.tileLayer(
         'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-        {
-          attribution: '© OpenStreetMap contributors © CARTO',
-          subdomains: 'abcd',
-          maxZoom: 16,
-        }
+        { attribution: '© OpenStreetMap contributors © CARTO', subdomains: 'abcd', maxZoom: 16 }
       ).addTo(map);
 
       fetch('/data/aden-districts.geojson')
         .then(r => r.json())
         .then(geojson => {
-          L.geoJSON(geojson, {
-            style: feature => {
-              const name = feature?.properties?.name || '';
-              const data = DISTRICT_DATA[name];
-              const count = data?.count || 0;
-              return {
-                fillColor: getColor(count),
-                fillOpacity: 0.55,
-                color: '#0E2A47',
-                weight: 1.5,
-                opacity: 0.8,
-              };
-            },
+          geoLayerRef.current = L.geoJSON(geojson, {
+            style: () => ({
+              fillColor: 'transparent',
+              fillOpacity: 0,
+              color: '#2A8A8A',
+              weight: 1.5,
+              opacity: 0.5,
+              dashArray: '4 3',
+            }),
             onEachFeature: (feature, layer) => {
               const name: string = feature.properties?.name || '';
-              const nameAr: string = feature.properties?.name_ar || name;
-              const data = DISTRICT_DATA[name];
-
-              layersRef.current[name] = layer;
-
-              layer.bindTooltip(
-                `<div style="font-family: Source Sans 3, sans-serif; min-width: 140px;">
-                  <strong style="font-size: 14px; color: #0E2A47; font-family: Source Serif 4, serif;">
-                    ${isAr ? nameAr : name}
-                  </strong>
-                  <div style="font-size: 12px; color: #6B6B6B; margin-top: 4px;">
-                    ${data?.count || 0} projects · ${data?.inv || 'N/A'}
-                  </div>
-                </div>`,
-                { permanent: false, sticky: true, className: 'awsp-tooltip' }
-              );
-
-              // Count label marker
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              const bounds = (layer as any).getBounds();
-              const center = bounds.getCenter();
-              L.marker(center, {
-                icon: L.divIcon({
-                  className: 'district-label',
-                  html: `<div style="
-                    background: rgba(14,42,71,0.85);
-                    color: white;
-                    padding: 4px 8px;
-                    border-radius: 12px;
-                    font-size: 12px;
-                    font-weight: 700;
-                    font-family: Source Sans 3, sans-serif;
-                    white-space: nowrap;
-                    text-align: center;
-                  ">${data?.count || ''}</div>`,
-                  iconAnchor: [20, 12],
-                }),
-              }).addTo(map);
-
-              layer.on('mouseover', () => {
-                onHover(name);
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (layer as any).setStyle({ fillOpacity: 0.85, weight: 2.5 });
-              });
-              layer.on('mouseout', () => {
-                onHover(null);
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (layer as any).setStyle({ fillOpacity: 0.55, weight: 1.5 });
-              });
+              layer.on('mouseover', () => onHover(name));
+              layer.on('mouseout', () => onHover(null));
             },
           }).addTo(map);
+
+          drawBubbles(L, map, metric);
         });
     });
 
@@ -160,29 +97,108 @@ export default function DistrictMap({
         mapInstanceRef.current = null;
       }
     };
-  // onHover and isAr are stable refs / derived values — intentionally omitted
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Sync hover highlight from table
   useEffect(() => {
-    Object.entries(layersRef.current).forEach(([name, layer]) => {
+    if (!mapInstanceRef.current) return;
+    import('leaflet').then(L => {
+      Object.values(circleLayersRef.current).forEach(c => c.remove());
+      circleLayersRef.current = {};
+      drawBubbles(L, mapInstanceRef.current, metric);
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [metric]);
+
+  useEffect(() => {
+    Object.entries(circleLayersRef.current).forEach(([name, circle]) => {
+      if (name.endsWith('_label')) return;
       const isHovered = hoveredDistrict === name;
-      layer.setStyle({
-        fillOpacity: isHovered ? 0.85 : 0.55,
-        weight: isHovered ? 2.5 : 1.5,
+      circle.setStyle({
+        fillOpacity: isHovered ? 0.9 : 0.75,
+        weight: isHovered ? 3 : 1.5,
+        color: isHovered ? '#0E2A47' : '#fff',
       });
+      if (isHovered) circle.bringToFront();
     });
   }, [hoveredDistrict]);
 
-  // Suppress unused-variable warnings for props only used in render/effects
-  void districts;
-  void metric;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function drawBubbles(L: any, map: any, currentMetric: string) {
+    const entries = Object.entries(DISTRICT_DATA);
+    const values = entries.map(([, d]) =>
+      currentMetric === 'investment' ? d.invNum : d.count
+    );
+
+    entries.forEach(([name, d]) => {
+      const value = currentMetric === 'investment' ? d.invNum : d.count;
+      const radius = getBubbleRadius(value, values);
+      const label = currentMetric === 'investment' ? d.inv : String(d.count);
+      const distName = isAr ? d.ar : name;
+
+      const bubbleColor =
+        d.count >= 30 ? '#0D7A6E' :
+        d.count >= 25 ? '#2A8A8A' :
+        d.count >= 20 ? '#E8B14A' :
+        '#3B8FD4';
+
+      const textColor = d.count >= 20 && d.count < 25 ? '#0E2A47' : '#fff';
+
+      const circle = L.circleMarker([d.lat, d.lng], {
+        radius,
+        fillColor: bubbleColor,
+        fillOpacity: 0.78,
+        color: '#fff',
+        weight: 1.5,
+      });
+
+      circle.bindTooltip(
+        `<div style="font-family: Source Sans 3, sans-serif; min-width: 150px; padding: 2px;">
+          <strong style="font-size: 14px; color: #0E2A47; font-family: Source Serif 4, serif; display: block; margin-bottom: 4px;">${distName}</strong>
+          <div style="font-size: 12px; color: #6B6B6B; display: flex; gap: 10px;">
+            <span>${d.count} projects</span><span>·</span><span>${d.inv}</span>
+          </div>
+        </div>`,
+        { permanent: false, sticky: false, direction: 'top', offset: [0, -radius], className: 'awsp-tooltip' }
+      );
+
+      const labelMarker = L.marker([d.lat, d.lng], {
+        icon: L.divIcon({
+          className: '',
+          html: `<div style="
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            width: ${radius * 2}px; height: ${radius * 2}px;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+          "><span style="
+            font-family: Source Serif 4, serif;
+            font-size: ${radius > 30 ? 14 : 11}px;
+            font-weight: 600; color: ${textColor}; line-height: 1;
+          ">${label}</span></div>`,
+          iconSize: [0, 0],
+          iconAnchor: [0, 0],
+        }),
+        interactive: false,
+        zIndexOffset: 1000,
+      }).addTo(map);
+
+      circle.on('mouseover', () => onHover(name));
+      circle.on('mouseout', () => onHover(null));
+      circle.addTo(map);
+
+      circleLayersRef.current[name] = circle;
+      circleLayersRef.current[`${name}_label`] = labelMarker;
+    });
+  }
 
   return (
     <>
       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-      <div ref={mapRef} style={{ height: '380px', width: '100%', borderRadius: '12px' }} />
+      <div
+        ref={mapRef}
+        style={{ height: '380px', width: '100%', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--line)' }}
+      />
       <style>{`
         .awsp-tooltip {
           background: white !important;
@@ -190,10 +206,12 @@ export default function DistrictMap({
           border-radius: 8px !important;
           padding: 10px 14px !important;
           box-shadow: 0 4px 16px rgba(14,42,71,0.12) !important;
+          font-size: 13px !important;
         }
         .awsp-tooltip::before { display: none !important; }
-        .district-label { background: transparent !important; border: none !important; }
-        .leaflet-control-attribution { font-size: 9px !important; }
+        .leaflet-tooltip-top::before { display: none !important; }
+        .leaflet-control-attribution { font-size: 9px !important; background: rgba(255,255,255,0.8) !important; }
+        .leaflet-control-zoom a { color: var(--ink-800) !important; border-color: var(--line) !important; }
       `}</style>
     </>
   );
