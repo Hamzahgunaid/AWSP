@@ -6,8 +6,8 @@ const SNAPSHOTS = [
   {
     href: '/projects',
     icon: <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" style={{ width: 28, height: 28 }}><path d="M4 8 L12 5 L20 8 L28 5 L28 24 L20 27 L12 24 L4 27 Z"/><path d="M12 5 L12 24 M20 8 L20 27"/><circle cx="22" cy="14" r="3.2"/><path d="M22 17.2 L22 21"/></svg>,
-    en: { title: 'Our Projects',       body: "193 infrastructure projects delivered across Aden's eight urban districts. Browse by location, intervention type, donor, or sector.", link: 'View project database' },
-    ar: { title: 'مشاريعنا',            body: '١٩٣ مشروعاً للبنية التحتية تم تنفيذها عبر المديريات الثماني لمدينة عدن. تصفح حسب الموقع أو نوع التدخل أو الجهة المانحة أو القطاع.', link: 'عرض قاعدة المشاريع' },
+    en: { title: 'Our Projects',       body: "194 infrastructure projects delivered across Aden's eight urban districts. Browse by location, intervention type, donor, or sector.", link: 'View project database' },
+    ar: { title: 'مشاريعنا',            body: '١٩٤ مشروعاً للبنية التحتية تم تنفيذها عبر المديريات الثماني لمدينة عدن. تصفح حسب الموقع أو نوع التدخل أو الجهة المانحة أو القطاع.', link: 'عرض قاعدة المشاريع' },
   },
   {
     href: '/knowledge',

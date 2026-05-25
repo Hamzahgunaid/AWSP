@@ -1,14 +1,16 @@
+import ContactHero  from '@/components/Contact/ContactHero';
+import ContactCards from '@/components/Contact/ContactCards';
+import ContactForm  from '@/components/Contact/ContactForm';
+
 export default async function ContactPage({
-  params
-}: {
-  params: Promise<{ locale: string }>
-}) {
+  params,
+}: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return (
-    <main style={{ padding: '100px 40px', textAlign: 'center' }}>
-      <p style={{ color: '#1A3557', fontFamily: 'Cairo, sans-serif' }}>
-        {locale === 'ar' ? 'التواصل والمشاركة' : 'Contact & Engage'} — Under Construction
-      </p>
-    </main>
+    <>
+      <ContactHero  locale={locale} />
+      <ContactCards locale={locale} />
+      <ContactForm  locale={locale} />
+    </>
   );
 }
