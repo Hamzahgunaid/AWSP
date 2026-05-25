@@ -1,388 +1,719 @@
-import projectsData from '@/data/projects.json';
-import phasesData from '@/data/phases.json';
-import type { Phase } from '@/types';
+'use client';
+import { useState } from 'react';
+import Link from 'next/link';
 
-interface ProjectRecord {
-  id: number;
-  name_ar: string;
-  name_en: string;
-  district_ar: string;
-  district_en: string;
-  sector_ar: string;
-  sector_en: string;
-  donor_ar: string;
-  donor_en: string;
-  cost_usd: number | null;
-  status: string;
-  year: number;
-}
+const PHASES = [
+  { n: 1,  status: 'completed', labelEn: 'Framework',      labelAr: 'الإطار' },
+  { n: 2,  status: 'active',    labelEn: 'Survey Align',   labelAr: 'مواءمة' },
+  { n: 3,  status: 'active',    labelEn: 'Survey Design',  labelAr: 'تصميم' },
+  { n: 4,  status: 'planned',   labelEn: 'Survey ToRs',    labelAr: 'مرجعية' },
+  { n: 5,  status: 'planned',   labelEn: 'Survey Impl',    labelAr: 'تنفيذ' },
+  { n: 6,  status: 'planned',   labelEn: 'Options Align',  labelAr: 'مواءمة خيارات' },
+  { n: 7,  status: 'planned',   labelEn: 'Options ToRs',   labelAr: 'مرجعية خيارات' },
+  { n: 8,  status: 'planned',   labelEn: 'Options Study',  labelAr: 'دراسة خيارات' },
+  { n: 9,  status: 'planned',   labelEn: 'Consultation',   labelAr: 'تشاور' },
+  { n: 10, status: 'planned',   labelEn: 'Plan ToRs',      labelAr: 'مرجعية خطة' },
+  { n: 11, status: 'planned',   labelEn: 'Plan Dev',       labelAr: 'تطوير خطة' },
+  { n: 12, status: 'planned',   labelEn: 'Endorsement',    labelAr: 'إقرار' },
+];
 
-function buildDistrictStats(projects: ProjectRecord[]) {
-  const map: Record<string, { ar: string; en: string; count: number; cost: number }> = {};
-  for (const p of projects) {
-    const key = p.district_ar || 'غير محدد';
-    const en  = p.district_en  || p.district_ar || 'Unspecified';
-    if (!map[key]) map[key] = { ar: key, en, count: 0, cost: 0 };
-    map[key].count++;
-    map[key].cost += p.cost_usd ?? 0;
-  }
-  return Object.values(map).sort((a, b) => b.count - a.count);
-}
+const DISTRICTS = [
+  { en: 'Al-Mansoura',   ar: 'المنصورة',          count: 34, inv: '$9.4M', cx: 320, cy: 140, r: 20 },
+  { en: 'Al-Buraiqeh',   ar: 'البريقة',            count: 33, inv: '$8.1M', cx: 415, cy: 235, r: 19 },
+  { en: 'Sheikh Othman', ar: 'الشيخ عثمان',        count: 31, inv: '$7.8M', cx: 440, cy: 120, r: 19 },
+  { en: 'Khormaksar',    ar: 'خورمكسر',            count: 28, inv: '$7.2M', cx: 195, cy: 125, r: 18 },
+  { en: 'Crater',        ar: 'كريتر',              count: 21, inv: '$5.1M', cx: 140, cy: 185, r: 16 },
+  { en: 'Al-Mualla',     ar: 'المعلا',             count: 19, inv: '$4.8M', cx: 285, cy: 225, r: 13 },
+  { en: 'Dar Saad',      ar: 'دار سعد',            count: 15, inv: '$4.6M', cx: 525, cy: 92,  r: 14 },
+  { en: 'Tawahi',        ar: 'التواهي',            count: 12, inv: '$3.6M', cx: 115, cy: 275, r: 14 },
+];
 
-function buildSectorStats(projects: ProjectRecord[]) {
-  const map: Record<string, { ar: string; en: string; count: number }> = {};
-  for (const p of projects) {
-    const key = p.sector_ar || 'غير محدد';
-    const en  = p.sector_en  || p.sector_ar || 'Unspecified';
-    if (!map[key]) map[key] = { ar: key, en, count: 0 };
-    map[key].count++;
-  }
-  return Object.values(map).sort((a, b) => b.count - a.count);
-}
+const DONORS = [
+  { name: 'ICRC',           val: '$14.8M', pct: 92, color: 'var(--teal-500)' },
+  { name: 'UNICEF',         val: '$11.6M', pct: 72, color: 'var(--blue-500)' },
+  { name: 'European Union', val: '$9.4M',  pct: 58, color: 'var(--sand-400)' },
+  { name: 'World Bank',     val: '$7.8M',  pct: 48, color: 'var(--teal-500)' },
+  { name: 'KfW',            val: '$6.8M',  pct: 42, color: 'var(--blue-500)' },
+  { name: 'USAID',          val: '$5.2M',  pct: 32, color: 'var(--blue-400)' },
+  { name: 'GIZ',            val: '$3.6M',  pct: 22, color: 'var(--teal-600)' },
+];
 
-const SECTOR_COLORS: Record<string, string> = {
-  'قطاع المياه':         'var(--teal-500)',
-  'قطاع الصرف الصحي':   'var(--ink-600)',
-  'دعم مؤسسي':          'var(--sand-500)',
+const INDICATORS = [
+  { label: 'Schedule',      labelAr: 'الجدول الزمني',  level: 'On track', levelAr: 'في الموعد',    status: 'good', note: '3 of 12 phases delivered or active on time.',          noteAr: '٣ من ١٢ مرحلة منجزة أو نشطة في الموعد المحدد.' },
+  { label: 'Funding',       labelAr: 'التمويل',         level: 'Secured',  levelAr: 'مؤمّن',         status: 'good', note: 'Phase 2 & 3 funded · Phase 4 pipeline confirmed.',       noteAr: 'المرحلتان ٢ و٣ ممولتان · تأكد خط أنابيب المرحلة ٤.' },
+  { label: 'Data quality',  labelAr: 'جودة البيانات',  level: 'Monitor',  levelAr: 'متابعة',         status: 'warn', note: 'Hydraulic baseline incomplete in 2 districts.',           noteAr: 'الأساس الهيدروليكي غير مكتمل في مديريتين.' },
+  { label: 'Engagement',    labelAr: 'التفاعل',         level: 'Strong',   levelAr: 'قوي',            status: 'good', note: '40+ stakeholder partners actively coordinated.',         noteAr: 'أكثر من ٤٠ شريكاً من أصحاب المصلحة يُنسَّق معهم.' },
+  { label: 'Risk register', labelAr: 'سجل المخاطر',    level: '2 open',   levelAr: 'مخاطر: ٢',      status: 'warn', note: 'Power supply continuity · procurement timeline.',        noteAr: 'استمرارية الطاقة · الجدول الزمني للمشتريات.' },
+  { label: 'Climate',       labelAr: 'المناخ',          level: 'Stressed', levelAr: 'ضغط مرتفع',     status: 'risk', note: 'Aquifer depletion rate exceeds replenishment.',          noteAr: 'معدل استنزاف الخزان يتجاوز التغذية.' },
+  { label: 'Governance',    labelAr: 'الحوكمة',         level: 'Active',   levelAr: 'نشط',            status: 'good', note: 'Taskforce meeting weekly · 15 members.',                noteAr: 'فريق العمل يجتمع أسبوعياً · ١٥ عضواً.' },
+  { label: 'Transparency',  labelAr: 'الشفافية',        level: 'Public',   levelAr: 'عام',            status: 'good', note: 'All Phase 1–2 outputs published.',                      noteAr: 'جميع مخرجات المرحلتين ١–٢ منشورة.' },
+];
+
+const ACTIVITY = [
+  { icon: '✓', iconType: 'gold',    titleEn: 'Phase 1 endorsed',         titleAr: 'اعتماد المرحلة الأولى',       descEn: 'AWSP Framework signed by MWE',                descAr: 'إطار AWSP موقّع من وزارة المياه والبيئة',         date: '22 Jun' },
+  { icon: '⊞', iconType: 'default', titleEn: 'Alignment matrix released', titleAr: 'إطلاق مصفوفة المواءمة',      descEn: 'Phase 2 stakeholder review opened',          descAr: 'مراجعة أصحاب المصلحة للمرحلة ٢ مفتوحة',         date: '28 Apr' },
+  { icon: '◎', iconType: 'blue',    titleEn: 'Workshop convened',         titleAr: 'انعقاد ورشة العمل',           descEn: '40+ partners in Aden · survey alignment',    descAr: 'أكثر من ٤٠ شريكاً في عدن · مواءمة المسوحات',    date: '12 May' },
+  { icon: '+', iconType: 'default', titleEn: 'Taskforce expansion',       titleAr: 'توسيع فريق العمل',            descEn: '2 new technical officers from LWSCA',         descAr: 'ضابطان تقنيان جديدان من المؤسسة المحلية',        date: '15 Apr' },
+];
+
+const BUBBLES_COLOR: Record<string, string> = {
+  'Al-Mansoura':   'var(--teal-500)',
+  'Al-Buraiqeh':   'var(--teal-500)',
+  'Sheikh Othman': 'var(--sand-400)',
+  'Khormaksar':    'var(--sand-400)',
+  'Crater':        'var(--teal-500)',
+  'Al-Mualla':     'var(--blue-500)',
+  'Dar Saad':      'var(--teal-500)',
+  'Tawahi':        'var(--blue-500)',
 };
 
-export default async function DashboardPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
+export default function DashboardPage() {
+  const [locale] = useState('en');
+  const [hoveredDistrict, setHoveredDistrict] = useState<string | null>(null);
+  const [mapMetric, setMapMetric] = useState<'count' | 'investment' | 'sector'>('count');
+  const [activeRange, setActiveRange] = useState<'3y' | '5y' | 'all'>('5y');
   const isAr = locale === 'ar';
-  const font = isAr ? 'var(--font-arabic)' : 'var(--font-sans)';
+  const ff    = isAr ? 'var(--font-arabic)' : 'var(--font-sans)';
+  const serif = isAr ? 'var(--font-arabic)' : 'var(--font-serif)';
 
-  const projects = projectsData as ProjectRecord[];
-  const phases   = phasesData  as Phase[];
+  const indicatorColor = (s: string) =>
+    ({ good: { dot: 'var(--teal-500)', text: 'var(--teal-700)', bg: 'rgba(42,138,138,0.08)' },
+       warn: { dot: 'var(--sand-400)', text: '#B5710A',          bg: 'rgba(232,177,74,0.10)' },
+       risk: { dot: '#C25A4E',         text: '#B23E33',           bg: 'rgba(194,90,78,0.08)' },
+    }[s] || { dot: 'var(--gray-300)', text: 'var(--gray-500)', bg: 'var(--bone)' });
 
-  const totalProjects = projects.length;
-  const totalCost     = projects.reduce((s, p) => s + (p.cost_usd ?? 0), 0);
-  const completedPhases = phases.filter(p => p.status === 'completed').length;
-  const activePhase     = phases.find(p => p.status === 'active');
-
-  const districtStats = buildDistrictStats(projects);
-  const sectorStats   = buildSectorStats(projects);
-  const maxSector     = Math.max(...sectorStats.map(s => s.count));
-
-  const KPI_TILES = [
-    {
-      labelAr: 'إجمالي المشاريع',
-      labelEn: 'Total Projects',
-      value: totalProjects.toString(),
-      accent: 'var(--teal-600)',
-    },
-    {
-      labelAr: 'إجمالي الاستثمار',
-      labelEn: 'Total Investment',
-      value: `$${(totalCost / 1_000_000).toFixed(1)}M`,
-      accent: 'var(--sand-500)',
-    },
-    {
-      labelAr: 'المراحل المكتملة',
-      labelEn: 'Phases Complete',
-      value: `${completedPhases} / ${phases.length}`,
-      accent: 'var(--ink-700)',
-    },
-    {
-      labelAr: 'المديريات المشمولة',
-      labelEn: 'Districts Covered',
-      value: '8',
-      accent: 'var(--teal-500)',
-    },
-  ];
+  const panelStyle: React.CSSProperties = {
+    background: '#fff', border: '1px solid var(--line)',
+    borderRadius: 'var(--radius-lg)', padding: '24px',
+    position: 'relative', transition: 'border-color 200ms ease, box-shadow 200ms ease',
+  };
+  const headStyle: React.CSSProperties = {
+    display: 'flex', justifyContent: 'space-between',
+    alignItems: 'baseline', marginBottom: '16px',
+  };
+  const headH3: React.CSSProperties = {
+    margin: 0, fontFamily: ff, fontSize: '13px', fontWeight: '600',
+    letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--gray-500)',
+  };
+  const moreLink: React.CSSProperties = {
+    fontSize: '12px', color: 'var(--teal-600)', fontWeight: '600',
+    letterSpacing: '0.04em', textDecoration: 'none', fontFamily: ff,
+  };
+  const tabsBg: React.CSSProperties = {
+    display: 'flex', gap: '4px', background: 'var(--bone)',
+    padding: '4px', borderRadius: 'var(--radius-pill)',
+  };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--paper)', padding: '40px 24px' }}>
-      <div style={{ maxWidth: 'var(--wrap-max)', margin: '0 auto' }}>
-
-        {/* Page header */}
-        <div style={{ marginBottom: '40px' }}>
-          <span style={{
-            display: 'inline-block',
-            fontSize: '11px', fontWeight: '700',
-            letterSpacing: '0.08em', textTransform: 'uppercase',
-            color: 'var(--teal-500)',
-            fontFamily: font,
-            marginBottom: '8px',
-          }}>
-            {isAr ? 'نظرة عامة' : 'Overview'}
-          </span>
-          <h1 style={{
-            fontFamily: isAr ? 'var(--font-arabic)' : 'var(--font-serif)',
-            fontWeight: '700',
-            fontSize: 'clamp(26px, 3vw, 40px)',
-            color: 'var(--ink-900)',
-            marginBottom: '8px',
-          }}>
-            {isAr ? 'لوحة معلومات AWSP' : 'AWSP Dashboard'}
-          </h1>
-          <p style={{ fontFamily: font, fontSize: '15px', color: '#6B7280' }}>
-            {isAr
-              ? 'ملخص تشغيلي لمشاريع وأنشطة برنامج خطة قطاع المياه في عدن'
-              : 'Operational summary of AWSP projects and programme activity'}
-          </p>
-        </div>
-
-        {/* KPI Tiles */}
+    <>
+      {/* ── HERO ── */}
+      <section style={{
+        background: 'var(--ink-900)', color: '#fff',
+        padding: 'calc(74px + 36px) 0 32px',
+        position: 'relative', overflow: 'hidden',
+      }}>
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: '20px',
-          marginBottom: '40px',
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          background: `radial-gradient(circle at 90% 20%, rgba(63,168,154,0.2), transparent 50%),
+                       radial-gradient(circle at 10% 90%, rgba(91,177,227,0.12), transparent 50%)`,
+        }} />
+        <div className="wrap" style={{
+          position: 'relative', display: 'grid',
+          gridTemplateColumns: '1fr auto', gap: '32px', alignItems: 'end',
         }}>
-          {KPI_TILES.map((tile, i) => (
-            <div key={i} style={{
-              backgroundColor: 'white',
-              borderRadius: '12px',
-              padding: '24px 20px',
-              boxShadow: '0 2px 10px rgba(0,0,0,0.06)',
-              borderTop: `3px solid ${tile.accent}`,
+          <div>
+            <span style={{
+              display: 'inline-flex', alignItems: 'center', gap: '10px',
+              fontSize: '12px', fontWeight: '600', letterSpacing: '0.14em',
+              textTransform: 'uppercase', color: 'var(--sand-400)', fontFamily: ff,
             }}>
-              <div style={{
-                fontFamily: isAr ? 'var(--font-arabic)' : 'var(--font-serif)',
-                fontSize: 'clamp(28px, 3vw, 40px)',
-                fontWeight: '700',
-                color: tile.accent,
-                lineHeight: '1.1',
-                marginBottom: '8px',
-              }}>
-                {tile.value}
-              </div>
-              <div style={{
-                fontFamily: font,
-                fontSize: '13px',
-                color: '#6B7280',
-                fontWeight: '500',
-              }}>
-                {isAr ? tile.labelAr : tile.labelEn}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '24px', marginBottom: '24px' }}>
-
-          {/* Phase Progress */}
-          <div style={{
-            backgroundColor: 'white', borderRadius: '12px', padding: '28px 24px',
-            boxShadow: '0 2px 10px rgba(0,0,0,0.06)',
-          }}>
-            <h2 style={{
-              fontFamily: isAr ? 'var(--font-arabic)' : 'var(--font-serif)',
-              fontWeight: '700', fontSize: '18px', color: 'var(--ink-900)',
-              marginBottom: '20px',
+              <span style={{ width: '24px', height: '1.5px', background: 'var(--sand-400)', display: 'inline-block' }} />
+              {isAr ? 'لوحة التحكم' : 'Programme Dashboard'}
+            </span>
+            <h1 style={{
+              fontFamily: serif, color: '#fff',
+              fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', margin: '12px 0 0',
             }}>
-              {isAr ? 'تقدم المراحل' : 'Phase Progress'}
-            </h2>
-
-            {/* Progress bar */}
-            <div style={{ marginBottom: '20px' }}>
-              <div style={{
-                height: '8px', backgroundColor: 'var(--bone)', borderRadius: '4px', overflow: 'hidden',
+              {isAr ? 'لقطة حية لخطة قطاع المياه في عدن' : 'Live snapshot of the Aden Water Sector Plan'}
+            </h1>
+            <div style={{
+              color: 'rgba(255,255,255,0.6)', fontSize: '13px', marginTop: '14px',
+              display: 'flex', gap: '22px', flexWrap: 'wrap', alignItems: 'center', fontFamily: ff,
+            }}>
+              <span style={{
+                display: 'inline-flex', alignItems: 'center', gap: '8px',
+                fontWeight: '600', color: 'var(--teal-300)', letterSpacing: '0.05em',
               }}>
-                <div style={{
-                  height: '100%',
-                  width: `${(completedPhases / phases.length) * 100}%`,
-                  background: 'linear-gradient(90deg, var(--teal-700), var(--teal-500))',
-                  borderRadius: '4px',
-                  transition: 'width 600ms ease',
+                <span style={{
+                  width: '8px', height: '8px', borderRadius: '50%',
+                  background: 'var(--teal-300)', display: 'inline-block',
+                  animation: 'dashPulse 1.6s ease-out infinite',
                 }} />
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px' }}>
-                <span style={{ fontFamily: font, fontSize: '12px', color: 'var(--teal-600)', fontWeight: '600' }}>
-                  {completedPhases} {isAr ? 'مكتملة' : 'complete'}
-                </span>
-                <span style={{ fontFamily: font, fontSize: '12px', color: '#8A9BB0' }}>
-                  {phases.length} {isAr ? 'الإجمالي' : 'total'}
-                </span>
-              </div>
-            </div>
-
-            {/* Phase list */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {phases.map(phase => (
-                <div key={phase.id} style={{
-                  display: 'flex', alignItems: 'center', gap: '12px',
-                  padding: '8px 12px',
-                  borderRadius: '8px',
-                  backgroundColor: phase.status === 'active' ? 'rgba(31,122,120,0.06)' : 'transparent',
-                }}>
-                  <div style={{
-                    width: '26px', height: '26px', borderRadius: '50%', flexShrink: 0,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '11px', fontWeight: '700',
-                    backgroundColor: phase.status === 'completed' ? 'var(--sand-500)'
-                      : phase.status === 'active' ? 'var(--teal-600)'
-                      : 'var(--bone)',
-                    color: phase.status === 'planned' ? '#8A9BB0' : 'white',
-                  }}>
-                    {phase.id}
-                  </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{
-                      fontFamily: font, fontSize: '13px', fontWeight: '500',
-                      color: 'var(--ink-900)',
-                      whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-                    }}>
-                      {isAr ? phase.name_ar : phase.name_en}
-                    </div>
-                    <div style={{ fontFamily: font, fontSize: '11px', color: '#8A9BB0' }}>
-                      {phase.start_date} — {phase.end_date}
-                    </div>
-                  </div>
-                  <span style={{
-                    fontSize: '10px', fontWeight: '600', fontFamily: font,
-                    padding: '2px 8px', borderRadius: '100px', flexShrink: 0,
-                    backgroundColor: phase.status === 'completed' ? 'rgba(200,137,58,0.10)'
-                      : phase.status === 'active' ? 'rgba(31,122,120,0.10)'
-                      : 'var(--bone)',
-                    color: phase.status === 'completed' ? 'var(--sand-500)'
-                      : phase.status === 'active' ? 'var(--teal-600)'
-                      : '#8A9BB0',
-                  }}>
-                    {isAr
-                      ? phase.status === 'completed' ? 'مكتملة' : phase.status === 'active' ? 'جارية' : 'مخططة'
-                      : phase.status === 'completed' ? 'Done' : phase.status === 'active' ? 'Active' : 'Planned'}
-                  </span>
-                </div>
-              ))}
+                {isAr ? 'مباشر' : 'LIVE'}
+              </span>
+              <span>{isAr ? 'آخر تحديث: ٢٣ مايو ٢٠٢٦ · ١٤:٣٢' : 'Last updated 23 May 2026 · 14:32 AST'}</span>
+              <span>{isAr ? 'المصدر: قاعدة بيانات AWSP v1.1' : 'Data source: AWSP Reference Database v1.1'}</span>
             </div>
           </div>
-
-          {/* Sector Breakdown */}
-          <div style={{
-            backgroundColor: 'white', borderRadius: '12px', padding: '28px 24px',
-            boxShadow: '0 2px 10px rgba(0,0,0,0.06)',
-          }}>
-            <h2 style={{
-              fontFamily: isAr ? 'var(--font-arabic)' : 'var(--font-serif)',
-              fontWeight: '700', fontSize: '18px', color: 'var(--ink-900)',
-              marginBottom: '20px',
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button style={{
+              display: 'inline-flex', alignItems: 'center', gap: '8px',
+              padding: '12px 20px', fontSize: '14px', fontWeight: '600',
+              background: 'transparent', color: '#fff',
+              border: '1.5px solid rgba(255,255,255,0.4)',
+              borderRadius: 'var(--radius)', cursor: 'pointer', fontFamily: ff,
             }}>
-              {isAr ? 'توزيع المشاريع حسب القطاع' : 'Projects by Sector'}
-            </h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {sectorStats.map(sector => (
-                <div key={sector.ar}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-                    <span style={{ fontFamily: font, fontSize: '13px', color: 'var(--ink-900)', fontWeight: '500' }}>
-                      {isAr ? sector.ar : sector.en}
-                    </span>
-                    <span style={{ fontFamily: font, fontSize: '13px', color: '#6B7280', fontWeight: '600' }}>
-                      {sector.count}
-                    </span>
-                  </div>
-                  <div style={{ height: '6px', backgroundColor: 'var(--bone)', borderRadius: '3px', overflow: 'hidden' }}>
-                    <div style={{
-                      height: '100%',
-                      width: `${(sector.count / maxSector) * 100}%`,
-                      backgroundColor: SECTOR_COLORS[sector.ar] ?? 'var(--teal-500)',
-                      borderRadius: '3px',
-                    }} />
-                  </div>
-                </div>
-              ))}
-            </div>
+              {isAr ? 'تحديث' : 'Refresh'}
+            </button>
+            <button style={{
+              display: 'inline-flex', alignItems: 'center', gap: '8px',
+              padding: '12px 20px', fontSize: '14px', fontWeight: '600',
+              background: 'rgba(255,255,255,0.95)', color: 'var(--ink-800)',
+              border: '1.5px solid transparent',
+              borderRadius: 'var(--radius)', cursor: 'pointer', fontFamily: ff,
+            }}>
+              {isAr ? 'تصدير' : 'Export'}
+            </button>
+          </div>
+        </div>
+      </section>
 
-            {/* Health indicators */}
-            <div style={{ marginTop: '32px', borderTop: `1px solid var(--line)`, paddingTop: '20px' }}>
-              <h3 style={{
-                fontFamily: font, fontWeight: '700', fontSize: '14px',
-                color: 'var(--ink-900)', marginBottom: '14px',
-              }}>
-                {isAr ? 'مؤشرات الحالة' : 'Health Indicators'}
-              </h3>
-              {[
-                { labelAr: 'معدل الإنجاز', labelEn: 'Completion Rate', value: '100%', ok: true },
-                { labelAr: 'المرحلة النشطة', labelEn: 'Active Phase', value: activePhase ? `P${activePhase.id}` : '—', ok: !!activePhase },
-                { labelAr: 'المناطق المشمولة', labelEn: 'Area Coverage', value: '8 / 8', ok: true },
-              ].map((ind, idx) => (
-                <div key={idx} style={{
-                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                  padding: '8px 0',
-                  borderBottom: idx < 2 ? `1px solid var(--bone)` : 'none',
+      {/* ── DASHBOARD SHELL ── */}
+      <section style={{ background: 'var(--paper)', padding: '32px 0 96px', borderTop: '1px solid var(--line)' }}>
+        <div className="wrap" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+
+          {/* ── ROW 1: KPI tiles ── */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+            {[
+              { labelEn: 'Projects Delivered',   labelAr: 'المشاريع المنجزة',      value: '193',   unit: '',  deltaEn: '+12 vs last quarter',  deltaAr: '+١٢ مقارنة بالربع الماضي', trend: 'up',   noteEn: 'Across 8 districts',               noteAr: 'عبر ٨ مديريات' },
+              { labelEn: 'Total Investment',      labelAr: 'إجمالي الاستثمار',      value: '$51.9', unit: 'M', deltaEn: '+$4.2M YTD',            deltaAr: '+٤.٢ م. هذا العام',         trend: 'up',   noteEn: 'Aggregate · USD',                  noteAr: 'إجمالي بالدولار' },
+              { labelEn: 'Active Donors',         labelAr: 'الجهات المانحة النشطة', value: '22',    unit: '',  deltaEn: '+2 this quarter',        deltaAr: '+٢ هذا الربع',              trend: 'up',   noteEn: 'Bilateral · multilateral · INGO',  noteAr: 'ثنائي · متعدد الأطراف · منظمات' },
+              { labelEn: 'Phase Completion',      labelAr: 'اكتمال المراحل',         value: '28',    unit: '%', deltaEn: 'On schedule',             deltaAr: 'في الموعد المحدد',           trend: 'flat', noteEn: '3 of 12 phases done or active',    noteAr: '٣ من ١٢ مرحلة مكتملة أو نشطة' },
+            ].map((tile, i) => (
+              <div key={i} style={panelStyle}>
+                <div style={{
+                  fontSize: '12px', fontWeight: '600', letterSpacing: '0.08em',
+                  textTransform: 'uppercase', color: 'var(--gray-500)', marginBottom: '14px', fontFamily: ff,
                 }}>
-                  <span style={{ fontFamily: font, fontSize: '13px', color: '#6B7280' }}>
-                    {isAr ? ind.labelAr : ind.labelEn}
-                  </span>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <div style={{
-                      width: '8px', height: '8px', borderRadius: '50%',
-                      backgroundColor: ind.ok ? 'var(--teal-500)' : 'var(--sand-500)',
-                    }} />
-                    <span style={{ fontFamily: font, fontSize: '13px', fontWeight: '600', color: 'var(--ink-900)' }}>
-                      {ind.value}
-                    </span>
+                  {isAr ? tile.labelAr : tile.labelEn}
+                </div>
+                <div style={{
+                  fontFamily: serif, fontSize: '44px', fontWeight: '400',
+                  color: 'var(--ink-800)', lineHeight: 1,
+                  fontVariantNumeric: 'tabular-nums', letterSpacing: '-0.02em',
+                }}>
+                  {tile.value}
+                  <span style={{ fontSize: '0.5em', color: 'var(--gray-500)', marginInlineStart: '4px' }}>{tile.unit}</span>
+                </div>
+                <div style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '4px',
+                  fontSize: '12px', fontWeight: '600', marginTop: '8px',
+                  color: tile.trend === 'up' ? 'var(--teal-600)' : 'var(--gray-500)', fontFamily: ff,
+                }}>
+                  {tile.trend === 'up' ? '↑' : '→'} {isAr ? tile.deltaAr : tile.deltaEn}
+                </div>
+                <div style={{ fontSize: '12px', color: 'var(--gray-500)', marginTop: '6px', fontFamily: ff }}>
+                  {isAr ? tile.noteAr : tile.noteEn}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* ── ROW 2: Phase progress + Activity feed ── */}
+          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '16px' }}>
+
+            {/* Phase progress panel */}
+            <div style={panelStyle}>
+              <div style={headStyle}>
+                <h3 style={headH3}>{isAr ? 'خارطة طريق البرنامج — ١٢ مرحلة' : '12-Phase Programme Roadmap'}</h3>
+                <Link href={`/${locale}/about#phases`} style={moreLink}>
+                  {isAr ? 'عرض التفاصيل ←' : 'View detailed roadmap →'}
+                </Link>
+              </div>
+
+              {/* Ring + text */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '24px', marginBottom: '24px' }}>
+                <svg width="100" height="100" viewBox="0 0 100 100" style={{ flexShrink: 0 }}>
+                  <circle cx="50" cy="50" r="42" fill="none" stroke="var(--line)" strokeWidth="10"/>
+                  <circle cx="50" cy="50" r="42" fill="none" stroke="var(--teal-500)" strokeWidth="10"
+                    strokeDasharray="263.9" strokeDashoffset="190" strokeLinecap="round"
+                    transform="rotate(-90 50 50)"/>
+                  <text x="50" y="48" textAnchor="middle" fontFamily="Source Serif 4, serif" fontSize="22" fontWeight="500" fill="var(--ink-800)">28%</text>
+                  <text x="50" y="64" textAnchor="middle" fontFamily="Source Sans 3, sans-serif" fontSize="9" letterSpacing="1" fill="var(--gray-500)">COMPLETE</text>
+                </svg>
+                <div>
+                  <strong style={{ fontFamily: serif, fontSize: '22px', color: 'var(--ink-800)', display: 'block', lineHeight: 1 }}>
+                    {isAr ? 'المرحلتان ٢ و٣ جاريتان' : 'Phases 2 & 3 in progress'}
+                  </strong>
+                  <div style={{ fontSize: '13px', color: 'var(--gray-500)', marginTop: '6px', fontFamily: ff }}>
+                    {isAr
+                      ? 'مواءمة المسوحات + الانتهاء من التصميم · يوليو ٢٠٢٥ — يناير ٢٠٢٦'
+                      : 'Survey alignment + design finalisation · Jul 2025 — Jan 2026 window'}
+                  </div>
+                  <div style={{ fontSize: '13px', color: 'var(--gray-500)', marginTop: '8px', fontFamily: ff }}>
+                    <strong style={{ color: 'var(--teal-700)', fontFamily: ff }}>
+                      {isAr ? 'المعلم القادم:' : 'Next milestone:'}
+                    </strong>{' '}
+                    {isAr ? 'الموافقة على تصميم المسح · يناير ٢٠٢٦' : 'Survey design sign-off · Jan 2026'}
                   </div>
                 </div>
-              ))}
+              </div>
+
+              {/* Mini phases grid — 12 coloured bars */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '4px' }}>
+                {PHASES.map(p => (
+                  <div key={p.n} style={{
+                    height: '56px', borderRadius: '6px',
+                    background: p.status === 'completed'
+                      ? 'rgba(232,177,74,0.22)'
+                      : p.status === 'active'
+                      ? 'var(--teal-500)'
+                      : 'var(--gray-100)',
+                    display: 'flex', flexDirection: 'column',
+                    justifyContent: 'flex-end', padding: '6px 8px',
+                    cursor: 'pointer', border: '1px solid transparent',
+                    transition: 'transform 160ms ease',
+                  }}
+                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'}
+                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'}
+                  >
+                    <div style={{
+                      fontFamily: serif, fontSize: '13px', lineHeight: 1,
+                      color: p.status === 'active'
+                        ? '#fff'
+                        : p.status === 'completed'
+                        ? '#8B5C20'
+                        : 'var(--gray-500)',
+                    }}>
+                      {p.n}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {/* Year labels */}
+              <div style={{
+                display: 'flex', justifyContent: 'space-between', marginTop: '8px',
+                fontSize: '11px', color: 'var(--gray-400)',
+                fontVariantNumeric: 'tabular-nums', fontFamily: ff,
+              }}>
+                <span>Jul 2025</span><span>Jan 2027</span><span>Jan 2029</span>
+              </div>
+            </div>
+
+            {/* Activity feed */}
+            <div style={panelStyle}>
+              <div style={headStyle}>
+                <h3 style={headH3}>{isAr ? 'آخر النشاطات' : 'Recent Activity'}</h3>
+                <Link href={`/${locale}/news`} style={moreLink}>
+                  {isAr ? 'جميع التحديثات ←' : 'All updates →'}
+                </Link>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                {ACTIVITY.map((row, i) => {
+                  const icBg    = row.iconType === 'gold'    ? 'rgba(232,177,74,0.18)'
+                                : row.iconType === 'blue'    ? 'rgba(91,177,227,0.15)'
+                                : 'var(--bone)';
+                  const icColor = row.iconType === 'gold'    ? '#8B5C20'
+                                : row.iconType === 'blue'    ? 'var(--blue-600)'
+                                : 'var(--teal-600)';
+                  return (
+                    <div key={i} style={{
+                      display: 'grid', gridTemplateColumns: '48px 1fr auto',
+                      gap: '12px', padding: '14px 0',
+                      borderBottom: i < ACTIVITY.length - 1 ? '1px solid var(--line)' : 'none',
+                      alignItems: 'flex-start',
+                    }}>
+                      <span style={{
+                        width: '32px', height: '32px', display: 'inline-flex',
+                        alignItems: 'center', justifyContent: 'center',
+                        borderRadius: '8px', background: icBg, color: icColor, fontSize: '14px',
+                      }}>
+                        {row.icon}
+                      </span>
+                      <div>
+                        <h4 style={{ margin: '0 0 2px', fontSize: '14px', fontWeight: '600', color: 'var(--ink-800)', fontFamily: ff }}>
+                          {isAr ? row.titleAr : row.titleEn}
+                        </h4>
+                        <p style={{ margin: 0, fontSize: '13px', color: 'var(--gray-500)', fontFamily: ff }}>
+                          {isAr ? row.descAr : row.descEn}
+                        </p>
+                      </div>
+                      <time style={{
+                        fontSize: '12px', color: 'var(--gray-400)',
+                        fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap', fontFamily: ff,
+                      }}>
+                        {row.date}
+                      </time>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* District Table */}
-        <div style={{
-          backgroundColor: 'white', borderRadius: '12px', padding: '28px 24px',
-          boxShadow: '0 2px 10px rgba(0,0,0,0.06)',
-        }}>
-          <h2 style={{
-            fontFamily: isAr ? 'var(--font-arabic)' : 'var(--font-serif)',
-            fontWeight: '700', fontSize: '18px', color: 'var(--ink-900)',
-            marginBottom: '20px',
-          }}>
-            {isAr ? 'المشاريع حسب المديرية' : 'Projects by District'}
-          </h2>
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: font }}>
-              <thead>
-                <tr style={{ borderBottom: `2px solid var(--line)` }}>
-                  <th style={{ textAlign: 'start', padding: '10px 12px', fontSize: '12px', fontWeight: '700', color: '#8A9BB0', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                    {isAr ? 'المديرية' : 'District'}
-                  </th>
-                  <th style={{ textAlign: 'end', padding: '10px 12px', fontSize: '12px', fontWeight: '700', color: '#8A9BB0', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                    {isAr ? 'المشاريع' : 'Projects'}
-                  </th>
-                  <th style={{ textAlign: 'end', padding: '10px 12px', fontSize: '12px', fontWeight: '700', color: '#8A9BB0', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                    {isAr ? 'الاستثمار (USD)' : 'Investment (USD)'}
-                  </th>
-                  <th style={{ textAlign: 'start', padding: '10px 12px', fontSize: '12px', fontWeight: '700', color: '#8A9BB0', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                    {isAr ? 'الحصة' : 'Share'}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {districtStats.map((dist, idx) => (
-                  <tr key={dist.ar} style={{ borderBottom: `1px solid var(--bone)`, backgroundColor: idx % 2 === 0 ? 'white' : 'var(--paper)' }}>
-                    <td style={{ padding: '11px 12px', fontSize: '14px', color: 'var(--ink-900)', fontWeight: '500' }}>
-                      {isAr ? dist.ar : dist.en}
-                    </td>
-                    <td style={{ padding: '11px 12px', fontSize: '14px', color: 'var(--ink-900)', fontWeight: '600', textAlign: 'end' }}>
-                      {dist.count}
-                    </td>
-                    <td style={{ padding: '11px 12px', fontSize: '14px', color: '#6B7280', textAlign: 'end' }}>
-                      ${(dist.cost / 1_000_000).toFixed(1)}M
-                    </td>
-                    <td style={{ padding: '11px 12px', minWidth: '120px' }}>
-                      <div style={{ height: '5px', backgroundColor: 'var(--bone)', borderRadius: '3px', overflow: 'hidden' }}>
-                        <div style={{
-                          height: '100%',
-                          width: `${(dist.count / districtStats[0].count) * 100}%`,
-                          backgroundColor: 'var(--teal-500)',
-                          borderRadius: '3px',
-                        }} />
-                      </div>
-                    </td>
-                  </tr>
+          {/* ── ROW 3: District SVG map + Donor bars ── */}
+          <div style={{ display: 'grid', gridTemplateColumns: '7fr 5fr', gap: '16px' }}>
+
+            {/* Interactive SVG district map */}
+            <div style={panelStyle}>
+              <div style={headStyle}>
+                <h3 style={headH3}>{isAr ? 'المشاريع حسب المديرية — محافظة عدن' : 'Projects by District — Aden Governorate'}</h3>
+                <div style={tabsBg}>
+                  {(['count', 'investment', 'sector'] as const).map(m => (
+                    <button key={m} onClick={() => setMapMetric(m)} style={{
+                      background: mapMetric === m ? '#fff' : 'transparent',
+                      border: 0, cursor: 'pointer', padding: '6px 14px',
+                      fontSize: '12px', fontWeight: '600',
+                      color: mapMetric === m ? 'var(--ink-800)' : 'var(--gray-600)',
+                      borderRadius: 'var(--radius-pill)', fontFamily: ff,
+                      boxShadow: mapMetric === m ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
+                    }}>
+                      {m === 'count' ? (isAr ? 'العدد' : 'Count')
+                        : m === 'investment' ? (isAr ? 'الاستثمار' : 'Investment')
+                        : (isAr ? 'القطاع' : 'Sector mix')}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* SVG Map */}
+              <div style={{
+                position: 'relative', height: '380px', borderRadius: '12px',
+                overflow: 'hidden', background: 'linear-gradient(180deg, #F4F0E3, #E8DDC2)',
+              }}>
+                <svg viewBox="0 0 600 380" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%' }}>
+                  <defs>
+                    <pattern id="dgrid" width="30" height="30" patternUnits="userSpaceOnUse">
+                      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="rgba(14,42,71,0.05)" strokeWidth="1"/>
+                    </pattern>
+                  </defs>
+                  <rect width="600" height="380" fill="url(#dgrid)"/>
+
+                  {/* Coastline + sea */}
+                  <path d="M 0 200 Q 100 180 180 210 Q 240 230 320 220 Q 400 210 480 230 Q 540 240 600 230 L 600 380 L 0 380 Z" fill="rgba(91,177,227,0.12)"/>
+                  <path d="M 0 200 Q 100 180 180 210 Q 240 230 320 220 Q 400 210 480 230 Q 540 240 600 230" stroke="#5BB1E3" strokeWidth="1.5" fill="none" opacity="0.5"/>
+                  <path d="M 0 220 Q 110 205 200 230 Q 270 250 340 240 Q 410 230 490 250" stroke="#5BB1E3" strokeWidth="1" fill="none" opacity="0.3"/>
+
+                  {/* District polygons */}
+                  <g fill="rgba(42,138,138,0.14)" stroke="var(--teal-500)" strokeWidth="1.5">
+                    <path d="M 130 90 L 220 70 L 260 130 L 200 165 Z"/>
+                    <path d="M 80 160 L 170 145 L 210 185 L 140 215 Z"/>
+                    <path d="M 70 240 L 150 230 L 170 285 L 100 305 Z"/>
+                    <path d="M 260 110 L 360 90 L 380 160 L 290 180 Z"/>
+                    <path d="M 380 90 L 480 70 L 500 140 L 400 160 Z"/>
+                    <path d="M 480 60 L 560 40 L 580 110 L 500 130 Z"/>
+                    <path d="M 230 195 L 320 185 L 340 245 L 250 255 Z"/>
+                    <path d="M 350 200 L 460 190 L 480 260 L 370 270 Z"/>
+                  </g>
+
+                  {/* District name labels */}
+                  <g fontFamily="Source Serif 4, serif" fontSize="10" fill="var(--ink-800)" opacity="0.7">
+                    <text x="195" y="110">Khormaksar</text>
+                    <text x="128" y="178">Crater</text>
+                    <text x="105" y="272">Tawahi</text>
+                    <text x="300" y="132">Al-Mansoura</text>
+                    <text x="400" y="112">Sheikh Othman</text>
+                    <text x="500" y="82">Dar Saad</text>
+                    <text x="260" y="218">Al-Mualla</text>
+                    <text x="382" y="228">Al-Buraiqeh</text>
+                  </g>
+
+                  {/* Interactive bubble overlays */}
+                  {DISTRICTS.map(d => {
+                    const isHovered = hoveredDistrict === d.en;
+                    const fillColor = BUBBLES_COLOR[d.en] || 'var(--teal-500)';
+                    const label = mapMetric === 'count' ? String(d.count)
+                                : mapMetric === 'investment' ? d.inv : '';
+                    const textFill = fillColor === 'var(--sand-400)' ? 'var(--ink-800)' : '#fff';
+                    return (
+                      <g key={d.en}
+                        style={{ cursor: 'pointer' }}
+                        onMouseEnter={() => setHoveredDistrict(d.en)}
+                        onMouseLeave={() => setHoveredDistrict(null)}
+                      >
+                        <circle
+                          cx={d.cx} cy={d.cy}
+                          r={isHovered ? d.r + 3 : d.r}
+                          fill={fillColor}
+                          opacity={isHovered ? 1 : 0.88}
+                          style={{ transition: 'r 200ms ease, opacity 200ms ease' }}
+                        />
+                        <text x={d.cx} y={d.cy + 4} textAnchor="middle"
+                          fill={textFill} fontSize="11" fontWeight="700"
+                          fontFamily="Source Sans 3, sans-serif">
+                          {label}
+                        </text>
+                        {isHovered && (
+                          <g>
+                            <rect x={d.cx - 48} y={d.cy - d.r - 44} width="96" height="36"
+                              rx="6" fill="var(--ink-800)" opacity="0.95"/>
+                            <text x={d.cx} y={d.cy - d.r - 26} textAnchor="middle"
+                              fill="#fff" fontSize="12" fontWeight="600"
+                              fontFamily="Source Sans 3, sans-serif">
+                              {isAr ? d.ar : d.en}
+                            </text>
+                            <text x={d.cx} y={d.cy - d.r - 12} textAnchor="middle"
+                              fill="rgba(255,255,255,0.75)" fontSize="10"
+                              fontFamily="Source Sans 3, sans-serif">
+                              {d.count} projects · {d.inv}
+                            </text>
+                          </g>
+                        )}
+                      </g>
+                    );
+                  })}
+
+                  {/* Gulf of Aden label */}
+                  <text x="430" y="345" fontFamily="Source Serif 4, serif" fontStyle="italic" fontSize="13" fill="#2A6FA0" opacity="0.7">
+                    Gulf of Aden
+                  </text>
+                </svg>
+
+                {/* Legend */}
+                <div style={{
+                  position: 'absolute', bottom: '12px', insetInlineStart: '12px',
+                  background: 'rgba(255,255,255,0.94)', padding: '10px 14px',
+                  borderRadius: '8px', fontSize: '11px', color: 'var(--gray-700)',
+                  display: 'flex', gap: '14px', alignItems: 'center',
+                  border: '1px solid var(--line)',
+                }}>
+                  {[
+                    { color: 'var(--teal-500)', label: isAr ? 'إمداد المياه' : 'Water Supply' },
+                    { color: 'var(--sand-400)', label: isAr ? 'الصرف الصحي' : 'Sanitation' },
+                    { color: 'var(--blue-500)', label: isAr ? 'البنية التحتية' : 'Infrastructure' },
+                  ].map(s => (
+                    <span key={s.label} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontFamily: ff }}>
+                      <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: s.color, display: 'inline-block' }} />
+                      {s.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Donor bar chart */}
+            <div style={panelStyle}>
+              <div style={headStyle}>
+                <h3 style={headH3}>{isAr ? 'أبرز المانحين والشركاء' : 'Top Donors & Partners'}</h3>
+                <Link href={`/${locale}/projects`} style={moreLink}>
+                  {isAr ? 'جميع المانحين ←' : 'All donors →'}
+                </Link>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {DONORS.map((d, i) => (
+                  <div key={i} style={{ display: 'grid', gridTemplateColumns: '110px 1fr 72px', gap: '14px', alignItems: 'center' }}>
+                    <span style={{ fontSize: '13px', color: 'var(--ink-800)', fontWeight: '500', fontFamily: ff }}>{d.name}</span>
+                    <div style={{ height: '8px', background: 'var(--bone)', borderRadius: '999px', overflow: 'hidden' }}>
+                      <div style={{
+                        height: '100%', width: `${d.pct}%`, background: d.color,
+                        borderRadius: '999px', transition: 'width 800ms cubic-bezier(0.2,0.8,0.2,1)',
+                      }} />
+                    </div>
+                    <span style={{
+                      textAlign: 'right', fontFamily: serif, fontSize: '14px',
+                      color: 'var(--ink-800)', fontVariantNumeric: 'tabular-nums',
+                    }}>{d.val}</span>
+                  </div>
                 ))}
-              </tbody>
-            </table>
+              </div>
+            </div>
           </div>
-        </div>
 
-      </div>
-    </div>
+          {/* ── ROW 4: Investment trend + Health indicators ── */}
+          <div style={{ display: 'grid', gridTemplateColumns: '7fr 5fr', gap: '16px' }}>
+
+            {/* Investment trend SVG area chart */}
+            <div style={panelStyle}>
+              <div style={headStyle}>
+                <h3 style={headH3}>{isAr ? 'الاستثمار عبر الزمن' : 'Investment Over Time'}</h3>
+                <div style={tabsBg}>
+                  {(['3y', '5y', 'all'] as const).map(r => (
+                    <button key={r} onClick={() => setActiveRange(r)} style={{
+                      background: activeRange === r ? '#fff' : 'transparent',
+                      border: 0, cursor: 'pointer', padding: '6px 14px',
+                      fontSize: '12px', fontWeight: '600',
+                      color: activeRange === r ? 'var(--ink-800)' : 'var(--gray-600)',
+                      borderRadius: 'var(--radius-pill)', fontFamily: ff,
+                      boxShadow: activeRange === r ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
+                    }}>
+                      {r === '3y' ? '3Y' : r === '5y' ? '5Y' : isAr ? 'الكل' : 'All'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <svg viewBox="0 0 600 220" style={{ width: '100%', height: '220px' }}>
+                <defs>
+                  <linearGradient id="invFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stopColor="var(--teal-500)" stopOpacity="0.32"/>
+                    <stop offset="1" stopColor="var(--teal-500)" stopOpacity="0"/>
+                  </linearGradient>
+                </defs>
+                <g fontFamily="Source Sans 3, sans-serif" fontSize="10" fill="var(--gray-400)">
+                  {[180, 140, 100, 60, 20].map((y, i) => (
+                    <g key={y}>
+                      <line x1="38" y1={y} x2="580" y2={y} stroke="var(--line)" strokeWidth="1"/>
+                      <text x="32" y={y + 4} textAnchor="end">{['$0', '$15M', '$30M', '$45M', '$60M'][i]}</text>
+                    </g>
+                  ))}
+                  <line x1="40" y1="20" x2="40" y2="180" stroke="var(--line-2)"/>
+                  <line x1="40" y1="180" x2="580" y2="180" stroke="var(--line-2)"/>
+                  <polygon points="60,170 150,150 240,130 330,90 420,55 510,40 580,30 580,180 60,180" fill="url(#invFill)"/>
+                  <polyline points="60,170 150,150 240,130 330,90 420,55 510,40 580,30"
+                    stroke="var(--teal-500)" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                  {([[60, 170], [150, 150], [240, 130], [330, 90], [420, 55], [510, 40]] as [number, number][]).map(([cx, cy], i) => (
+                    <circle key={i} cx={cx} cy={cy} r="3.5" fill="var(--teal-500)"/>
+                  ))}
+                  <circle cx="580" cy="30" r="4.5" fill="var(--teal-500)" stroke="#fff" strokeWidth="2"/>
+                  {['2020', '2021', '2022', '2023', '2024', '2025', 'YTD'].map((lbl, i) => (
+                    <text key={lbl} x={60 + i * ((580 - 60) / 6)} y="205" textAnchor="middle">{lbl}</text>
+                  ))}
+                  <line x1="580" y1="30" x2="580" y2="55" stroke="var(--teal-500)" strokeWidth="1" strokeDasharray="2 2"/>
+                  <text x="572" y="22" textAnchor="end" fontFamily="Source Serif 4, serif" fontSize="11" fill="var(--ink-800)" fontWeight="500">$51.9M</text>
+                </g>
+              </svg>
+            </div>
+
+            {/* Health indicators — 8 in 2×4 grid */}
+            <div style={panelStyle}>
+              <div style={headStyle}>
+                <h3 style={headH3}>{isAr ? 'مؤشرات صحة البرنامج' : 'Programme Health Indicators'}</h3>
+                <Link href={`/${locale}/about#framework`} style={moreLink}>
+                  {isAr ? 'الإطار ←' : 'Framework →'}
+                </Link>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+                {INDICATORS.map((ind, i) => {
+                  const c = indicatorColor(ind.status);
+                  return (
+                    <div key={i} style={{
+                      padding: '14px 12px', background: c.bg,
+                      borderRadius: '10px', border: '1px solid var(--line)',
+                      display: 'flex', flexDirection: 'column', gap: '5px',
+                    }}>
+                      <div style={{
+                        fontSize: '10px', fontWeight: '600', letterSpacing: '0.08em',
+                        textTransform: 'uppercase', color: 'var(--gray-500)', fontFamily: ff,
+                      }}>
+                        {isAr ? ind.labelAr : ind.label}
+                      </div>
+                      <div style={{
+                        display: 'inline-flex', alignItems: 'center', gap: '6px',
+                        fontWeight: '600', fontSize: '12px', color: c.text, fontFamily: ff,
+                      }}>
+                        <span style={{
+                          width: '8px', height: '8px', borderRadius: '50%',
+                          background: c.dot, display: 'inline-block', flexShrink: 0,
+                        }} />
+                        {isAr ? ind.levelAr : ind.level}
+                      </div>
+                      <p style={{ fontSize: '11px', color: 'var(--gray-600)', margin: 0, lineHeight: 1.4, fontFamily: ff }}>
+                        {isAr ? ind.noteAr : ind.note}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* ── ROW 5: District table + Sector donut ── */}
+          <div style={{ display: 'grid', gridTemplateColumns: '7fr 5fr', gap: '16px' }}>
+
+            {/* District breakdown table */}
+            <div style={panelStyle}>
+              <div style={headStyle}>
+                <h3 style={headH3}>{isAr ? 'توزيع المديريات' : 'District Breakdown'}</h3>
+                <Link href={`/${locale}/projects`} style={moreLink}>
+                  {isAr ? 'فتح في المشاريع ←' : 'Open in projects →'}
+                </Link>
+              </div>
+              <div style={{ fontSize: '13px' }}>
+                <div style={{
+                  display: 'grid', gridTemplateColumns: '1fr 56px 80px', gap: '10px',
+                  padding: '9px 0', borderBottom: '1px solid var(--line-2)',
+                  fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase',
+                  color: 'var(--gray-400)', fontFamily: ff,
+                }}>
+                  <span>{isAr ? 'المديرية' : 'District'}</span>
+                  <span>{isAr ? 'المشاريع' : 'Projects'}</span>
+                  <span style={{ textAlign: 'right' }}>{isAr ? 'الاستثمار' : 'Investment'}</span>
+                </div>
+                {DISTRICTS.map((d, i) => (
+                  <div key={i}
+                    style={{
+                      display: 'grid', gridTemplateColumns: '1fr 56px 80px', gap: '10px',
+                      padding: '9px 0',
+                      borderBottom: i < DISTRICTS.length - 1 ? '1px solid var(--line)' : 'none',
+                      alignItems: 'center',
+                      background: hoveredDistrict === d.en ? 'var(--bone)' : 'transparent',
+                      transition: 'background 160ms ease', cursor: 'default',
+                    }}
+                    onMouseEnter={() => setHoveredDistrict(d.en)}
+                    onMouseLeave={() => setHoveredDistrict(null)}
+                  >
+                    <span style={{ color: 'var(--ink-800)', fontWeight: '500', fontFamily: ff }}>
+                      {isAr ? d.ar : d.en}
+                    </span>
+                    <span style={{ color: 'var(--gray-500)', fontVariantNumeric: 'tabular-nums', fontFamily: ff }}>{d.count}</span>
+                    <span style={{ textAlign: 'right', fontFamily: serif, color: 'var(--ink-800)', fontVariantNumeric: 'tabular-nums' }}>{d.inv}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Sector donut */}
+            <div style={panelStyle}>
+              <div style={headStyle}>
+                <h3 style={headH3}>{isAr ? 'توزيع القطاعات' : 'Sector Mix'}</h3>
+                <Link href={`/${locale}/projects`} style={moreLink}>
+                  {isAr ? 'جميع المشاريع ←' : 'All projects →'}
+                </Link>
+              </div>
+              <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
+                <svg width="160" height="160" viewBox="0 0 42 42" style={{ flexShrink: 0 }}>
+                  <circle cx="21" cy="21" r="15.915" fill="#fff" stroke="var(--line)" strokeWidth="8"/>
+                  <circle cx="21" cy="21" r="15.915" fill="none" stroke="var(--teal-500)" strokeWidth="8" strokeDasharray="43 57" strokeDashoffset="25"/>
+                  <circle cx="21" cy="21" r="15.915" fill="none" stroke="var(--sand-400)" strokeWidth="8" strokeDasharray="30 70" strokeDashoffset="-18"/>
+                  <circle cx="21" cy="21" r="15.915" fill="none" stroke="var(--blue-500)" strokeWidth="8" strokeDasharray="24 76" strokeDashoffset="-48"/>
+                  <circle cx="21" cy="21" r="15.915" fill="none" stroke="var(--gray-300)" strokeWidth="8" strokeDasharray="3 97" strokeDashoffset="-72"/>
+                  <text x="21" y="21" textAnchor="middle" fontFamily="Source Serif 4, serif" fontSize="6" fill="var(--ink-800)" fontWeight="500">193</text>
+                  <text x="21" y="26" textAnchor="middle" fontFamily="Source Sans 3, sans-serif" fontSize="2.4" letterSpacing="0.3" fill="var(--gray-500)">PROJECTS</text>
+                </svg>
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  {[
+                    { color: 'var(--teal-500)', labelEn: 'Water Supply',   labelAr: 'إمداد المياه',   pct: '43%' },
+                    { color: 'var(--sand-400)', labelEn: 'Sanitation',     labelAr: 'الصرف الصحي',   pct: '30%' },
+                    { color: 'var(--blue-500)', labelEn: 'Infrastructure', labelAr: 'البنية التحتية', pct: '24%' },
+                    { color: 'var(--gray-300)', labelEn: 'Capacity',       labelAr: 'بناء القدرات',   pct: '3%' },
+                  ].map(s => (
+                    <div key={s.labelEn} style={{
+                      display: 'flex', justifyContent: 'space-between',
+                      fontSize: '13px', alignItems: 'center', fontFamily: ff,
+                    }}>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{
+                          width: '10px', height: '10px', background: s.color,
+                          borderRadius: '2px', display: 'inline-block', flexShrink: 0,
+                        }} />
+                        {isAr ? s.labelAr : s.labelEn}
+                      </span>
+                      <span style={{ fontFamily: serif, color: 'var(--ink-800)' }}>{s.pct}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <style>{`
+        @keyframes dashPulse {
+          0%   { box-shadow: 0 0 0 0   rgba(107,195,182,0.6); }
+          100% { box-shadow: 0 0 0 12px rgba(107,195,182,0);   }
+        }
+      `}</style>
+    </>
   );
 }
