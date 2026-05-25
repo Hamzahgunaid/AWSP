@@ -49,6 +49,8 @@ export default function DistrictMap({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const circleLayersRef = useRef<Record<string, any>>({});
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const labelLayersRef = useRef<Record<string, any>>({});
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const geoLayerRef = useRef<any>(null);
   const isAr = locale === 'ar';
 
@@ -119,9 +121,16 @@ export default function DistrictMap({
   useEffect(() => {
     if (!mapInstanceRef.current) return;
     import('leaflet').then(L => {
-      // Remove old circles
-      Object.values(circleLayersRef.current).forEach(c => c.remove());
+      // Safely remove all circle layers
+      Object.values(circleLayersRef.current).forEach(c => {
+        try { c.remove(); } catch (_) {}
+      });
+      // Safely remove all label layers
+      Object.values(labelLayersRef.current).forEach(l => {
+        try { l.remove(); } catch (_) {}
+      });
       circleLayersRef.current = {};
+      labelLayersRef.current = {};
       drawBubbles(L, mapInstanceRef.current, metric);
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -130,13 +139,17 @@ export default function DistrictMap({
   // Highlight hovered circle
   useEffect(() => {
     Object.entries(circleLayersRef.current).forEach(([name, circle]) => {
+      // Skip label markers — they don't have setStyle
+      if (typeof circle.setStyle !== 'function') return;
       const isHovered = hoveredDistrict === name;
       circle.setStyle({
         fillOpacity: isHovered ? 0.9 : 0.75,
         weight: isHovered ? 3 : 1.5,
         color: isHovered ? '#0E2A47' : '#fff',
       });
-      if (isHovered) circle.bringToFront();
+      if (isHovered && typeof circle.bringToFront === 'function') {
+        circle.bringToFront();
+      }
     });
   }, [hoveredDistrict]);
 
@@ -224,15 +237,17 @@ export default function DistrictMap({
         }),
         interactive: false,
         zIndexOffset: 1000,
-      }).addTo(map);
+      });
 
       circle.on('mouseover', () => onHover(name));
       circle.on('mouseout', () => onHover(null));
 
       circle.addTo(map);
+      labelMarker.addTo(map);
+
+      // Circles and labels tracked separately to avoid setStyle crashes
       circleLayersRef.current[name] = circle;
-      // Store label too for cleanup
-      circleLayersRef.current[`${name}_label`] = labelMarker;
+      labelLayersRef.current[name] = labelMarker;
     });
   }
 
