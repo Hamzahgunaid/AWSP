@@ -27,25 +27,22 @@ const DISTRICTS: Record<string, {
   'Tawahi':        { count: 12, inv: '$3.6M', invNum: 3.6, lat: 12.7700, lng: 44.9500, ar: 'التواهي' },
 };
 
-// Count ranges: <15 = small, 16-30 = medium, >30 = large
 function getCountRadius(count: number): number {
   if (count > 30) return 38;
   if (count >= 16) return 26;
   return 18;
 }
 
-// Investment: scale min 16px to max 40px proportionally
 function getInvRadius(invNum: number): number {
   const min = 3.6;
   const max = 9.4;
   return 16 + ((invNum - min) / (max - min)) * 24;
 }
 
-// Count colour scale — 3 tiers
 function getCountColor(count: number): string {
-  if (count > 30) return '#0D7A6E'; // dark teal — largest
-  if (count >= 16) return '#2A8A8A'; // mid teal
-  return '#6BC3B6';                  // light teal — smallest
+  if (count > 30) return '#0D7A6E';
+  if (count >= 16) return '#2A8A8A';
+  return '#6BC3B6';
 }
 
 export default function DistrictMap({
@@ -100,7 +97,7 @@ export default function DistrictMap({
               color: '#2A8A8A',
               weight: 1.2,
               opacity: 0.35,
-              dashArray: '',            // solid thin line, no dashes
+              dashArray: '',
             }),
           }).addTo(map);
 
@@ -149,23 +146,11 @@ export default function DistrictMap({
     Object.entries(DISTRICTS).forEach(([name, d]) => {
       const isCount = currentMetric !== 'investment';
 
-      // Radius — count tiers OR investment proportional
-      const radius = isCount
-        ? getCountRadius(d.count)
-        : getInvRadius(d.invNum);
-
-      // Color — count = 3-tier teal, investment = single unified sand
-      const fillColor = isCount
-        ? getCountColor(d.count)
-        : '#2A8A8A'; // unified teal for investment tab
-
-      // Label: count number OR investment amount
+      const radius = isCount ? getCountRadius(d.count) : getInvRadius(d.invNum);
+      const fillColor = isCount ? getCountColor(d.count) : '#2A8A8A';
       const label = isCount ? String(d.count) : d.inv;
       const distName = isAr ? d.ar : name;
-
-      // Text colour — white on dark teal, dark on light
-      const textColor =
-        fillColor === '#6BC3B6' ? '#0E2A47' : '#fff';
+      const textColor = fillColor === '#6BC3B6' ? '#0E2A47' : '#fff';
 
       // Circle marker at exact district centre
       const circle = L.circleMarker([d.lat, d.lng], {
@@ -176,32 +161,22 @@ export default function DistrictMap({
         weight: 1.5,
       });
 
-      // Tooltip — appears above bubble
-      circle.bindTooltip(`
-        <div style="
-          font-family: Source Sans 3, sans-serif;
-          min-width: 160px; padding: 2px;
-        ">
-          <strong style="
-            font-size: 14px; color: #0E2A47;
-            font-family: Source Serif 4, serif;
-            display: block; margin-bottom: 6px;
-          ">${distName}</strong>
-          <div style="
-            display: flex; gap: 10px;
-            font-size: 12px; color: #6B6B6B;
-          ">
+      circle.bindTooltip(
+        `<div style="font-family: Source Sans 3, sans-serif; min-width: 160px; padding: 2px;">
+          <strong style="font-size: 14px; color: #0E2A47; font-family: Source Serif 4, serif; display: block; margin-bottom: 6px;">${distName}</strong>
+          <div style="display: flex; gap: 10px; font-size: 12px; color: #6B6B6B;">
             <span>📍 ${d.count} projects</span>
             <span>💰 ${d.inv}</span>
           </div>
-        </div>
-      `, {
-        permanent: false,
-        sticky: false,
-        direction: 'top',
-        offset: [0, -(radius + 4)],
-        className: 'awsp-tooltip',
-      });
+        </div>`,
+        {
+          permanent: false,
+          sticky: false,
+          direction: 'top',
+          offset: [0, -(radius + 4)],
+          className: 'awsp-tooltip',
+        }
+      );
 
       // Label marker — centred on bubble
       const labelMarker = L.marker([d.lat, d.lng], {
@@ -264,14 +239,8 @@ export default function DistrictMap({
         }
         .awsp-tooltip::before,
         .leaflet-tooltip-top::before { display: none !important; }
-        .leaflet-control-attribution {
-          font-size: 9px !important;
-          background: rgba(255,255,255,0.75) !important;
-        }
-        .leaflet-control-zoom a {
-          color: #0E2A47 !important;
-          border-color: #E5DFD0 !important;
-        }
+        .leaflet-control-attribution { font-size: 9px !important; background: rgba(255,255,255,0.75) !important; }
+        .leaflet-control-zoom a { color: #0E2A47 !important; border-color: #E5DFD0 !important; }
       `}</style>
     </>
   );

@@ -414,16 +414,11 @@ export default function DashboardPage() {
                         { color: '#2A8A8A', size: 11, label: isAr ? '١٦–٣٠' : '16–30 projects' },
                         { color: '#6BC3B6', size: 9,  label: isAr ? 'أقل من ١٥' : 'Under 15 projects' },
                       ].map(s => (
-                        <span
-                          key={s.label}
-                          style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-                        >
+                        <span key={s.label} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
                           <span style={{
                             width: `${s.size}px`, height: `${s.size}px`,
-                            borderRadius: '50%',
-                            background: s.color,
-                            display: 'inline-block',
-                            flexShrink: 0,
+                            borderRadius: '50%', background: s.color,
+                            display: 'inline-block', flexShrink: 0,
                           }} />
                           {s.label}
                         </span>
