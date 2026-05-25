@@ -386,50 +386,29 @@ export default function DashboardPage() {
                 />
                 {/* Legend */}
                 <div style={{
-                  marginTop: '12px',
-                  display: 'flex',
-                  gap: '16px',
-                  alignItems: 'center',
-                  flexWrap: 'wrap',
-                  fontSize: '11px',
-                  color: 'var(--gray-700)',
-                  fontFamily: ff,
+                  marginTop: '12px', display: 'flex',
+                  gap: '16px', alignItems: 'center', flexWrap: 'wrap',
+                  fontSize: '11px', color: 'var(--gray-700)', fontFamily: ff,
                 }}>
-                  <span style={{
-                    fontWeight: '600',
-                    color: 'var(--gray-500)',
-                    letterSpacing: '0.06em',
-                    textTransform: 'uppercase',
-                    flexShrink: 0,
-                  }}>
-                    {mapMetric === 'investment'
-                      ? (isAr ? 'الحجم حسب الاستثمار · لون موحد' : 'Size by investment · unified colour')
-                      : (isAr ? 'الحجم حسب عدد المشاريع' : 'Size by project count')}
+                  <span style={{ fontWeight: '600', color: 'var(--gray-500)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                    {isAr ? 'الحجم حسب:' : 'Size by:'}
                   </span>
-                  {mapMetric !== 'investment' && (
-                    <>
-                      <span style={{ color: 'var(--line-2)' }}>·</span>
-                      {[
-                        { color: '#0D7A6E', size: 14, label: isAr ? 'أكثر من ٣٠' : '> 30 projects' },
-                        { color: '#2A8A8A', size: 11, label: isAr ? '١٦–٣٠' : '16–30 projects' },
-                        { color: '#6BC3B6', size: 9,  label: isAr ? 'أقل من ١٥' : 'Under 15 projects' },
-                      ].map(s => (
-                        <span
-                          key={s.label}
-                          style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-                        >
-                          <span style={{
-                            width: `${s.size}px`, height: `${s.size}px`,
-                            borderRadius: '50%',
-                            background: s.color,
-                            display: 'inline-block',
-                            flexShrink: 0,
-                          }} />
-                          {s.label}
-                        </span>
-                      ))}
-                    </>
-                  )}
+                  {mapMetric === 'count'
+                    ? <span style={{ fontFamily: ff }}>{isAr ? 'عدد المشاريع' : 'Number of projects'}</span>
+                    : <span style={{ fontFamily: ff }}>{isAr ? 'حجم الاستثمار' : 'Investment volume'}</span>
+                  }
+                  <span style={{ color: 'var(--line-2)' }}>·</span>
+                  {[
+                    { color: '#0D7A6E', label: isAr ? '٣٠+' : '30+' },
+                    { color: '#2A8A8A', label: isAr ? '٢٥–٢٩' : '25–29' },
+                    { color: '#E8B14A', label: isAr ? '٢٠–٢٤' : '20–24' },
+                    { color: '#3B8FD4', label: isAr ? 'أقل من ٢٠' : 'Under 20' },
+                  ].map(s => (
+                    <span key={s.label} style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                      <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: s.color, display: 'inline-block' }} />
+                      {s.label}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
