@@ -223,3 +223,19 @@ html[dir='rtl'] .lead { font-family: var(--font-arabic); }
   outline: 2px solid var(--teal-500);
   outline-offset: 2px; border-radius: 4px;
 }
+
+/* Dashboard grid spans */
+.dash-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+.span-3  { grid-column: span 3; }
+.span-4  { grid-column: span 4; }
+.span-5  { grid-column: span 5; }
+.span-7  { grid-column: span 7; }
+.span-8  { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+@media (max-width: 1100px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .span-7, .span-8           { grid-column: span 12; }
+}
+@media (max-width: 700px) {
+  .dash-grid > * { grid-column: span 12 !important; }
+}
