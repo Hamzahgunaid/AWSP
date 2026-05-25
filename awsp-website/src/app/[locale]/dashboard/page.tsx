@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import DistrictMap from '@/components/Dashboard/DistrictMapDynamic';
 
 const PHASES = [
   { n: 1,  status: 'completed', labelEn: 'Framework',      labelAr: 'الإطار' },
@@ -376,114 +377,28 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* SVG Map */}
-              <div style={{
-                position: 'relative', height: '380px', borderRadius: '12px',
-                overflow: 'hidden', background: 'linear-gradient(180deg, #F4F0E3, #E8DDC2)',
-              }}>
-                <svg viewBox="0 0 600 380" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%' }}>
-                  <defs>
-                    <pattern id="dgrid" width="30" height="30" patternUnits="userSpaceOnUse">
-                      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="rgba(14,42,71,0.05)" strokeWidth="1"/>
-                    </pattern>
-                  </defs>
-                  <rect width="600" height="380" fill="url(#dgrid)"/>
-
-                  {/* Coastline + sea */}
-                  <path d="M 0 200 Q 100 180 180 210 Q 240 230 320 220 Q 400 210 480 230 Q 540 240 600 230 L 600 380 L 0 380 Z" fill="rgba(91,177,227,0.12)"/>
-                  <path d="M 0 200 Q 100 180 180 210 Q 240 230 320 220 Q 400 210 480 230 Q 540 240 600 230" stroke="#5BB1E3" strokeWidth="1.5" fill="none" opacity="0.5"/>
-                  <path d="M 0 220 Q 110 205 200 230 Q 270 250 340 240 Q 410 230 490 250" stroke="#5BB1E3" strokeWidth="1" fill="none" opacity="0.3"/>
-
-                  {/* District polygons */}
-                  <g fill="rgba(42,138,138,0.14)" stroke="var(--teal-500)" strokeWidth="1.5">
-                    <path d="M 130 90 L 220 70 L 260 130 L 200 165 Z"/>
-                    <path d="M 80 160 L 170 145 L 210 185 L 140 215 Z"/>
-                    <path d="M 70 240 L 150 230 L 170 285 L 100 305 Z"/>
-                    <path d="M 260 110 L 360 90 L 380 160 L 290 180 Z"/>
-                    <path d="M 380 90 L 480 70 L 500 140 L 400 160 Z"/>
-                    <path d="M 480 60 L 560 40 L 580 110 L 500 130 Z"/>
-                    <path d="M 230 195 L 320 185 L 340 245 L 250 255 Z"/>
-                    <path d="M 350 200 L 460 190 L 480 260 L 370 270 Z"/>
-                  </g>
-
-                  {/* District name labels */}
-                  <g fontFamily="Source Serif 4, serif" fontSize="10" fill="var(--ink-800)" opacity="0.7">
-                    <text x="195" y="110">Khormaksar</text>
-                    <text x="128" y="178">Crater</text>
-                    <text x="105" y="272">Tawahi</text>
-                    <text x="300" y="132">Al-Mansoura</text>
-                    <text x="400" y="112">Sheikh Othman</text>
-                    <text x="500" y="82">Dar Saad</text>
-                    <text x="260" y="218">Al-Mualla</text>
-                    <text x="382" y="228">Al-Buraiqeh</text>
-                  </g>
-
-                  {/* Interactive bubble overlays */}
-                  {DISTRICTS.map(d => {
-                    const isHovered = hoveredDistrict === d.en;
-                    const fillColor = BUBBLES_COLOR[d.en] || 'var(--teal-500)';
-                    const label = mapMetric === 'count' ? String(d.count)
-                                : mapMetric === 'investment' ? d.inv : '';
-                    const textFill = fillColor === 'var(--sand-400)' ? 'var(--ink-800)' : '#fff';
-                    return (
-                      <g key={d.en}
-                        style={{ cursor: 'pointer' }}
-                        onMouseEnter={() => setHoveredDistrict(d.en)}
-                        onMouseLeave={() => setHoveredDistrict(null)}
-                      >
-                        <circle
-                          cx={d.cx} cy={d.cy}
-                          r={isHovered ? d.r + 3 : d.r}
-                          fill={fillColor}
-                          opacity={isHovered ? 1 : 0.88}
-                          style={{ transition: 'r 200ms ease, opacity 200ms ease' }}
-                        />
-                        <text x={d.cx} y={d.cy + 4} textAnchor="middle"
-                          fill={textFill} fontSize="11" fontWeight="700"
-                          fontFamily="Source Sans 3, sans-serif">
-                          {label}
-                        </text>
-                        {isHovered && (
-                          <g>
-                            <rect x={d.cx - 48} y={d.cy - d.r - 44} width="96" height="36"
-                              rx="6" fill="var(--ink-800)" opacity="0.95"/>
-                            <text x={d.cx} y={d.cy - d.r - 26} textAnchor="middle"
-                              fill="#fff" fontSize="12" fontWeight="600"
-                              fontFamily="Source Sans 3, sans-serif">
-                              {isAr ? d.ar : d.en}
-                            </text>
-                            <text x={d.cx} y={d.cy - d.r - 12} textAnchor="middle"
-                              fill="rgba(255,255,255,0.75)" fontSize="10"
-                              fontFamily="Source Sans 3, sans-serif">
-                              {d.count} projects · {d.inv}
-                            </text>
-                          </g>
-                        )}
-                      </g>
-                    );
-                  })}
-
-                  {/* Gulf of Aden label */}
-                  <text x="430" y="345" fontFamily="Source Serif 4, serif" fontStyle="italic" fontSize="13" fill="#2A6FA0" opacity="0.7">
-                    Gulf of Aden
-                  </text>
-                </svg>
-
+              <div style={{ position: 'relative' }}>
+                <DistrictMap
+                  districts={DISTRICTS}
+                  hoveredDistrict={hoveredDistrict}
+                  onHover={setHoveredDistrict}
+                  metric={mapMetric}
+                  locale={locale}
+                />
                 {/* Legend */}
                 <div style={{
-                  position: 'absolute', bottom: '12px', insetInlineStart: '12px',
-                  background: 'rgba(255,255,255,0.94)', padding: '10px 14px',
-                  borderRadius: '8px', fontSize: '11px', color: 'var(--gray-700)',
-                  display: 'flex', gap: '14px', alignItems: 'center',
-                  border: '1px solid var(--line)',
+                  marginTop: '12px', display: 'flex', gap: '14px',
+                  alignItems: 'center', fontSize: '11px', color: 'var(--gray-700)', fontFamily: ff,
                 }}>
                   {[
-                    { color: 'var(--teal-500)', label: isAr ? 'إمداد المياه' : 'Water Supply' },
-                    { color: 'var(--sand-400)', label: isAr ? 'الصرف الصحي' : 'Sanitation' },
-                    { color: 'var(--blue-500)', label: isAr ? 'البنية التحتية' : 'Infrastructure' },
+                    { color: '#0D7A6E', label: isAr ? '٣٠+ مشروع' : '30+ projects' },
+                    { color: '#2A8A8A', label: isAr ? '٢٥–٢٩' : '25–29' },
+                    { color: '#3FA89A', label: isAr ? '٢٠–٢٤' : '20–24' },
+                    { color: '#6BC3B6', label: isAr ? '١٥–١٩' : '15–19' },
+                    { color: '#A8DDD7', label: isAr ? 'أقل من ١٥' : 'Under 15' },
                   ].map(s => (
-                    <span key={s.label} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontFamily: ff }}>
-                      <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: s.color, display: 'inline-block' }} />
+                    <span key={s.label} style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                      <span style={{ width: '12px', height: '12px', borderRadius: '3px', background: s.color, display: 'inline-block' }} />
                       {s.label}
                     </span>
                   ))}
