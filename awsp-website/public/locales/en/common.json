@@ -53,7 +53,7 @@
   "snapshot": {
     "projects": {
       "title": "Our Projects",
-      "body": "193 infrastructure projects delivered across Aden's eight urban districts. Browse by location, intervention type, donor, or sector."
+      "body": "194 infrastructure projects delivered across Aden's eight urban districts. Browse by location, intervention type, donor, or sector."
     },
     "knowledge": {
       "title": "Knowledge Products",
@@ -85,7 +85,7 @@
     "year": "Year",
     "cost": "Cost (USD)",
     "reset": "Reset All Filters",
-    "results": "Showing {{count}} of 193 projects"
+    "results": "Showing {{count}} of 194 projects"
   },
   "view": {
     "map": "Map View",

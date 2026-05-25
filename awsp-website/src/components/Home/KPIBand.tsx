@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 const KPIS = [
-  { target: 193, prefix: '',    suffix: '',   labelEn: 'Projects Delivered',    labelAr: 'مشروع منجز',       metaEn: 'All districts · live count',       metaAr: 'جميع المديريات · إحصاء حي' },
+  { target: 194, prefix: '',    suffix: '',   labelEn: 'Projects Delivered',    labelAr: 'مشروع منجز',       metaEn: 'All districts · live count',       metaAr: 'جميع المديريات · إحصاء حي' },
   { target: 51,  prefix: '>$', suffix: 'M',  labelEn: 'Total Investment (USD)', labelAr: 'إجمالي الاستثمار',  metaEn: 'Project database aggregate',        metaAr: 'إجمالي قاعدة المشاريع' },
   { target: 8,   prefix: '',    suffix: '',   labelEn: 'Districts Covered',      labelAr: 'مديريات مشمولة',   metaEn: 'Aden urban governorate',            metaAr: 'محافظة عدن الحضرية' },
   { target: 20,  prefix: '',    suffix: '+',  labelEn: 'Donors & Partners',      labelAr: 'شريك ومانح',        metaEn: 'Bilateral · multilateral · INGO',   metaAr: 'ثنائي · متعدد الأطراف · منظمات' },

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 
 const TICKER = [
+  { date: '25 May 2026', en: '194 projects delivered across Aden\'s eight urban districts.',           ar: '١٩٤ مشروعاً منجزاً عبر المديريات الثماني لمدينة عدن.' },
   { date: '12 May 2026', en: 'Survey alignment workshop convened with development partners in Aden.', ar: 'انعقدت ورشة مواءمة المسوحات مع شركاء التنمية في عدن.' },
   { date: '28 Apr 2026', en: 'Phase 2 Survey Alignment Matrix released for stakeholder review.',       ar: 'صدرت مصفوفة مواءمة مسوحات المرحلة الثانية للمراجعة.' },
   { date: '15 Apr 2026', en: 'AWSP Taskforce welcomes two new technical officers.',                    ar: 'رحّب فريق عمل AWSP بضابطَين تقنيَّين جديدَين.' },

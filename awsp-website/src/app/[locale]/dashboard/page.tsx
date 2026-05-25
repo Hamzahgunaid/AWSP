@@ -7,7 +7,7 @@ const PHASES = [
   { n: 1,  status: 'completed', labelEn: 'Framework',      labelAr: 'الإطار' },
   { n: 2,  status: 'active',    labelEn: 'Survey Align',   labelAr: 'مواءمة' },
   { n: 3,  status: 'active',    labelEn: 'Survey Design',  labelAr: 'تصميم' },
-  { n: 4,  status: 'planned',   labelEn: 'Survey ToRs',    labelAr: 'مرجعية' },
+  { n: 4,  status: 'active',    labelEn: 'Survey ToRs',    labelAr: 'مرجعية' },
   { n: 5,  status: 'planned',   labelEn: 'Survey Impl',    labelAr: 'تنفيذ' },
   { n: 6,  status: 'planned',   labelEn: 'Options Align',  labelAr: 'مواءمة خيارات' },
   { n: 7,  status: 'planned',   labelEn: 'Options ToRs',   labelAr: 'مرجعية خيارات' },
@@ -186,7 +186,7 @@ export default function DashboardPage() {
           {/* ── ROW 1: KPI tiles ── */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
             {[
-              { labelEn: 'Projects Delivered',   labelAr: 'المشاريع المنجزة',      value: '193',   unit: '',  deltaEn: '+12 vs last quarter',  deltaAr: '+١٢ مقارنة بالربع الماضي', trend: 'up',   noteEn: 'Across 8 districts',               noteAr: 'عبر ٨ مديريات' },
+              { labelEn: 'Projects Delivered',   labelAr: 'المشاريع المنجزة',      value: '194',   unit: '',  deltaEn: '+12 vs last quarter',  deltaAr: '+١٢ مقارنة بالربع الماضي', trend: 'up',   noteEn: 'Across 8 districts',               noteAr: 'عبر ٨ مديريات' },
               { labelEn: 'Total Investment',      labelAr: 'إجمالي الاستثمار',      value: '$51.9', unit: 'M', deltaEn: '+$4.2M YTD',            deltaAr: '+٤.٢ م. هذا العام',         trend: 'up',   noteEn: 'Aggregate · USD',                  noteAr: 'إجمالي بالدولار' },
               { labelEn: 'Active Donors',         labelAr: 'الجهات المانحة النشطة', value: '22',    unit: '',  deltaEn: '+2 this quarter',        deltaAr: '+٢ هذا الربع',              trend: 'up',   noteEn: 'Bilateral · multilateral · INGO',  noteAr: 'ثنائي · متعدد الأطراف · منظمات' },
               { labelEn: 'Phase Completion',      labelAr: 'اكتمال المراحل',         value: '28',    unit: '%', deltaEn: 'On schedule',             deltaAr: 'في الموعد المحدد',           trend: 'flat', noteEn: '3 of 12 phases done or active',    noteAr: '٣ من ١٢ مرحلة مكتملة أو نشطة' },
@@ -598,7 +598,7 @@ export default function DashboardPage() {
                   <circle cx="21" cy="21" r="15.915" fill="none" stroke="var(--sand-400)" strokeWidth="8" strokeDasharray="30 70" strokeDashoffset="-18"/>
                   <circle cx="21" cy="21" r="15.915" fill="none" stroke="var(--blue-500)" strokeWidth="8" strokeDasharray="24 76" strokeDashoffset="-48"/>
                   <circle cx="21" cy="21" r="15.915" fill="none" stroke="var(--gray-300)" strokeWidth="8" strokeDasharray="3 97" strokeDashoffset="-72"/>
-                  <text x="21" y="21" textAnchor="middle" fontFamily="Source Serif 4, serif" fontSize="6" fill="var(--ink-800)" fontWeight="500">193</text>
+                  <text x="21" y="21" textAnchor="middle" fontFamily="Source Serif 4, serif" fontSize="6" fill="var(--ink-800)" fontWeight="500">194</text>
                   <text x="21" y="26" textAnchor="middle" fontFamily="Source Sans 3, sans-serif" fontSize="2.4" letterSpacing="0.3" fill="var(--gray-500)">PROJECTS</text>
                 </svg>
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
