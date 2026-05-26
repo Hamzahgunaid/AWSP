@@ -59,12 +59,14 @@ export default function ProjectsMap({
       // Plot project pins
       projects.forEach(p => {
         if (!p.lat || !p.lng) return;
-        const color = INTERVENTION_COLORS[p.intervention_type_en] || DEFAULT_COLOR;
-        const name = p.name_ar || p.name_en || '—';
-        const districtLabel = p.district_ar || '—';
+        const color = INTERVENTION_COLORS[p.intervention_en] || DEFAULT_COLOR;
+        const name = isAr
+          ? (p.name_ar || '—')
+          : (p.name_en || `${p.intervention_en} — ${p.district_en}`);
+        const districtLabel = isAr ? (p.district_ar || '—') : (p.district_en || p.district_ar || '—');
         const typeLabel = isAr
-          ? (p.intervention_type_ar || p.intervention_type_en || '—')
-          : (p.intervention_type_en || '—');
+          ? (p.intervention_ar || p.intervention_en || '—')
+          : (p.intervention_en || '—');
 
         const icon = L.divIcon({
           className: '',
@@ -171,20 +173,22 @@ export default function ProjectsMap({
               textTransform: 'uppercase', letterSpacing: '0.06em',
             }}>
               {isAr
-                ? (selected.intervention_type_ar || selected.intervention_type_en || '—')
-                : (selected.intervention_type_en || '—')}
+                ? (selected.intervention_ar || selected.intervention_en || '—')
+                : (selected.intervention_en || '—')}
             </div>
             <h4 style={{
               fontFamily: isAr ? 'var(--font-arabic)' : 'var(--font-serif)',
               fontSize: '14px', color: 'var(--ink-800)',
               lineHeight: 1.4, marginBottom: '12px', paddingInlineEnd: '24px',
             }}>
-              {selected.name_ar || selected.name_en || '—'}
+              {isAr
+                ? (selected.name_ar || '—')
+                : (selected.name_en || `${selected.intervention_en} — ${selected.district_en}`)}
             </h4>
             {[
-              { labelEn: 'District',     labelAr: 'المديرية',  val: selected.district_ar || '—' },
-              { labelEn: 'Donor',        labelAr: 'المانح',    val: selected.donor_ar || '—' },
-              { labelEn: 'Implementer',  labelAr: 'المنفذ',    val: selected.implementer_ar || '—' },
+              { labelEn: 'District',     labelAr: 'المديرية',  val: isAr ? (selected.district_ar || '—') : (selected.district_en || selected.district_ar || '—') },
+              { labelEn: 'Donor',        labelAr: 'المانح',    val: isAr ? (selected.donor_ar || '—') : (selected.donor_en || selected.donor_ar || '—') },
+              { labelEn: 'Implementer',  labelAr: 'المنفذ',    val: selected.implementer_en || selected.implementer_ar || '—' },
               { labelEn: 'Year',         labelAr: 'السنة',     val: String(selected.year || '—') },
               { labelEn: 'Cost',         labelAr: 'التكلفة',   val: selected.cost_usd > 0 ? `$${(selected.cost_usd/1000).toFixed(0)}K` : '—' },
             ].map(row => (
