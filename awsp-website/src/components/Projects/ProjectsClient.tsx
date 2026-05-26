@@ -25,23 +25,25 @@ type Project = Record<string, any>;
 
 type ViewMode = 'map' | 'list' | 'analytics';
 
-// Arabic district names as they appear in the JSON
-const DISTRICTS_AR = ['المنصورة','البريقة','الشيخ عثمان','خور مكسر','المعلا','دار سعد','التواهي','صيرة','مصادر المياه','مشاريع تخدم عدة مناطق'];
+const DISTRICTS_EN = [
+  'Al-Mansoura', 'Al-Buraiqeh', 'Sheikh Othman', 'Khormaksar',
+  'Crater', 'Al-Mualla', 'Dar Saad', 'Tawahi',
+  'Sirah', 'Water Sources', 'Multi-district',
+];
 
-// Helper: display name — Arabic name is the primary data source
 function displayName(p: Project, isAr: boolean): string {
-  if (isAr) return p.name_ar || p.name_en || '';
-  return p.name_en || p.name_ar || '';
+  if (isAr) return p.name_ar || '';
+  return p.name_en || `${p.intervention_en} — ${p.district_en} (${p.year})`;
 }
 function displayDistrict(p: Project, isAr: boolean): string {
-  return isAr ? (p.district_ar || '') : (p.district_ar || '');
+  return isAr ? (p.district_ar || '') : (p.district_en || p.district_ar || '');
 }
 function displaySector(p: Project, isAr: boolean): string {
-  if (isAr) return p.intervention_type_ar || p.sector_ar || '';
-  return p.intervention_type_en || p.sector_ar || '';
+  if (isAr) return p.intervention_ar || p.sector_ar || '';
+  return p.intervention_en || p.sector_en || '';
 }
 function displayDonor(p: Project, isAr: boolean): string {
-  return isAr ? (p.donor_ar || '') : (p.donor_ar || '');
+  return isAr ? (p.donor_ar || '') : (p.donor_en || p.donor_ar || '');
 }
 
 export default function ProjectsClient({
@@ -68,11 +70,11 @@ export default function ProjectsClient({
 
   // Unique filter values from actual data fields
   const interventionTypes = useMemo(() =>
-    [...new Set(projects.map(p => p.intervention_type_en).filter(Boolean))].sort()
+    [...new Set(projects.map(p => p.intervention_en).filter(Boolean))].sort()
   , [projects]);
 
   const donors = useMemo(() =>
-    [...new Set(projects.map(p => p.donor_ar).filter(Boolean))].sort()
+    [...new Set(projects.map(p => p.donor_en).filter(Boolean))].sort()
   , [projects]);
 
   const years = useMemo(() =>
@@ -86,16 +88,17 @@ export default function ProjectsClient({
         const q = search.toLowerCase();
         const match =
           (p.name_ar || '').includes(search) ||
-          (p.name_en || '').toLowerCase().includes(q) ||
+          (p.name_en || p.intervention_en || '').toLowerCase().includes(q) ||
           (p.district_ar || '').includes(search) ||
+          (p.district_en || '').toLowerCase().includes(q) ||
           (p.donor_ar || '').includes(search) ||
-          (p.implementer_ar || '').includes(search) ||
-          (p.intervention_type_en || '').toLowerCase().includes(q);
+          (p.donor_en || '').toLowerCase().includes(q) ||
+          (p.implementer_ar || '').includes(search);
         if (!match) return false;
       }
-      if (district && p.district_ar !== district) return false;
-      if (sector   && p.intervention_type_en !== sector) return false;
-      if (donor    && p.donor_ar !== donor) return false;
+      if (district && p.district_en !== district) return false;
+      if (sector   && p.intervention_en !== sector) return false;
+      if (donor    && p.donor_en !== donor) return false;
       if (yearFrom && p.year < parseInt(yearFrom)) return false;
       if (yearTo   && p.year > parseInt(yearTo)) return false;
       return true;
@@ -129,15 +132,15 @@ export default function ProjectsClient({
   };
 
   // Analytics computed values
-  const byDistrict = useMemo(() => DISTRICTS_AR.map(d => ({
+  const byDistrict = useMemo(() => DISTRICTS_EN.map(d => ({
     name: d,
-    count: filtered.filter(p => p.district_ar === d).length,
-    inv: filtered.filter(p => p.district_ar === d).reduce((s: number, p) => s + (p.cost_usd || 0), 0),
+    count: filtered.filter(p => p.district_en === d).length,
+    inv: filtered.filter(p => p.district_en === d).reduce((s: number, p) => s + (p.cost_usd || 0), 0),
   })).filter(d => d.count > 0).sort((a, b) => b.count - a.count), [filtered]);
 
   const byInterventionType = useMemo(() => interventionTypes.map(t => ({
     name: t,
-    count: filtered.filter(p => p.intervention_type_en === t).length,
+    count: filtered.filter(p => p.intervention_en === t).length,
   })).sort((a, b) => b.count - a.count), [filtered, interventionTypes]);
 
   const totalInv = filtered.reduce((s: number, p) => s + (p.cost_usd || 0), 0);
@@ -209,17 +212,17 @@ export default function ProjectsClient({
 
           {/* Filter row */}
           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
-            <select value={district} onChange={e => { setDistrict(e.target.value); setPage(1); }} style={selectStyle} dir="rtl">
+            <select value={district} onChange={e => { setDistrict(e.target.value); setPage(1); }} style={selectStyle} dir="ltr">
               <option value="">{isAr ? 'جميع المديريات' : 'All Districts'}</option>
-              {DISTRICTS_AR.map(d => <option key={d} value={d}>{d}</option>)}
+              {DISTRICTS_EN.map(d => <option key={d} value={d}>{d}</option>)}
             </select>
 
-            <select value={sector} onChange={e => { setSector(e.target.value); setPage(1); }} style={selectStyle} dir={isAr?'rtl':'ltr'}>
+            <select value={sector} onChange={e => { setSector(e.target.value); setPage(1); }} style={selectStyle} dir="ltr">
               <option value="">{isAr ? 'جميع أنواع التدخل' : 'All Intervention Types'}</option>
               {interventionTypes.map(t => <option key={t} value={t}>{t}</option>)}
             </select>
 
-            <select value={donor} onChange={e => { setDonor(e.target.value); setPage(1); }} style={{ ...selectStyle, minWidth: '200px' }} dir="rtl">
+            <select value={donor} onChange={e => { setDonor(e.target.value); setPage(1); }} style={{ ...selectStyle, minWidth: '200px' }} dir="ltr">
               <option value="">{isAr ? 'جميع المانحين' : 'All Donors'}</option>
               {donors.map(d => <option key={d} value={d}>{d}</option>)}
             </select>
