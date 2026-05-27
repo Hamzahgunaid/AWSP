@@ -92,7 +92,7 @@ export default async function NewsArticlePage({
       {/* Article body */}
       <section style={{ background: 'var(--paper)', padding: '64px 0 96px' }}>
         <div className="wrap-narrow">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 240px', gap: '64px', alignItems: 'start' }}>
+          <div className="news-article-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 240px', gap: '64px', alignItems: 'start' }}>
 
             <div>
               {(isAr ? post.body_ar : post.body_en).split('\n\n').map((para, i) => (
@@ -120,7 +120,7 @@ export default async function NewsArticlePage({
               </div>
             </div>
 
-            <aside style={{ position: 'sticky', top: '94px' }}>
+            <aside className="news-article-sidebar" style={{ position: 'sticky', top: '94px' }}>
               <div style={{
                 background: '#fff', border: '1px solid var(--line)',
                 borderRadius: 'var(--radius-lg)', padding: '24px',

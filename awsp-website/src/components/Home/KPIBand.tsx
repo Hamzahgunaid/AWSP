@@ -54,7 +54,7 @@ export default function KPIBand({ locale }: { locale: string }) {
         opacity: 0.5,
       }} />
       <div className="wrap">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 0 }}>
+        <div className="kpi-band-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 0 }}>
           {KPIS.map((k, i) => (
             <div key={i} style={{
               padding: '8px 24px',

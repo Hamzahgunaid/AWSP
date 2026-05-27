@@ -184,7 +184,7 @@ export default function DashboardPage() {
         <div className="wrap" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
           {/* ── ROW 1: KPI tiles ── */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+          <div className="dash-kpi-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
             {[
               { labelEn: 'Projects Delivered',   labelAr: 'المشاريع المنجزة',      value: '194',   unit: '',  deltaEn: '+12 vs last quarter',  deltaAr: '+١٢ مقارنة بالربع الماضي', trend: 'up',   noteEn: 'Across 8 districts',               noteAr: 'عبر ٨ مديريات' },
               { labelEn: 'Total Investment',      labelAr: 'إجمالي الاستثمار',      value: '$51.9', unit: 'M', deltaEn: '+$4.2M YTD',            deltaAr: '+٤.٢ م. هذا العام',         trend: 'up',   noteEn: 'Aggregate · USD',                  noteAr: 'إجمالي بالدولار' },
@@ -221,7 +221,7 @@ export default function DashboardPage() {
           </div>
 
           {/* ── ROW 2: Phase progress + Activity feed ── */}
-          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '16px' }}>
+          <div className="dash-row-2" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '16px' }}>
 
             {/* Phase progress panel */}
             <div style={panelStyle}>
@@ -353,7 +353,7 @@ export default function DashboardPage() {
           </div>
 
           {/* ── ROW 3: District SVG map + Donor bars ── */}
-          <div style={{ display: 'grid', gridTemplateColumns: '7fr 5fr', gap: '16px' }}>
+          <div className="dash-row-3" style={{ display: 'grid', gridTemplateColumns: '7fr 5fr', gap: '16px' }}>
 
             {/* Interactive SVG district map */}
             <div style={panelStyle}>
@@ -442,7 +442,7 @@ export default function DashboardPage() {
           </div>
 
           {/* ── ROW 4: Investment trend + Health indicators ── */}
-          <div style={{ display: 'grid', gridTemplateColumns: '7fr 5fr', gap: '16px' }}>
+          <div className="dash-row-4" style={{ display: 'grid', gridTemplateColumns: '7fr 5fr', gap: '16px' }}>
 
             {/* Investment trend SVG area chart */}
             <div style={panelStyle}>
@@ -539,7 +539,7 @@ export default function DashboardPage() {
           </div>
 
           {/* ── ROW 5: District table + Sector donut ── */}
-          <div style={{ display: 'grid', gridTemplateColumns: '7fr 5fr', gap: '16px' }}>
+          <div className="dash-row-5" style={{ display: 'grid', gridTemplateColumns: '7fr 5fr', gap: '16px' }}>
 
             {/* District breakdown table */}
             <div style={panelStyle}>

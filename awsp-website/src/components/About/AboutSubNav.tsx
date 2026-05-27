@@ -31,7 +31,7 @@ export default function AboutSubNav({ locale }: { locale: string }) {
   };
 
   return (
-    <nav style={{
+    <nav className="about-subnav" style={{
       position: 'sticky', top: '74px', zIndex: 40,
       background: 'rgba(250,247,240,0.95)',
       backdropFilter: 'blur(12px)',

@@ -31,7 +31,7 @@ export default function SiteFooter({ locale }: { locale: string }) {
 
       <div className="wrap">
         {/* Top row */}
-        <div style={{
+        <div className="footer-top" style={{
           display: 'flex', justifyContent: 'space-between',
           alignItems: 'center', paddingBottom: '28px',
           borderBottom: '1px solid rgba(255,255,255,0.1)',
@@ -59,7 +59,7 @@ export default function SiteFooter({ locale }: { locale: string }) {
             </span>
           </Link>
 
-          <nav style={{ display: 'flex', gap: '28px', flexWrap: 'wrap' }}>
+          <nav className="footer-nav" style={{ display: 'flex', gap: '28px', flexWrap: 'wrap' }}>
             {NAV.map(l => (
               <Link key={l.href} href={`/${locale}${l.href}`}
                 style={{

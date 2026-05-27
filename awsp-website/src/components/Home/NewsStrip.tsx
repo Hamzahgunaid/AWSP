@@ -52,7 +52,7 @@ export default function NewsStrip({ locale }: { locale: string }) {
             </Link>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr', gap: '24px' }}>
+          <div className="news-three-col" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr', gap: '24px' }}>
             {MOCK_NEWS.map((item, i) => (
               <article key={i} style={{
                 background: '#fff', borderRadius: 'var(--radius-lg)',
@@ -109,7 +109,7 @@ export default function NewsStrip({ locale }: { locale: string }) {
         background: 'radial-gradient(circle at 80% 50%, rgba(63,168,154,0.2), transparent 60%), linear-gradient(135deg, var(--ink-900), var(--ink-700))',
         color: '#fff', padding: '80px 0', position: 'relative', overflow: 'hidden',
       }}>
-        <div className="wrap" style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '48px', alignItems: 'center' }}>
+        <div className="wrap cta-band-inner" style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '48px', alignItems: 'center' }}>
           <div>
             <span className="eyebrow" style={{ color: 'var(--sand-400)', fontFamily: ff }}>
               {isAr ? 'تواصل مع البرنامج' : 'Engage with the programme'}

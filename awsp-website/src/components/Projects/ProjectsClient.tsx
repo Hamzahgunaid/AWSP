@@ -211,7 +211,7 @@ export default function ProjectsClient({
           </div>
 
           {/* Filter row */}
-          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
+          <div className="projects-toolbar-filters" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
             <select value={district} onChange={e => { setDistrict(e.target.value); setPage(1); }} style={selectStyle} dir="ltr">
               <option value="">{isAr ? 'جميع المديريات' : 'All Districts'}</option>
               {DISTRICTS_EN.map(d => <option key={d} value={d}>{d}</option>)}
@@ -287,7 +287,7 @@ export default function ProjectsClient({
             ) : (
               <>
                 {/* Table header */}
-                <div style={{
+                <div className="projects-table-header" style={{
                   display: 'grid',
                   gridTemplateColumns: '2fr 1fr 1fr 1fr 100px',
                   gap: '12px',
@@ -299,15 +299,15 @@ export default function ProjectsClient({
                   marginBottom: '4px',
                 }}>
                   <span>{isAr ? 'المشروع' : 'Project'}</span>
-                  <span>{isAr ? 'المديرية' : 'District'}</span>
-                  <span>{isAr ? 'نوع التدخل' : 'Intervention'}</span>
-                  <span>{isAr ? 'المانح' : 'Donor'}</span>
+                  <span className="col-district">{isAr ? 'المديرية' : 'District'}</span>
+                  <span className="col-sector">{isAr ? 'نوع التدخل' : 'Intervention'}</span>
+                  <span className="col-donor">{isAr ? 'المانح' : 'Donor'}</span>
                   <span style={{ textAlign: 'right' }}>{isAr ? 'التكلفة' : 'Cost'}</span>
                 </div>
 
                 {/* Rows */}
                 {paginated.map((p, i) => (
-                  <div key={p.id} style={{
+                  <div key={p.id} className="projects-list-row" style={{
                     display: 'grid',
                     gridTemplateColumns: '2fr 1fr 1fr 1fr 100px',
                     gap: '12px',
@@ -328,10 +328,10 @@ export default function ProjectsClient({
                         {p.implementer_ar || p.implementer_en || '—'} · {p.year}
                       </div>
                     </div>
-                    <span style={{ fontFamily: ff, fontSize: '13px', color: 'var(--gray-700)' }}>
+                    <span className="col-district" style={{ fontFamily: ff, fontSize: '13px', color: 'var(--gray-700)' }}>
                       {displayDistrict(p, isAr)}
                     </span>
-                    <div>
+                    <div className="col-sector">
                       <span style={{
                         display: 'inline-block', padding: '2px 8px',
                         borderRadius: 'var(--radius-pill)', fontSize: '11px',
@@ -341,7 +341,7 @@ export default function ProjectsClient({
                         {displaySector(p, isAr)}
                       </span>
                     </div>
-                    <span style={{ fontFamily: ff, fontSize: '12px', color: 'var(--gray-600)', lineHeight: 1.4 }}>
+                    <span className="col-donor" style={{ fontFamily: ff, fontSize: '12px', color: 'var(--gray-600)', lineHeight: 1.4 }}>
                       {displayDonor(p, isAr)}
                     </span>
                     <span style={{
@@ -415,7 +415,7 @@ export default function ProjectsClient({
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
 
             {/* Summary row */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+            <div className="analytics-summary-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
               {[
                 { labelEn: 'Filtered Projects',  labelAr: 'المشاريع المفلترة', val: filtered.length },
                 { labelEn: 'Total Investment',   labelAr: 'إجمالي الاستثمار',  val: `$${(totalInv/1000000).toFixed(1)}M` },
@@ -436,7 +436,7 @@ export default function ProjectsClient({
             </div>
 
             {/* By district + by intervention type */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+            <div className="analytics-charts-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
               <div style={{ background: '#fff', border: '1px solid var(--line)', borderRadius: 'var(--radius-lg)', padding: '24px' }}>
                 <h3 style={{ fontFamily: ff, fontSize: '13px', fontWeight: '600', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--gray-500)', margin: '0 0 20px' }}>
                   {isAr ? 'حسب المديرية' : 'By District'}

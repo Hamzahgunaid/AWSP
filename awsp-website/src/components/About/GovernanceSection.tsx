@@ -71,7 +71,7 @@ export default function GovernanceSection({ locale }: { locale: string }) {
         </div>
 
         {/* Role cards */}
-        <div style={{
+        <div className="governance-roles-grid" style={{
           display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '24px', marginBottom: '80px',
         }}>
@@ -103,7 +103,7 @@ export default function GovernanceSection({ locale }: { locale: string }) {
         <h3 style={{ fontFamily: serif, marginBottom: '32px' }}>
           {isAr ? 'أعضاء فريق العمل' : 'Taskforce Members'}
         </h3>
-        <div style={{
+        <div className="taskforce-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
           gap: '16px',

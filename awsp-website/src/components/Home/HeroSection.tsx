@@ -48,7 +48,7 @@ export default function HeroSection({ locale }: { locale: string }) {
       }} />
 
       {/* Two-column content grid */}
-      <div className="wrap" style={{
+      <div className="wrap hero-two-col" style={{
         position: 'relative', width: '100%',
         display: 'grid', gridTemplateColumns: '1.4fr 1fr',
         alignItems: 'end', padding: '80px 0 64px', gap: '48px',
@@ -90,7 +90,7 @@ export default function HeroSection({ locale }: { locale: string }) {
               : "Transitioning Aden's water and sanitation sector from emergency response to a stable, resilient, and locally governed system."}
           </p>
 
-          <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+          <div className="hero-cta-group" style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
             <Link href={`/${locale}/projects`} className="btn btn-light" style={{ fontFamily: ff }}>
               {isAr ? 'استكشاف المشاريع' : 'Explore Projects'}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="icon-dir" style={{ width: 16, height: 16 }}>
@@ -108,7 +108,7 @@ export default function HeroSection({ locale }: { locale: string }) {
         </div>
 
         {/* RIGHT — At a glance sidebar */}
-        <aside style={{
+        <aside className="hero-at-a-glance" style={{
           borderInlineStart: '1px solid rgba(255,255,255,0.16)',
           paddingInlineStart: '36px', paddingBottom: '12px',
         }}>

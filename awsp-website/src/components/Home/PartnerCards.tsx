@@ -33,7 +33,7 @@ export default function PartnerCards({ locale }: { locale: string }) {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
+        <div className="partners-three-col" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
           {partnersData.map((p, i) => (
             <a key={p.id} href={p.href}
               target={p.href.startsWith('http') ? '_blank' : '_self'}

@@ -58,7 +58,7 @@ export default function ContactCards({ locale }: { locale: string }) {
   return (
     <section style={{ background: 'var(--bone)', padding: '64px 0' }}>
       <div className="wrap">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
+        <div className="contact-cards-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
           {cards.map((card, i) => (
             <div key={i} style={{
               background: '#fff', border: '1px solid var(--line)',

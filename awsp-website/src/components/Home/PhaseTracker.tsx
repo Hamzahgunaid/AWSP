@@ -22,7 +22,7 @@ export default function PhaseTracker({ locale }: { locale: string }) {
       <div className="wrap">
 
         {/* Intro: two-column — headline left, summary card right */}
-        <div style={{
+        <div className="phase-intro-grid" style={{
           display: 'grid', gridTemplateColumns: '1fr 1.2fr',
           gap: '64px', alignItems: 'end', marginBottom: '80px',
         }}>
@@ -82,7 +82,7 @@ export default function PhaseTracker({ locale }: { locale: string }) {
         </div>
 
         {/* Vertical timeline */}
-        <div style={{
+        <div className="phase-timeline-wrap" style={{
           position: 'relative',
           paddingInlineStart: '56px',
           maxWidth: '920px', margin: '0 auto',
@@ -102,7 +102,7 @@ export default function PhaseTracker({ locale }: { locale: string }) {
             return (
               <div key={phase.id} style={{ position: 'relative', marginBottom: '56px' }}>
                 {/* Timeline dot */}
-                <div style={{
+                <div className="phase-dot" style={{
                   position: 'absolute',
                   insetInlineStart: '-42px', top: '8px',
                   width: '16px', height: '16px', borderRadius: '50%',
@@ -116,7 +116,7 @@ export default function PhaseTracker({ locale }: { locale: string }) {
                 }} />
 
                 {/* Phase number */}
-                <div style={{
+                <div className="phase-number" style={{
                   position: 'absolute',
                   insetInlineStart: '-78px', top: 0,
                   fontFamily: 'var(--font-serif)',
@@ -189,7 +189,7 @@ export default function PhaseTracker({ locale }: { locale: string }) {
 
                   {/* Expandable body */}
                   {isOpen && (
-                    <div style={{
+                    <div className="phase-card-body-inner" style={{
                       padding: '24px 28px 28px',
                       borderTop: '1px solid var(--line)',
                       display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '36px',

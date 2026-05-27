@@ -45,7 +45,7 @@ export default function SnapshotCards({ locale }: { locale: string }) {
             </p>
           </div>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
+        <div className="snapshots-three-col" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
           {SNAPSHOTS.map(snap => {
             const d = isAr ? snap.ar : snap.en;
             return (

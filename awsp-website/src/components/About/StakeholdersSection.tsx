@@ -130,7 +130,7 @@ export default function StakeholdersSection({ locale }: { locale: string }) {
         </p>
 
         {/* Cards */}
-        <div style={{
+        <div className="stakeholders-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
           gap: '16px',

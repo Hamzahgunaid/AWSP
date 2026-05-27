@@ -68,7 +68,7 @@ export default function ContactForm({ locale }: { locale: string }) {
   return (
     <section style={{ background: 'var(--paper)', padding: '96px 0' }}>
       <div className="wrap">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: '64px', alignItems: 'start' }}>
+        <div className="contact-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: '64px', alignItems: 'start' }}>
 
           {/* LEFT — context */}
           <div>
@@ -140,7 +140,7 @@ export default function ContactForm({ locale }: { locale: string }) {
           }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div className="contact-form-inner-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                 {(['name','org'] as const).map(id => (
                   <div key={id} className="field">
                     <label htmlFor={id} style={{ fontFamily: ff }}>
