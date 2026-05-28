@@ -29,14 +29,14 @@ export default function TaskforceEditor({
   const [message, setMessage]   = useState('');
 
   const [form, setForm] = useState<Member>({
-    id:         member?.id         ?? `tf-${Date.now()}`,
-    name_en:    member?.name_en    ?? '',
-    name_ar:    member?.name_ar    ?? '',
-    title_en:   member?.title_en   ?? '',
-    title_ar:   member?.title_ar   ?? '',
-    department: member?.department ?? 'MWE',
-    email:      member?.email      ?? '',
-    phone:      member?.phone      ?? '',
+    id:         member?.id         || `tf-${Date.now()}`,
+    name_en:    member?.name_en    || '',
+    name_ar:    member?.name_ar    || '',
+    title_en:   member?.title_en   || '',
+    title_ar:   member?.title_ar   || '',
+    department: member?.department || 'MWE',
+    email:      member?.email      || '',
+    phone:      member?.phone      || '',
     active:     member?.active     ?? true,
   });
 
@@ -62,9 +62,7 @@ export default function TaskforceEditor({
       } else {
         setMessage('Error saving. Please try again.');
       }
-    } catch {
-      setMessage('Network error.');
-    }
+    } catch { setMessage('Network error.'); }
     setSaving(false);
   };
 
@@ -72,19 +70,15 @@ export default function TaskforceEditor({
     if (!confirm(`Delete ${form.name_en}? This cannot be undone.`)) return;
     setDeleting(true);
     const res = await fetch(`/api/admin/taskforce/${form.id}`, { method: 'DELETE' });
-    if (res.ok) {
-      router.push('/admin/taskforce');
-    } else {
-      setMessage('Error deleting.');
-      setDeleting(false);
-    }
+    if (res.ok) router.push('/admin/taskforce');
+    else { setMessage('Error deleting.'); setDeleting(false); }
   };
 
   const inputStyle: React.CSSProperties = {
     width: '100%', padding: '10px 14px', fontSize: '14px',
     border: '1px solid #D8D0BB', borderRadius: '8px',
     fontFamily: 'inherit', outline: 'none', background: '#fff',
-    boxSizing: 'border-box',
+    transition: 'border-color 150ms ease', boxSizing: 'border-box',
   };
   const labelStyle: React.CSSProperties = {
     fontSize: '12px', fontWeight: '600', color: '#3D3D3D',
@@ -98,7 +92,7 @@ export default function TaskforceEditor({
       {/* Header */}
       <div style={{
         display: 'flex', justifyContent: 'space-between',
-        alignItems: 'flex-start', marginBottom: '28px',
+        alignItems: 'center', marginBottom: '28px',
       }}>
         <div>
           <Link href="/admin/taskforce" style={{
@@ -115,11 +109,9 @@ export default function TaskforceEditor({
             {isNew ? 'Add Taskforce Member' : `Edit — ${form.name_en}`}
           </h1>
         </div>
-        <div style={{ display: 'flex', gap: '10px', flexShrink: 0 }}>
+        <div style={{ display: 'flex', gap: '10px' }}>
           {!isNew && (
-            <button
-              onClick={deleteMember}
-              disabled={deleting}
+            <button onClick={deleteMember} disabled={deleting}
               style={{
                 padding: '10px 18px',
                 background: 'rgba(194,90,78,0.08)',
@@ -127,23 +119,18 @@ export default function TaskforceEditor({
                 border: '1px solid rgba(194,90,78,0.3)',
                 borderRadius: '8px', fontSize: '13px',
                 fontWeight: '600', cursor: deleting ? 'not-allowed' : 'pointer',
-              }}
-            >
-              {deleting ? 'Deleting…' : 'Delete Member'}
+              }}>
+              {deleting ? 'Deleting...' : 'Delete Member'}
             </button>
           )}
-          <button
-            onClick={save}
-            disabled={saving}
+          <button onClick={save} disabled={saving}
             style={{
               padding: '10px 24px',
               background: saving ? '#BFBFBF' : '#0E2A47',
               color: '#fff', border: 'none', borderRadius: '8px',
-              fontSize: '14px', fontWeight: '600',
-              cursor: saving ? 'not-allowed' : 'pointer',
-            }}
-          >
-            {saving ? 'Saving…' : isNew ? 'Add Member' : 'Save Changes'}
+              fontSize: '14px', fontWeight: '600', cursor: saving ? 'not-allowed' : 'pointer',
+            }}>
+            {saving ? 'Saving...' : isNew ? 'Add Member' : 'Save Changes'}
           </button>
         </div>
       </div>
@@ -219,9 +206,7 @@ export default function TaskforceEditor({
           <label style={labelStyle}>Department *</label>
           <div style={{ display: 'flex', gap: '12px' }}>
             {(['MWE', 'LWSCA'] as const).map(dept => (
-              <button
-                key={dept}
-                onClick={() => setForm(f => ({ ...f, department: dept }))}
+              <button key={dept} onClick={() => setForm(f => ({ ...f, department: dept }))}
                 style={{
                   flex: 1, padding: '12px',
                   borderRadius: '8px', border: '2px solid',
@@ -236,15 +221,19 @@ export default function TaskforceEditor({
                     : '#6B6B6B',
                   fontSize: '14px', fontWeight: '700', cursor: 'pointer',
                   transition: 'all 150ms ease',
-                }}
-              >
+                }}>
                 {dept}
+                <div style={{ fontSize: '11px', fontWeight: '400', marginTop: '2px', opacity: 0.8 }}>
+                  {dept === 'MWE'
+                    ? 'Ministry of Water and Environment'
+                    : 'Local Water & Sanitation Corp.'}
+                </div>
               </button>
             ))}
           </div>
         </div>
 
-        {/* Contact */}
+        {/* Contact info */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
           <div>
             <label style={labelStyle}>Email (optional)</label>
@@ -252,7 +241,8 @@ export default function TaskforceEditor({
               type="email"
               value={form.email}
               onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-              placeholder="name@example.com"
+              placeholder="name@mwe.gov.ye"
+              dir="ltr"
               style={inputStyle}
             />
           </div>
@@ -262,45 +252,87 @@ export default function TaskforceEditor({
               type="tel"
               value={form.phone}
               onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
-              placeholder="+967 xxx xxx xxx"
+              placeholder="+967 ..."
+              dir="ltr"
               style={inputStyle}
             />
           </div>
         </div>
 
-        {/* Active toggle */}
+        {/* Active status */}
         <div style={{
-          display: 'flex', alignItems: 'center', gap: '12px',
-          paddingTop: '4px', borderTop: '1px solid #F2F2F2',
+          display: 'flex', justifyContent: 'space-between',
+          alignItems: 'center', padding: '16px',
+          background: '#F4F6F8', borderRadius: '8px',
         }}>
+          <div>
+            <div style={{ fontSize: '14px', fontWeight: '600', color: '#0E2A47' }}>
+              Active Member
+            </div>
+            <div style={{ fontSize: '12px', color: '#6B6B6B', marginTop: '2px' }}>
+              Inactive members are hidden from the public About page
+            </div>
+          </div>
           <button
-            role="switch"
-            aria-checked={form.active}
             onClick={() => setForm(f => ({ ...f, active: !f.active }))}
             style={{
-              width: '44px', height: '24px', borderRadius: '999px',
+              width: '52px', height: '28px', borderRadius: '999px',
               border: 'none', cursor: 'pointer',
               background: form.active ? '#2A8A8A' : '#BFBFBF',
-              position: 'relative', transition: 'background 150ms ease',
+              position: 'relative', transition: 'background 200ms ease',
               flexShrink: 0,
             }}
           >
             <span style={{
-              position: 'absolute', top: '3px',
-              left: form.active ? '22px' : '3px',
-              width: '18px', height: '18px', borderRadius: '50%',
-              background: '#fff', transition: 'left 150ms ease',
+              position: 'absolute', top: '4px',
+              left: form.active ? '26px' : '4px',
+              width: '20px', height: '20px',
+              borderRadius: '50%', background: '#fff',
+              transition: 'left 200ms ease',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
             }} />
           </button>
+        </div>
+
+        {/* Live preview */}
+        {(form.name_en || form.name_ar) && (
           <div>
-            <div style={{ fontSize: '14px', fontWeight: '600', color: '#0E2A47' }}>
-              {form.active ? 'Active' : 'Inactive'}
-            </div>
-            <div style={{ fontSize: '12px', color: '#8E8E8E' }}>
-              Inactive members are hidden from the public-facing About page.
+            <label style={{ ...labelStyle, marginBottom: '10px' }}>
+              Preview — how this will appear on the About page:
+            </label>
+            <div style={{
+              background: '#FAF7F0', border: '1px solid #E5DFD0',
+              borderRadius: '10px', padding: '20px 16px', textAlign: 'center',
+              width: '180px',
+            }}>
+              <div style={{
+                width: '56px', height: '56px', borderRadius: '50%',
+                background: '#0E2A47', color: '#fff',
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: '18px', fontWeight: '700',
+                marginBottom: '12px', border: '3px solid #D5E8F0',
+                fontFamily: 'Source Serif 4, serif',
+              }}>
+                {form.name_en.split(' ').slice(0, 2).map(n => n[0]).join('').toUpperCase() || '??'}
+              </div>
+              <div style={{ fontSize: '13px', fontWeight: '700', color: '#0E2A47', marginBottom: '3px' }}>
+                {form.name_en || 'Name (EN)'}
+              </div>
+              <div style={{ fontSize: '11px', color: '#6B6B6B', marginBottom: '8px', lineHeight: 1.3 }}>
+                {form.title_en || 'Title'}
+              </div>
+              <span style={{
+                display: 'inline-block', padding: '2px 8px',
+                borderRadius: '999px', fontSize: '11px', fontWeight: '600',
+                background: form.department === 'MWE'
+                  ? 'rgba(42,120,184,0.1)' : 'rgba(42,138,138,0.1)',
+                color: form.department === 'MWE' ? '#2A78B8' : '#1F7A78',
+              }}>
+                {form.department}
+              </span>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

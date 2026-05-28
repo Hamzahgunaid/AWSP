@@ -7,7 +7,8 @@ import newsData      from '@/data/news.json';
 import documentsData from '@/data/documents.json';
 import phasesData    from '@/data/phases.json';
 import projectsData  from '@/data/projects.json';
-import partnersData  from '@/data/partners.json';
+import partnersData   from '@/data/partners.json';
+import taskforceData  from '@/data/taskforce.json';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,7 +21,8 @@ export default async function AdminDashboard() {
     { label: 'Documents',       value: documentsData.length, href: '/admin/knowledge', icon: '⊟' },
     { label: 'Planning Phases', value: phasesData.length,    href: '/admin/phases',    icon: '◎' },
     { label: 'Projects',        value: projectsData.length,  href: '/admin/projects',  icon: '▦' },
-    { label: 'Partners',        value: partnersData.length,  href: '/admin/partners',  icon: '⊕' },
+    { label: 'Partners',          value: partnersData.length,                                                         href: '/admin/partners',   icon: '⊕' },
+    { label: 'Taskforce Members', value: (taskforceData as any[]).filter((m: any) => m.active).length, href: '/admin/taskforce',  icon: '👥' },
   ];
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39,7 +41,7 @@ export default async function AdminDashboard() {
         </p>
 
         {/* Stat cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px', marginBottom: '36px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '16px', marginBottom: '36px' }}>
           {stats.map(s => (
             <Link key={s.href} href={s.href} style={{
               display: 'block', background: '#fff', border: '1px solid #E5DFD0',
@@ -85,7 +87,8 @@ export default async function AdminDashboard() {
               {[
                 { href: '/admin/news/new',      label: '+ Add news post',      bg: '#0E2A47', color: '#fff' },
                 { href: '/admin/knowledge/new', label: '+ Add document',        bg: '#1F7A78', color: '#fff' },
-                { href: '/admin/phases',        label: '◎ Update phase status', bg: '#F2F2F2', color: '#0E2A47' },
+                { href: '/admin/phases',        label: '◎ Update phase status',    bg: '#F2F2F2', color: '#0E2A47' },
+                { href: '/admin/taskforce/new', label: '+ Add taskforce member',   bg: '#F2F2F2', color: '#0E2A47' },
                 { href: '/ar',                  label: '↗ View live site (AR)', bg: '#F2F2F2', color: '#0E2A47', blank: true },
                 { href: '/en',                  label: '↗ View live site (EN)', bg: '#F2F2F2', color: '#0E2A47', blank: true },
               ].map(action => (
