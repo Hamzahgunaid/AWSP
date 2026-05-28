@@ -11,6 +11,7 @@ const NAV = [
   { href: '/admin/phases',    icon: '◎', label: 'Phase Status' },
   { href: '/admin/partners',  icon: '⊕', label: 'Partners' },
   { href: '/admin/projects',  icon: '▦', label: 'Project Database' },
+  { href: '/admin/taskforce', icon: '◈', label: 'Taskforce Members' },
 ];
 
 export default function AdminShell({ children }: { children: React.ReactNode }) {

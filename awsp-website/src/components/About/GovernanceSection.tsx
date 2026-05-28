@@ -1,20 +1,4 @@
-const TASKFORCE = [
-  { nameEn: 'Abdullah Al-Hasani',  nameAr: 'عبدالله الحسني',   titleEn: 'Procurement Manager',                          titleAr: 'مدير المشتريات',                     dept: 'MWE' },
-  { nameEn: 'Amal Al-Saqqaf',      nameAr: 'أمل الصقاف',       titleEn: 'Head of Administrative Department and HR',      titleAr: 'رئيسة القسم الإداري والموارد البشرية', dept: 'LWSCA' },
-  { nameEn: 'Anjila Issa',          nameAr: 'أنجيلا عيسى',      titleEn: 'WASH Coordinator Aden HUB',                    titleAr: 'منسقة WASH مركز عدن',                dept: 'MWE' },
-  { nameEn: 'Arzaq Al-Aqrabi',     nameAr: 'أرزاق العقربي',    titleEn: 'General Manager UW-PMU',                       titleAr: 'المدير العام UW-PMU',                dept: 'MWE' },
-  { nameEn: 'Hikmat Faris',         nameAr: 'حكمت فارس',        titleEn: 'Planning Department',                          titleAr: 'قسم التخطيط',                        dept: 'LWSCA' },
-  { nameEn: 'Hussam Ghaithan',      nameAr: 'حسام غيثان',       titleEn: 'Head of Emergency Unit',                       titleAr: 'رئيس وحدة الطوارئ',                  dept: 'MWE' },
-  { nameEn: 'Nagween Atta',         nameAr: 'نجوى عطا',         titleEn: 'Head of Coordination Department',              titleAr: 'رئيسة قسم التنسيق',                  dept: 'LWSCA' },
-  { nameEn: 'Naif bin Shaiban',     nameAr: 'نايف بن شيبان',    titleEn: 'Financial Manager',                            titleAr: 'المدير المالي',                      dept: 'MWE' },
-  { nameEn: 'Marwa Ali',            nameAr: 'مروى علي',          titleEn: 'Technical Officer',                            titleAr: 'ضابطة تقنية',                        dept: 'MWE' },
-  { nameEn: 'Muhammad Ismail',      nameAr: 'محمد إسماعيل',     titleEn: 'IT and Data Management',                       titleAr: 'تقنية المعلومات وإدارة البيانات',    dept: 'MWE' },
-  { nameEn: 'Reem Al-Dabai',        nameAr: 'ريم الدبعي',        titleEn: 'Manager of Water Studies Department',          titleAr: 'مديرة قسم الدراسات المائية',         dept: 'LWSCA' },
-  { nameEn: 'Yusra Ali',            nameAr: 'يسرى علي',          titleEn: 'Assistant to National WASH Cluster Coordinator', titleAr: 'مساعدة منسق كتلة WASH الوطنية',  dept: 'MWE' },
-  { nameEn: 'Wahib bin Saeed',      nameAr: 'وهيب بن سعيد',     titleEn: 'Head of Statistics Department',                titleAr: 'رئيس قسم الإحصاء',                   dept: 'LWSCA' },
-  { nameEn: 'Azah Al-Mass',         nameAr: 'عزة الماس',         titleEn: 'Engineer / Purchasing Management',             titleAr: 'مهندسة / إدارة المشتريات',           dept: 'LWSCA' },
-  { nameEn: 'Sanaa Naji',           nameAr: 'سناء ناجي',         titleEn: "Secretary of the Director General's Office",   titleAr: 'سكرتيرة مكتب المدير العام',          dept: 'LWSCA' },
-];
+import taskforceJson from '@/data/taskforce.json';
 
 const DEPT_STYLE: Record<string, { bg: string; color: string }> = {
   MWE:   { bg: 'rgba(42,120,184,0.1)',   color: 'var(--blue-600)' },
@@ -108,10 +92,10 @@ export default function GovernanceSection({ locale }: { locale: string }) {
           gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
           gap: '16px',
         }}>
-          {TASKFORCE.map((m, i) => {
-            const ds = DEPT_STYLE[m.dept] || { bg: 'var(--bone)', color: 'var(--gray-500)' };
+          {(taskforceJson as any[]).filter(m => m.active).map((m, i) => {
+            const ds = DEPT_STYLE[m.department] || { bg: 'var(--bone)', color: 'var(--gray-500)' };
             return (
-              <div key={i} style={{
+              <div key={m.id ?? i} style={{
                 background: '#fff', border: '1px solid var(--line)',
                 borderRadius: 'var(--radius-lg)', padding: '24px 16px',
                 textAlign: 'center',
@@ -125,19 +109,19 @@ export default function GovernanceSection({ locale }: { locale: string }) {
                   fontSize: '18px', fontWeight: '700', fontFamily: ff,
                   marginBottom: '14px', border: '3px solid var(--line)',
                 }}>
-                  {initials(m.nameEn)}
+                  {initials(m.name_en)}
                 </div>
                 <h4 style={{
                   fontFamily: ff, fontSize: '13px', fontWeight: '700',
                   color: 'var(--ink-800)', marginBottom: '4px',
                 }}>
-                  {isAr ? m.nameAr : m.nameEn}
+                  {isAr ? m.name_ar : m.name_en}
                 </h4>
                 <p style={{
                   fontFamily: ff, fontSize: '11px', color: 'var(--gray-500)',
                   lineHeight: 1.4, marginBottom: '10px',
                 }}>
-                  {isAr ? m.titleAr : m.titleEn}
+                  {isAr ? m.title_ar : m.title_en}
                 </p>
                 <span style={{
                   display: 'inline-block', padding: '2px 10px',
@@ -145,7 +129,7 @@ export default function GovernanceSection({ locale }: { locale: string }) {
                   fontWeight: '600', fontFamily: ff,
                   background: ds.bg, color: ds.color,
                 }}>
-                  {m.dept}
+                  {m.department}
                 </span>
               </div>
             );
